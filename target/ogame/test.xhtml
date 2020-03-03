@@ -1,0 +1,29 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:p="http://primefaces.org/ui" xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+<h:head>
+	<title>Ajax Listener</title>
+</h:head>
+<h:body>
+	<h2>Ajax Listener Example</h2>
+	<h:form>
+		<h:panelGrid columns="3">
+			<h:outputText value="Enter: " />
+			<p:inputText id="counter" value="#{roles.text}"
+				placeholder="Enter Text">
+				<p:ajax event="keyup" update="out"
+					listener="#{roles.handleKeyEvent()}" />
+			</p:inputText>
+		</h:panelGrid>
+		<h:panelGrid id="out">
+			<h2>Output</h2>
+			<h:outputText value="#{roles.text}" />
+		</h:panelGrid>
+	</h:form>
+</h:body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:p="http://primefaces.org/ui">
+
+	<f:event listener="#{loginHandler.checkLoggedIn}" type="preRenderView" />
+
+	<ui:insert name="res_table">
+		<table id="res_table">
+			<thead>
+				<tr class="res_table">
+					<td><h:graphicImage style="width: 42px; height: 100%;"
+							url="resources/images/metal.gif" /></td>
+					<td><h:graphicImage style="width: 42px; height: 100%;"
+							url="resources/images/crystal.gif" /></td>
+					<td><h:graphicImage style="width: 42px; height: 100%;"
+							url="resources/images/deuterium.gif" /></td>
+					<td><h:graphicImage style="width: 42px; height: 100%;"
+							url="resources/images/energy.gif" /></td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr class="res_table">
+					<td id="metal"><p:outputLabel value="#{planet.metal}"/></td>
+					<td id="crystal"><p:outputLabel value="#{planet.getCrystal()}"/></td>
+					<td id="deut"><p:outputLabel value="#{planet.getDeut()}"/></td>
+					<td id="energy"><p:outputLabel value="#{planet.getEnergy()}"/></td>
+				</tr>
+				<tr class="res_table">
+					<td id="metal_storage">/<p:outputLabel value="#{planet.getMetalStorage()}"/></td>
+					<td id="crystal_storage">/<p:outputLabel value="#{planet.getCrytalStorage()}"/></td>
+					<td id="deut_storage">/<p:outputLabel value="#{planet.getDeutStorage()}"/></td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
+	</ui:insert>
+</ui:composition>
