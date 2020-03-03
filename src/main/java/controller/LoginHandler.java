@@ -30,7 +30,7 @@ public class LoginHandler implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private String username;
 	private String password;
-	private User user = null;
+	private UserHandler handler = new UserHandler(); 
 
 	@PersistenceContext
 	private EntityManager em;
@@ -69,7 +69,7 @@ public class LoginHandler implements Serializable{
 		@SuppressWarnings("unchecked")
 		List<User> users = query.getResultList();
 		if(users.size() == 1) {
-			user = users.get(0);
+			handler.setUser(users.get(0));
 			return"/main.xhtml?faces-redirect=true";
 		} else { 
 			return null;
@@ -77,7 +77,7 @@ public class LoginHandler implements Serializable{
 	}
 	
 	public boolean isAdmin() {
-		if(user.getAuthLvl() == AuthLvl.SGA) {
+		if(handler.getUser().getAuthLvl() == AuthLvl.SGA) {
 			return true;
 		} else {
 			return false;
@@ -86,7 +86,7 @@ public class LoginHandler implements Serializable{
 	
 	public void checkLoggedIn(ComponentSystemEvent cse) {
 		FacesContext context = FacesContext.getCurrentInstance();
-		if (user == null) {
+		if (handler.getUser() == null) {
 			context.getApplication().getNavigationHandler().handleNavigation(context, null, "/login.xhtml?faces-redirect=true");
 		}
 	}
@@ -94,7 +94,7 @@ public class LoginHandler implements Serializable{
 	public String logout () {
 		Query query = em.createQuery("UPDATE User SET lastlogin = :time where username = :username");
 		query.setParameter("time", System.currentTimeMillis());
-		query.setParameter("username", user.getUsername());
+		query.setParameter("username", handler.getUser().getUsername());
 		try {
 			utx.begin();
 		} catch (NotSupportedException | SystemException e) {
@@ -130,13 +130,15 @@ public class LoginHandler implements Serializable{
 		this.password = password;
 	}
 
-	public User getUser() {
-		return user;
+	public UserHandler getHandler() {
+		return handler;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setHandler(UserHandler handler) {
+		this.handler = handler;
 	}
+
+	
 
 
 }

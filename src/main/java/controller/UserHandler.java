@@ -34,7 +34,7 @@ public class UserHandler {
 	private UserTransaction utx;
 
 	private DataModel<User> users = new ListDataModel<User>();
-	private User merkeUser = new User();
+	private User user = null;
 	private String username;
 	private String password;
 	private String email;
@@ -63,20 +63,20 @@ public class UserHandler {
 		@SuppressWarnings("unchecked")
 		List<User> qusers = query.getResultList();
 		if(qusers.size() == 0) {
-			merkeUser = new User();
-			merkeUser.setAuthLvl(AuthLvl.USER);
-			merkeUser.setIsActive(IsActive.TRUE);
-			merkeUser.setUsername(username);
-			merkeUser.setPassword(password);
-			merkeUser.setEmail(email);
+			user = new User();
+			user.setAuthLvl(AuthLvl.USER);
+			user.setIsActive(IsActive.TRUE);
+			user.setUsername(username);
+			user.setPassword(password);
+			user.setEmail(email);
 			try {
 				utx.begin();
 			} catch (NotSupportedException | SystemException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			merkeUser = em.merge(merkeUser);
-			em.persist(merkeUser);
+			user = em.merge(user);
+			em.persist(user);
 			users.setWrappedData(em.createNamedQuery("SelectUsers").getResultList());
 			try {
 				utx.commit();
@@ -101,12 +101,12 @@ public class UserHandler {
 		this.users = users;
 	}
 
-	public User getMerkeUser() {
-		return merkeUser;
+	public User getUser() {
+		return user;
 	}
 
-	public void setMerkeUser(User merkeUser) {
-		this.merkeUser = merkeUser;
+	public void setUser(User merkeUser) {
+		this.user = merkeUser;
 	}
 
 	public String getUsername() {

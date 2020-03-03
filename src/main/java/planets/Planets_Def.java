@@ -3,8 +3,11 @@ package planets;
 import java.io.Serializable;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.MapsId;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 
 @SuppressWarnings("serial")
 @NamedQuery(name="SelectPlanets_Def", query="Select k from Planets_Def k")
@@ -24,6 +27,10 @@ public class Planets_Def implements Serializable {
 	private int largeShieldDome;
 	private int antiBallisticMissle;
 	private int interplanetaryMissle;
+	
+	@OneToOne(fetch = FetchType.LAZY)
+    @MapsId
+    private Planets_General planet;
 	
 	public Planets_Def() {
 		

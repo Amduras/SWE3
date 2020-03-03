@@ -3,8 +3,11 @@ package planets;
 import java.io.Serializable;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.MapsId;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 
 @SuppressWarnings("serial")
 @NamedQuery(name="SelectPlanets_Buildings", query="Select k from Planets_Buildings k")
@@ -37,8 +40,20 @@ public class Planets_Buildings implements Serializable {
 	private int sensorPhalanx;
 	private int jumpgate;
 	
+	@OneToOne(fetch = FetchType.LAZY)
+    @MapsId
+    private Planets_General planet;
+	
 	public Planets_Buildings() {
 		
+	}
+
+	public Planets_General getPlanet() {
+		return planet;
+	}
+
+	public void setPlanet(Planets_General planet) {
+		this.planet = planet;
 	}
 
 	public int getPlanetId() {

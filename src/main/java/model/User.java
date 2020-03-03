@@ -35,9 +35,9 @@ public class User implements Serializable{
 	private AuthLvl authLvl;
 	
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "user_id")
-    private List<Planets_General> planets = new ArrayList<>();
-    
+	@JoinColumn(name = "user_id")
+	private List<Planets_General> planets = new ArrayList<>();
+	
 	public User(){
 		
 	}
@@ -113,6 +113,14 @@ public class User implements Serializable{
 
 	public void setAuthLvl(AuthLvl authLvl) {
 		this.authLvl = authLvl;
+	}
+
+	public List<Planets_General> getPlanets() {
+		return planets;
+	}
+
+	public void setPlanets(List<Planets_General> planets) {
+		this.planets = planets;
 	}
 	
 	

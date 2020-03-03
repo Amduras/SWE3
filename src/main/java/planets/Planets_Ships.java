@@ -3,8 +3,11 @@ package planets;
 import java.io.Serializable;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.MapsId;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 
 @SuppressWarnings("serial")
 @NamedQuery(name="SelectPlanets_Ships", query="Select k from Planets_Ships k")
@@ -28,6 +31,10 @@ public class Planets_Ships implements Serializable {
 	private int recycler;
 	private int espionageProbe;
 	private int solarSattlelite;
+	
+	@OneToOne(fetch = FetchType.LAZY)
+    @MapsId
+    private Planets_General planet;
 	
 	public Planets_Ships() {
 		

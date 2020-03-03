@@ -35,6 +35,7 @@ public class Planets_General implements Serializable {
 	private int energy;
 	
 	
+	
 	public Planets_General() {
 		
 	}
