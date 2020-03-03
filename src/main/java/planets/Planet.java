@@ -2,11 +2,15 @@ package planets;
 
 import javax.faces.bean.SessionScoped;
 
+import static org.quartz.JobBuilder.*;
+import static org.quartz.TriggerBuilder.*;
+
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.SchedulerFactory;
+import org.quartz.SimpleScheduleBuilder;
 
-import Task.SchedulingTask;
+import Task.ResUpdateTask;
 
 @SessionScoped
 public class Planet {
@@ -23,21 +27,7 @@ public class Planet {
 	private long deutStorage = 0;
 	
 	public Planet() {
-		try {
-			s = factory.getScheduler();
-			s.start();
-			s.scheduleJob(
-					newJob(SchedulingTask.class)
-						.build(),
-					newTrigger()
-						.withSchedule(SimpleScheduleBuilder.repeatSecondlyForever())
-						.startNow()
-						.build());
-		} catch (SchedulerException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+
 	}
 	
 	public long getMetal() {

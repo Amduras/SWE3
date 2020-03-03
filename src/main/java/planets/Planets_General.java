@@ -29,12 +29,10 @@ public class Planets_General implements Serializable {
 	private int slots;
 	private int moonSlots;
 	private int temperature;
-	private int metal;
-	private int cris;
-	private int deut;
-	private int energy;
-	
-	
+	private int metal = 7896;
+	private int crystal = 97896;
+	private int deut = 17896;
+	private int energy = 47896; 
 	
 	public Planets_General() {
 		
@@ -136,12 +134,12 @@ public class Planets_General implements Serializable {
 		this.metal = metal;
 	}
 
-	public int getCris() {
-		return cris;
+	public int getCrystal() {
+		return crystal;
 	}
 
-	public void setCris(int cris) {
-		this.cris = cris;
+	public void setCrystal(int cris) {
+		this.crystal = cris;
 	}
 
 	public int getDeut() {

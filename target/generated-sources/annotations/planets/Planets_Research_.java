@@ -11,6 +11,7 @@ public abstract class Planets_Research_ {
 	public static volatile SingularAttribute<Planets_Research, Integer> shield;
 	public static volatile SingularAttribute<Planets_Research, Integer> hyperspace;
 	public static volatile SingularAttribute<Planets_Research, Integer> espionage;
+	public static volatile SingularAttribute<Planets_Research, Planets_General> planet;
 	public static volatile SingularAttribute<Planets_Research, Integer> astrophysics;
 	public static volatile SingularAttribute<Planets_Research, Integer> ion;
 	public static volatile SingularAttribute<Planets_Research, Integer> armour;

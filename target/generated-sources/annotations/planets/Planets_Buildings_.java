@@ -12,6 +12,7 @@ public abstract class Planets_Buildings_ {
 	public static volatile SingularAttribute<Planets_Buildings, Integer> spaceDock;
 	public static volatile SingularAttribute<Planets_Buildings, Integer> crisStorage;
 	public static volatile SingularAttribute<Planets_Buildings, Integer> lunarBase;
+	public static volatile SingularAttribute<Planets_Buildings, Planets_General> planet;
 	public static volatile SingularAttribute<Planets_Buildings, Integer> deutSyn;
 	public static volatile SingularAttribute<Planets_Buildings, Integer> shipyard;
 	public static volatile SingularAttribute<Planets_Buildings, Integer> roboticFactory;

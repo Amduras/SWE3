@@ -31,11 +31,12 @@ body {
 
 /*id*/
 #header{
-  height: 50px;
+  height: 100px;
   border: 2px solid #73AD21;
 }
 #res_table{
 	margin: auto;
+	margin-top: 10px;
 	width: 400px;
 	border-collapse: collapse;
 	text-align: center;
