@@ -17,7 +17,7 @@ import org.quartz.SchedulerException;
 import controller.PlanetHandler;
 
 public class ResUpdateTask implements Job {
-
+	
 	@Override
 	public void execute(JobExecutionContext context) throws JobExecutionException {
 		PlanetHandler ph;

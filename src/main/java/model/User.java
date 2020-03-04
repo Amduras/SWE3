@@ -1,8 +1,8 @@
 package model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -33,10 +33,6 @@ public class User implements Serializable{
 	private Long lastlogin;
 	private int picture;
 	private AuthLvl authLvl;
-	
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-	@JoinColumn(name = "user_id")
-	private List<Planets_General> planets = new ArrayList<>();
 	
 	public User(){
 		
@@ -115,13 +111,13 @@ public class User implements Serializable{
 		this.authLvl = authLvl;
 	}
 
-	public List<Planets_General> getPlanets() {
-		return planets;
-	}
-
-	public void setPlanets(List<Planets_General> planets) {
-		this.planets = planets;
-	}
+//	public List<Planets_General> getPlanets() {
+//		return planets;
+//	}
+//
+//	public void setPlanets(List<Planets_General> planets) {
+//		this.planets = planets;
+//	}
 	
 	
 }
