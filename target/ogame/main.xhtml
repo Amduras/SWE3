@@ -6,7 +6,7 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
-	xmlns:p="http://primefaces.org/ui" xmlns:jsf="http://xmlns.jcp.org/jsf">
+	xmlns:p="http://primefaces.org/ui">
 <h:head>
 	<title><ui:insert name="title">Ogame</ui:insert></title>
 	<link rel="stylesheet" href="resources/style.css" type="text/css" />
@@ -16,12 +16,12 @@
 </h:head>
 <h:body>
 	<div id="header">
-		<ui:include src="/includes/mainHeader.xhtml" />
+		<ui:include src="includes/mainHeader.xhtml" />
 	</div>
 
 	<div id="content">
 		<div id="col_Left" class="col">
-			<ui:include src="/includes/mainMenu.xhtml" />
+			<ui:include src="includes/mainMenu.xhtml" />
 		</div>
 		<div id="col_center" class="col">
 			<div id="center_head">

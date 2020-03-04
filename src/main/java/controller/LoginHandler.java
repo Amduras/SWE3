@@ -22,6 +22,7 @@ import javax.transaction.UserTransaction;
 import enums.AuthLvl;
 import enums.IsActive;
 import model.User;
+import planets.Planets_General;
 
 @ManagedBean(name="loginHandler")
 @SessionScoped
@@ -30,7 +31,8 @@ public class LoginHandler implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private String username;
 	private String password;
-	private UserHandler handler = new UserHandler(); 
+	private UserHandler handler = new UserHandler();
+	private PlanetHandler pHandler = new PlanetHandler();
 
 	@PersistenceContext
 	private EntityManager em;
@@ -45,13 +47,20 @@ public class LoginHandler implements Serializable{
 		@SuppressWarnings("unchecked")
 		List<User> qusers = query.getResultList();
 		if(qusers.size() == 0) {
+			User user = new User("admin","admin@admin.de","admin", IsActive.TRUE, AuthLvl.SGA);
+			Planets_General planet = new Planets_General(100,100,100,100,"Arsch 5");
+			Planets_General planet2 = new Planets_General(100,100,100,100,"Arsch 8");
+			planet.setUser(user);
+			planet2.setUser(user);
 			try {
 				utx.begin();
 			} catch (NotSupportedException | SystemException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			em.persist(new User("admin","admin@admin.de","admin", IsActive.TRUE, AuthLvl.SGA));
+			em.persist(user);
+			em.persist(planet);
+			em.persist(planet2);
 			try {
 				utx.commit();
 			} catch (SecurityException | IllegalStateException | RollbackException | HeuristicMixedException
@@ -70,6 +79,11 @@ public class LoginHandler implements Serializable{
 		List<User> users = query.getResultList();
 		if(users.size() == 1) {
 			handler.setUser(users.get(0));
+			query = em.createQuery("select k from Planets_General k where k.user = :user");
+			query.setParameter("user", handler.getUser());
+			@SuppressWarnings("unchecked")
+			List<Planets_General> planet = query.getResultList();
+			pHandler.setActivePlanet(planet.get(0));
 			return"/main.xhtml?faces-redirect=true";
 		} else { 
 			return null;

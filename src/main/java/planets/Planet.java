@@ -5,6 +5,7 @@ import javax.faces.bean.SessionScoped;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.SchedulerFactory;
+import org.quartz.SimpleScheduleBuilder;
 
 import Task.SchedulingTask;
 
@@ -23,20 +24,20 @@ public class Planet {
 	private long deutStorage = 0;
 	
 	public Planet() {
-		try {
-			s = factory.getScheduler();
-			s.start();
-			s.scheduleJob(
-					newJob(SchedulingTask.class)
-						.build(),
-					newTrigger()
-						.withSchedule(SimpleScheduleBuilder.repeatSecondlyForever())
-						.startNow()
-						.build());
-		} catch (SchedulerException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		try {
+//			s = factory.getScheduler();
+//			s.start();
+//			s.scheduleJob(
+//					newJob(SchedulingTask.class)
+//						.build(),
+//					newTrigger()
+//						.withSchedule(SimpleScheduleBuilder.repeatSecondlyForever())
+//						.startNow()
+//						.build());
+//		} catch (SchedulerException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		
 	}
 	

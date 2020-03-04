@@ -4,6 +4,7 @@ import enums.Moon;
 import javax.annotation.Generated;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
+import model.User;
 
 @Generated(value = "org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor")
 @StaticMetamodel(Planets_General.class)
@@ -19,10 +20,12 @@ public abstract class Planets_General_ {
 	public static volatile SingularAttribute<Planets_General, Integer> cris;
 	public static volatile SingularAttribute<Planets_General, Integer> solarsystem;
 	public static volatile SingularAttribute<Planets_General, Integer> temperature;
+	public static volatile SingularAttribute<Planets_General, String> name;
 	public static volatile SingularAttribute<Planets_General, Integer> planetId;
 	public static volatile SingularAttribute<Planets_General, Integer> position;
 	public static volatile SingularAttribute<Planets_General, Integer> galaxy;
 	public static volatile SingularAttribute<Planets_General, Long> debrisFieldMetal;
+	public static volatile SingularAttribute<Planets_General, User> user;
 	public static volatile SingularAttribute<Planets_General, Integer> energy;
 
 }
