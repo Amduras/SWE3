@@ -9,37 +9,43 @@
 	xmlns:p="http://primefaces.org/ui">
 
 	<f:event listener="#{loginHandler.checkLoggedIn}" type="preRenderView" />
+	<script>
+		setInterval(function() {
+        	document.getElementById("hiddenForm:update_res_table").click();
+    	}, 1000);
+	</script>
 
 	<ui:insert name="res_table">
-		<p:panel id="res_update">
-		<table id="res_table">
-			<thead>
-				<tr class="res_table">
-					<td><h:graphicImage style="width: 42px; height: 100%;"
-							url="resources/images/metal.gif" /></td>
-					<td><h:graphicImage style="width: 42px; height: 100%;"
-							url="resources/images/crystal.gif" /></td>
-					<td><h:graphicImage style="width: 42px; height: 100%;"
-							url="resources/images/deuterium.gif" /></td>
-					<td><h:graphicImage style="width: 42px; height: 100%;"
-							url="resources/images/energy.gif" /></td>
-				</tr>
-			</thead>
-			<tbody>
-				<tr class="res_table">
-					<td id="metal"><p:outputLabel id="res_table_metal" value="#{planetHandler.activePlanet.metal}"/></td>
-					<td id="crystal"><p:outputLabel value="#{planetHandler.activePlanet.crystal}"/></td>
-					<td id="deut"><p:outputLabel value="#{planetHandler.activePlanet.deut}"/></td>
-					<td id="energy"><p:outputLabel value="#{planetHandler.activePlanet.energy}"/></td>
-				</tr>
-				<tr class="res_table">
-					<td id="metal_storage">/<p:outputLabel value="#{planet.getMetalStorage()}"/></td>
-					<td id="crystal_storage">/<p:outputLabel value="#{planet.getCrytalStorage()}"/></td>
-					<td id="deut_storage">/<p:outputLabel value="#{planet.getDeutStorage()}"/></td>
-					<td></td>
-				</tr>
-			</tbody>
-		</table>
-		</p:panel>
+		<h:form>
+			<table id="res_table">
+				<thead>
+					<tr class="res_table">
+						<td><h:graphicImage style="width: 42px; height: 100%;"
+								url="resources/images/metal.gif" /></td>
+						<td><h:graphicImage style="width: 42px; height: 100%;"
+								url="resources/images/crystal.gif" /></td>
+						<td><h:graphicImage style="width: 42px; height: 100%;"
+								url="resources/images/deuterium.gif" /></td>
+						<td><h:graphicImage style="width: 42px; height: 100%;"
+								url="resources/images/energy.gif" /></td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr class="res_table">
+						<td id="metal"><p:outputLabel id="res_table_metal" value="#{planetHandler.activePlanet.metal}"/></td>
+						<td id="crystal"><p:outputLabel id="res_table_crystal" value="#{planetHandler.activePlanet.crystal}"/></td>
+						<td id="deut"><p:outputLabel  id="res_table_deut" value="#{planetHandler.activePlanet.deut}"/></td>
+						<td id="energy"><p:outputLabel id="res_table_energy" value="#{planetHandler.activePlanet.energy}"/></td>
+						<p:poll interval="1" listener="#{planetHandler.updateRes}" update="res_table_metal res_table_crystal res_table_deut"/>
+					</tr>
+					<tr class="res_table">
+						<td id="metal_storage">/<p:outputLabel value="#{planet.getMetalStorage()}"/></td>
+						<td id="crystal_storage">/<p:outputLabel value="#{planet.getCrytalStorage()}"/></td>
+						<td id="deut_storage">/<p:outputLabel value="#{planet.getDeutStorage()}"/></td>
+						<td></td>
+					</tr>
+				</tbody>
+			</table>
+		</h:form>
 	</ui:insert>
 </ui:composition>

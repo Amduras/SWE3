@@ -4,8 +4,11 @@ package controller;
 import static org.quartz.JobBuilder.newJob;
 import static org.quartz.TriggerBuilder.newTrigger;
 
+import java.util.List;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.persistence.Query;
 
@@ -32,30 +35,16 @@ public class PlanetHandler {
 	private Planets_Research pr;
 	private Planets_Ships ps;
 	
-	public PlanetHandler() {
-		try {
-			s = factory.getScheduler();
-			s.start();
-			s.getContext().put("o", this);
-			s.scheduleJob(
-					newJob(ResUpdateTask.class)
-						.build(),
-					newTrigger()
-						.withSchedule(SimpleScheduleBuilder.repeatSecondlyForever())
-						.startNow()
-						.build());
-		} catch (SchedulerException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+	public PlanetHandler() {		
 	}
 
 	public void updateRes() {
-		System.out.println("eyyyyyyyyyyyyyyyyyyyyyy");
 		int m = activePlanet.getMetal();
+		int c = activePlanet.getCrystal();
+		int d = activePlanet.getDeut();
 		activePlanet.setMetal(m+1000);
-		RequestContext.getCurrentInstance().update("update_res");
+		activePlanet.setCrystal(c+663);
+		activePlanet.setDeut(d+22);
 	}
 
 	public Planets_General getActivePlanet() {

@@ -15,9 +15,9 @@
 	<f:event listener="#{loginHandler.checkLoggedIn}" type="preRenderView" />
 </h:head>
 <h:body>
-	<div id="header">
+	<h:panelGroup layout="block" id="header">
 		<ui:include src="/includes/mainHeader.xhtml" />
-	</div>
+	</h:panelGroup>
 
 	<div id="content">
 		<div id="col_Left" class="col">
