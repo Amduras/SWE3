@@ -3,16 +3,12 @@ package planets;
 import java.io.Serializable;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 
 import enums.Moon;
-import model.User;
 
 @SuppressWarnings("serial")
 @NamedQuery(name="SelectPlanets_General", query="Select k from Planets_General k")
@@ -33,31 +29,14 @@ public class Planets_General implements Serializable {
 	private int slots;
 	private int moonSlots;
 	private int temperature;
-	private int metal;
-	private int cris;
-	private int deut;
-	private int energy;
-	private String name;
-	
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name="user_id", nullable=false)
-	private User user;
+	private int metal = 7896;
+	private int crystal = 97896;
+	private int deut = 17896;
+	private int energy = 47896; 
 	
 	public Planets_General() {
 		
 	}
-
-	
-
-	public Planets_General(int metal, int cris, int deut, int energy, String name) {
-		this.metal = metal;
-		this.cris = cris;
-		this.deut = deut;
-		this.energy = energy;
-		this.name = name;
-	}
-
-
 
 	public int getPlanetId() {
 		return planetId;
@@ -155,12 +134,12 @@ public class Planets_General implements Serializable {
 		this.metal = metal;
 	}
 
-	public int getCris() {
-		return cris;
+	public int getCrystal() {
+		return crystal;
 	}
 
-	public void setCris(int cris) {
-		this.cris = cris;
+	public void setCrystal(int cris) {
+		this.crystal = cris;
 	}
 
 	public int getDeut() {
@@ -177,22 +156,6 @@ public class Planets_General implements Serializable {
 
 	public void setEnergy(int energy) {
 		this.energy = energy;
-	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 	
 	

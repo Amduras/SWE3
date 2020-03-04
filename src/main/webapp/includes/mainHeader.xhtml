@@ -11,6 +11,7 @@
 	<f:event listener="#{loginHandler.checkLoggedIn}" type="preRenderView" />
 
 	<ui:insert name="res_table">
+		<p:panel id="res_update">
 		<table id="res_table">
 			<thead>
 				<tr class="res_table">
@@ -26,10 +27,10 @@
 			</thead>
 			<tbody>
 				<tr class="res_table">
-					<td id="metal"><p:outputLabel value="#{planet.metal}"/></td>
-					<td id="crystal"><p:outputLabel value="#{planet.getCrystal()}"/></td>
-					<td id="deut"><p:outputLabel value="#{planet.getDeut()}"/></td>
-					<td id="energy"><p:outputLabel value="#{planet.getEnergy()}"/></td>
+					<td id="metal"><p:outputLabel id="res_table_metal" value="#{planetHandler.activePlanet.metal}"/></td>
+					<td id="crystal"><p:outputLabel value="#{planetHandler.activePlanet.crystal}"/></td>
+					<td id="deut"><p:outputLabel value="#{planetHandler.activePlanet.deut}"/></td>
+					<td id="energy"><p:outputLabel value="#{planetHandler.activePlanet.energy}"/></td>
 				</tr>
 				<tr class="res_table">
 					<td id="metal_storage">/<p:outputLabel value="#{planet.getMetalStorage()}"/></td>
@@ -39,5 +40,6 @@
 				</tr>
 			</tbody>
 		</table>
+		</p:panel>
 	</ui:insert>
 </ui:composition>
