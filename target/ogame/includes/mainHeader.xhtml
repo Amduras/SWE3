@@ -9,11 +9,6 @@
 	xmlns:p="http://primefaces.org/ui">
 
 	<f:event listener="#{loginHandler.checkLoggedIn}" type="preRenderView" />
-	<script>
-		setInterval(function() {
-        	document.getElementById("hiddenForm:update_res_table").click();
-    	}, 1000);
-	</script>
 
 	<ui:insert name="res_table">
 		<h:form>

@@ -7,61 +7,46 @@
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
 	xmlns:p="http://primefaces.org/ui">
-	
-	<h:form id="test">
-			<h:panelGrid columns="3">
-				<h:outputText value="Enter: " style="color:white;"/>
-				<p:inputText id="counter" value="#{roles.text}"
-					placeholder="Enter Text">
-					<p:ajax event="keyup" update="mainForm:test:out"
-						listener="#{onKey}" />
-				</p:inputText>
-			</h:panelGrid>
-			<h:panelGrid id="out">
-				<h2 style="color:white;">Output</h2>
-				<h:outputText value="#{roles.text}" style="color:white;"/>
-			</h:panelGrid>
 
-			<div>
-				<p:dataTable id="testTable" var="user" value="#{userHandler.users}"
-					selectionMode="single" selection="#{roles.selectedUser}"
-					rowKey="#{user.userID}" rowClasses="odd,even" headerClass="header"
-					scrollable="true" scrollHeight="200" styleClass="userTable">
-					<f:facet name="header">Nutzer</f:facet>
-					<p:ajax event="rowSelect" listener="#{roles.onRowSelect()}" />
-					<p:column headerText="NutzerID">
-						<p:outputLabel value="#{user.userID}" />
-					</p:column>
-					<p:column headerText="Nickname">
-						<p:outputLabel value="#{user.username}" />
-					</p:column>
-					<p:column headerText="E-Mail">
-						<p:outputLabel value="#{user.email}" />
-					</p:column>
-				</p:dataTable>
-			</div>
+	<p:dataTable id="testTable" var="user" value="#{userHandler.users}"
+		rowClasses="odd,even" headerClass="header" 
+		scrollable="true" scrollHeight="200" styleClass="userTable">
+		<f:facet name="header">Nutzer</f:facet>
+		<p:column headerText="NutzerID">
+			<p:outputLabel value="#{user.userID}" />
+		</p:column>
+		<p:column headerText="Nickname">
+			<p:outputLabel value="#{user.username}" />
+		</p:column>
+		<p:column headerText="E-Mail">
+			<p:outputLabel value="#{user.email}" />
+		</p:column>
+		<p:column>
+			<p:commandButton action="#{roles.test}" process="@form"/>
+		</p:column>
+	</p:dataTable>
 
-			<div id="tappedPanel">
-				<p:tabView>
-					<p:tab title="Status">
-						<div id="leftTable">
-							<p:dataTable var="roles" value="#{roles.rights}">
-								<p:column>
-									<f:facet name="header">verfügbare Rechte</f:facet>
-									<p:outputLabel value="#{roles}" />
-								</p:column>
-							</p:dataTable>
-						</div>
-						<div id="rightTable">
-							<p:dataTable var="user" value="#{userHandler.merkeUser}">
-								<p:column>
-									<f:facet name="header">Nutzer Rechte</f:facet>
-									<p:outputLabel value="#{user.authLvl}" />
-								</p:column>
-							</p:dataTable>
-						</div>
-					</p:tab>
-				</p:tabView>
-			</div>
-		</h:form>
+	<div id="tappedPanel">
+		<p:tabView id="rightsView">
+			<p:tab title="Status">
+				<div id="leftTable">
+					<p:dataTable var="roles" value="#{roles.rights}">
+						<p:column>
+							<f:facet name="header">verfügbare Rechte</f:facet>
+							<p:outputLabel value="#{roles}" />
+						</p:column>
+					</p:dataTable>
+				</div>
+				<div id="rightTable">
+					<p:dataTable id="selectedUser" var="user"
+						value="#{roles.selectedUser}">
+						<p:column>
+							<f:facet name="header">Nutzer Rechte</f:facet>
+							<p:outputLabel value="#{user.authLvl}" />
+						</p:column>
+					</p:dataTable>
+				</div>
+			</p:tab>
+		</p:tabView>
+	</div>
 </ui:composition>

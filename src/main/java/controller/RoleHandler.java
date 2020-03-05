@@ -3,15 +3,14 @@ package controller;
 import java.io.Serializable;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
-
-import org.primefaces.event.SelectEvent;
+import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 
 import enums.AuthLvl;
 import model.User;
 
 @ManagedBean(name="roles")
-@RequestScoped
+@SessionScoped
 public class RoleHandler implements Serializable{
 
 	private static final long serialVersionUID = 1L;
@@ -25,14 +24,14 @@ public class RoleHandler implements Serializable{
 		System.out.println("Role");
 	}
 	
-	public void test() {
-		System.out.println("Button läuft");
-	}
-	
-	public void onRowSelect(SelectEvent event) {
+	public void onRowSelect() {
 		System.out.println("läuft");
 //		user = (User) event.getObject();
 //		System.out.println(user.getUsername());
+	}
+	
+	public void test() {
+		System.out.println("Test");
 	}
 	
 	public User getUser() {
@@ -67,18 +66,4 @@ public class RoleHandler implements Serializable{
 		System.out.println("Gesetzt");
 		this.selectedUser = selectedUser;
 	}
-	
-	private String text;
-	 
-    public String getText() {
-        return text;
-    }
-    public void setText(String text) {
-        this.text = text;
-    }
-     
-    public void handleKeyEvent() {
-    	System.out.println("Event");
-    	text = text.toUpperCase();
-    }
 }
