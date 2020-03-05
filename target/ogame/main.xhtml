@@ -15,13 +15,15 @@
 	<f:event listener="#{loginHandler.checkLoggedIn}" type="preRenderView" />
 </h:head>
 <h:body>
+
 	<h:panelGroup layout="block" id="header">
 		<ui:include src="includes/mainHeader.xhtml" />
-		<p:commandLink action="#{loginHandler.logout()}" style="float: right; color: white;">
+		<p:commandLink action="#{loginHandler.logout()}"
+			style="float: right; color: white;">
 			<i class="fa fa-sign-out fa-2x">Logout</i>
 		</p:commandLink>
 	</h:panelGroup>
-	<ui:insert name="content">
+	<h:form id="mainForm">
 	<div id="content">
 		<div id="col_Left" class="col">
 			<ui:include src="includes/mainMenu.xhtml" />
@@ -29,10 +31,10 @@
 		<div id="col_center" class="col">
 			<div id="center_head"></div>
 			<div id="center_body">
-				<h:form id="mainForm">
-						<ui:include src="/includes/#{includeController.page}.xhtml"/>
-				</h:form>
-			</div>
+			
+			 <ui:include src="includes/#{includeController.page}.xhtml" />
+				
+				</div>
 			<div id="center_footer">
 				<div id="building_queue" class="col2"></div>
 				<div id="tech_queue" class="col2"></div>
@@ -43,10 +45,11 @@
 			<div id="planets"></div>
 		</div>
 	</div>
-</ui:insert>
+	</h:form>
 	<div id="footer">
 		<ui:insert name="footer">
 		</ui:insert>
 	</div>
+	
 </h:body>
 </html>

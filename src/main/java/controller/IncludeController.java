@@ -3,8 +3,9 @@ package controller;
 import java.io.Serializable;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.SessionScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 
 @ManagedBean
 @SessionScoped
@@ -13,11 +14,9 @@ public class IncludeController implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	private String page;
-	private boolean loggedin = false;
 	
 	@PostConstruct
 	public void init() {
-		if(!loggedin)
 			page="start";
 	}
 
@@ -26,14 +25,8 @@ public class IncludeController implements Serializable{
 	}
 
 	public void setPage(String page) {
+		FacesContext.getCurrentInstance().getViewRoot().getViewMap().remove("roles");
 		this.page = page;
 	}
-
-	public boolean isLoggedin() {
-		return loggedin;
-	}
-
-	public void setLoggedin(boolean loggedin) {
-		this.loggedin = loggedin;
-	}
+	
 }
