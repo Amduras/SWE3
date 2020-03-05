@@ -37,7 +37,7 @@ public class Planets_General implements Serializable {
 	private int crystal = 97896;
 	private int deut = 17896;
 	private int energy = 47896; 
-	private String name;
+	private String name = "DingDong des Todes";
 	
 	
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)

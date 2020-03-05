@@ -17,11 +17,7 @@
 <h:body>
 	<h:panelGroup layout="block" id="header">
 		<ui:include src="includes/mainHeader.xhtml" />
-		<p:commandLink action="#{loginHandler.logout()}" style="float: right; color: white;">
-			<i class="fa fa-sign-out fa-2x">Logout</i>
-		</p:commandLink>
 	</h:panelGroup>
-	<ui:insert name="content">
 	<div id="content">
 		<div id="col_Left" class="col">
 			<ui:include src="includes/mainMenu.xhtml" />
@@ -40,10 +36,11 @@
 			</div>
 		</div>
 		<div id="col_right" class="col">
-			<div id="planets"></div>
+			<h:panelGroup id="planets">
+				<ui:include src="includes/planets.xhtml" />
+			</h:panelGroup>
 		</div>
 	</div>
-</ui:insert>
 	<div id="footer">
 		<ui:insert name="footer">
 		</ui:insert>
