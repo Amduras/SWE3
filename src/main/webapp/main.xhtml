@@ -20,8 +20,6 @@
 		<ui:include src="includes/mainHeader.xhtml" />
 		<p:commandLink action="#{loginHandler.logout()}"
 			style="float: right; color: white;">
-			<i class="fa fa-sign-out fa-2x">Logout</i>
-		</p:commandLink>
 	</h:panelGroup>
 	<h:form id="mainForm">
 	<div id="content">
@@ -42,7 +40,9 @@
 			</div>
 		</div>
 		<div id="col_right" class="col">
-			<div id="planets"></div>
+			<h:panelGroup id="planets">
+				<ui:include src="includes/planets.xhtml" />
+			</h:panelGroup>
 		</div>
 	</div>
 	</h:form>
