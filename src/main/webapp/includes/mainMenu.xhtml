@@ -11,6 +11,7 @@
 	<f:event listener="#{loginHandler.checkLoggedIn}" type="preRenderView" />
 	
 	<div id="menu">
+				<h:form id="menuForm">
 				<p:menu class="navMenu" toggleable="true">
 					<p:menuitem class="menuItem">
 						<i class="fa fa-home fa-2x" style="color: white;">Übersicht</i>
@@ -55,5 +56,6 @@
 						</p:menuitem>
 					</p:submenu>
 				</p:menu>
+				</h:form>
 		</div>
 </ui:composition>
