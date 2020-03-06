@@ -22,19 +22,21 @@
 		<div id="col_Left" class="col">
 			<ui:include src="includes/mainMenu.xhtml" />
 		</div>
-		<div id="col_center" class="col">
-			<div id="center_head"></div>
-			<div id="center_body">
-				<h:form id="mainForm">
+		<h:panelGroup id="col_center" class="col">
+		
+			<h:panelGroup id="center_head" layout="block"></h:panelGroup>
+			<h:panelGroup id="center_body">
+				<h:form id="mainForm">	
 						<ui:include src="/includes/#{includeController.page}.xhtml"/>
 				</h:form>
-			</div>
-			<div id="center_footer">
-				<div id="building_queue" class="col2"></div>
-				<div id="tech_queue" class="col2"></div>
-				<div id="ship_queue" class="col2"></div>
-			</div>
-		</div>
+			</h:panelGroup>
+			<h:panelGroup id="center_footer">
+				<h:panelGroup id="building_queue" class="col2"></h:panelGroup>
+				<h:panelGroup id="tech_queue" class="col2"></h:panelGroup>
+				<h:panelGroup id="ship_queue" class="col2"></h:panelGroup>
+			</h:panelGroup>
+			
+		</h:panelGroup>
 		<div id="col_right" class="col">
 			<h:panelGroup id="planets">
 				<ui:include src="includes/planets.xhtml" />
