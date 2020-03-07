@@ -23,13 +23,15 @@ public class Planets_General implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int planetId;
 	
+
+
 	private int galaxy;
 	private int solarsystem;
 	private int position;
 	private Moon moon;
-	private Long debrisFieldMetal;
-	private Long debrisFieldCris;
-	private Long debrisFieldDeut;
+	private long debrisFieldMetal;
+	private long debrisFieldCris;
+	private long debrisFieldDeut;
 	private int slots;
 	private int moonSlots;
 	private int temperature;
@@ -44,16 +46,26 @@ public class Planets_General implements Serializable {
 	@JoinColumn(name="user_id", nullable=false)
 	private User user;
 	
-	public Planets_General() {
-		
-	}
-	
-	public Planets_General(int metal, int cris, int deut, int energy, String name) {
+	public Planets_General(int planetId, int galaxy, int solarsystem, int position, Moon moon, long debrisFieldMetal,
+			long debrisFieldCris, long debrisFieldDeut, int slots, int moonSlots, int temperature, int metal,
+			int crystal, int deut, int energy, String name, User user) {
+		this.planetId = planetId;
+		this.galaxy = galaxy;
+		this.solarsystem = solarsystem;
+		this.position = position;
+		this.moon = moon;
+		this.debrisFieldMetal = debrisFieldMetal;
+		this.debrisFieldCris = debrisFieldCris;
+		this.debrisFieldDeut = debrisFieldDeut;
+		this.slots = slots;
+		this.moonSlots = moonSlots;
+		this.temperature = temperature;
 		this.metal = metal;
-		this.crystal = cris;
+		this.crystal = crystal;
 		this.deut = deut;
 		this.energy = energy;
 		this.name = name;
+		this.user = user;
 	}
 	
 	public int getPlanetId() {
@@ -96,7 +108,7 @@ public class Planets_General implements Serializable {
 		this.moon = moon;
 	}
 
-	public Long getDebrisFieldMetal() {
+	public long getDebrisFieldMetal() {
 		return debrisFieldMetal;
 	}
 
@@ -104,7 +116,7 @@ public class Planets_General implements Serializable {
 		this.debrisFieldMetal = debrisFieldMetal;
 	}
 
-	public Long getDebrisFieldCris() {
+	public long getDebrisFieldCris() {
 		return debrisFieldCris;
 	}
 
@@ -112,7 +124,7 @@ public class Planets_General implements Serializable {
 		this.debrisFieldCris = debrisFieldCris;
 	}
 
-	public Long getDebrisFieldDeut() {
+	public long getDebrisFieldDeut() {
 		return debrisFieldDeut;
 	}
 

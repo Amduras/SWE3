@@ -32,7 +32,7 @@ public class LoginHandler implements Serializable{
 	private String username;
 	private String password;
 	private UserHandler handler = new UserHandler();
-	private PlanetHandler pHandler = new PlanetHandler();
+	private PlanetHandler pHandler;
 
 	@PersistenceContext
 	private EntityManager em;
@@ -42,25 +42,21 @@ public class LoginHandler implements Serializable{
 
 	@PostConstruct
 	public void init() {
+		pHandler = new PlanetHandler(em);
 		Query query = em.createQuery("select k from User k where k.username = :username");
 		query.setParameter("username", "admin");
 		@SuppressWarnings("unchecked")
 		List<User> qusers = query.getResultList();
 		if(qusers.size() == 0) {
 			User user = new User("admin","admin@admin.de","admin", IsActive.TRUE, AuthLvl.SGA);
-			Planets_General planet = new Planets_General(100,100,100,100,"Arsch 5");
-			Planets_General planet2 = new Planets_General(100,100,100,100,"Arsch 8");
-			planet.setUser(user);
-			planet2.setUser(user);
 			try {
 				utx.begin();
 			} catch (NotSupportedException | SystemException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			pHandler.createNewPlanet(user);
 			em.persist(user);
-			em.persist(planet);
-			em.persist(planet2);
 			try {
 				utx.commit();
 			} catch (SecurityException | IllegalStateException | RollbackException | HeuristicMixedException
@@ -83,11 +79,46 @@ public class LoginHandler implements Serializable{
 			query.setParameter("user", handler.getUser());
 			@SuppressWarnings("unchecked")
 			List<Planets_General> planet = query.getResultList();
-			pHandler.init(planet, em);
+			pHandler.init(planet);
 			return"/main.xhtml?faces-redirect=true";
 		} else { 
 			return null;
 		}
+	}
+	
+	public String neuerUser() {
+		Query query = em.createQuery("select k from User k where k.username = :username");
+		query.setParameter("username", username);
+		@SuppressWarnings("unchecked")
+		List<User> qusers = query.getResultList();
+		if(qusers.size() == 0) {
+			User user = new User();
+			user.setAuthLvl(AuthLvl.USER);
+			user.setIsActive(IsActive.TRUE);
+			user.setUsername(username);
+			user.setPassword(password);
+			user.setEmail("asd@web.de");
+						
+			try {
+				utx.begin();
+			} catch (NotSupportedException | SystemException e) {
+				e.printStackTrace();
+			}
+			user = em.merge(user);
+			pHandler.createNewPlanet(user);
+			em.persist(user);
+			try {
+				utx.commit();
+			} catch (SecurityException | IllegalStateException | RollbackException | HeuristicMixedException
+					| HeuristicRollbackException | SystemException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return "login";
+		} else {
+			return "login";
+		}
+		
 	}
 	
 	public boolean isAdmin() {

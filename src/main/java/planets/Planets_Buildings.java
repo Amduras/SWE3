@@ -44,8 +44,34 @@ public class Planets_Buildings implements Serializable {
     @MapsId
     private Planets_General planet;
 	
-	public Planets_Buildings() {
-		
+	public Planets_Buildings(int planetId, int metalMine, int crystalMine, int deutSyn, int solarPlant,
+			int fusionReactor, int metalStorage, int crystalStorage, int deutTank, int metallHideout,
+			int crystalHideout, int deutHideout, int roboticFactory, int shipyard, int researchlab, int alliancedepot,
+			int missleSilo, int naniteFactory, int terraformer, int spaceDock, int lunarBase, int sensorPhalanx,
+			int jumpgate) {
+		this.planetId = planetId;
+		this.metalMine = metalMine;
+		this.crystalMine = crystalMine;
+		this.deutSyn = deutSyn;
+		this.solarPlant = solarPlant;
+		this.fusionReactor = fusionReactor;
+		this.metalStorage = metalStorage;
+		this.crystalStorage = crystalStorage;
+		this.deutTank = deutTank;
+		this.metallHideout = metallHideout;
+		this.crystalHideout = crystalHideout;
+		this.deutHideout = deutHideout;
+		this.roboticFactory = roboticFactory;
+		this.shipyard = shipyard;
+		this.researchlab = researchlab;
+		this.alliancedepot = alliancedepot;
+		this.missleSilo = missleSilo;
+		this.naniteFactory = naniteFactory;
+		this.terraformer = terraformer;
+		this.spaceDock = spaceDock;
+		this.lunarBase = lunarBase;
+		this.sensorPhalanx = sensorPhalanx;
+		this.jumpgate = jumpgate;
 	}
 
 	public Planets_General getPlanet() {

@@ -17,6 +17,8 @@ public class Planets_Research implements Serializable {
 	@Id
 	private int planetsId;
 	
+
+
 	private int energy;
 	private int laser;
 	private int ion;
@@ -36,8 +38,24 @@ public class Planets_Research implements Serializable {
     @MapsId
     private Planets_General planet;
 	
-	public Planets_Research() {
-		
+	public Planets_Research(int planetsId, int energy, int laser, int ion, int plasma, int combustion, int impulse,
+			int hyperspace, int espionage, int computer, int astrophysics, int gravitation, int armour, int weapon,
+			int shield) {
+		this.planetsId = planetsId;
+		this.energy = energy;
+		this.laser = laser;
+		this.ion = ion;
+		this.plasma = plasma;
+		this.combustion = combustion;
+		this.impulse = impulse;
+		this.hyperspace = hyperspace;
+		this.espionage = espionage;
+		this.computer = computer;
+		this.astrophysics = astrophysics;
+		this.gravitation = gravitation;
+		this.armour = armour;
+		this.weapon = weapon;
+		this.shield = shield;
 	}
 
 	public int getPlanetsId() {

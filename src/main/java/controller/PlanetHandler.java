@@ -5,9 +5,11 @@ import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import Task.ResUpdateTask;
+import model.User;
 import planets.*;
 
 @ManagedBean(name="planetHandler")
@@ -15,6 +17,7 @@ import planets.*;
 public class PlanetHandler {
 	
 	private List<Planets_General> planets;
+	
 	private EntityManager em;
 	
 	private int ownedPlanets;
@@ -26,15 +29,28 @@ public class PlanetHandler {
 	private Planets_Research pr;
 	private Planets_Ships ps;
 	
-	public PlanetHandler() {		
+	public PlanetHandler(EntityManager em) {
+		this.em = em;
 	}
 	/*** Get Lists of owned planets and init active ***/
-	public void init(List<Planets_General> planets, EntityManager em) {
+	public void init(List<Planets_General> planets) {
 		this.planets = planets;
-		this.em = em;
 		this.setOwnedPlanets(planets.size());
 		
 		updateDataset();	
+	}
+	
+	public void createNewPlanet(User user) {
+		Planets_Buildings pbt = new Planets_Buildings(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+		Planets_Def pdt = new Planets_Def(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+		Planets_General pgt = new Planets_General(0, 0, 0, 0, null, 0, 0, 0, 193, 0, 500, 200, 0, 0, 0, "Heimatplanet",user);
+		Planets_Research prt = new Planets_Research(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+		Planets_Ships pst = new Planets_Ships(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+		em.persist(pbt);
+		em.persist(pdt);
+		em.persist(pgt);
+		em.persist(prt);
+		em.persist(pst);
 	}
 
 	public void changePlanet(int ind) {
@@ -99,7 +115,7 @@ public class PlanetHandler {
 		this.ownedPlanets = ownedPlanets;
 	}
 	private void updateBuildings() {
-		Query query = em.createQuery("select k from PlanetsBuildings k where k.planetId = :id");
+		Query query = em.createQuery("select k from Planets_Buildings k where k.planetId = :id");
 		query.setParameter("id", pg.getPlanetId());
 		@SuppressWarnings("unchecked")
 		Object res = query.getSingleResult();
