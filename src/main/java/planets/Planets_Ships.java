@@ -34,9 +34,9 @@ public class Planets_Ships implements Serializable {
 	private int espionageProbe;
 	private int solarSattlelite;
 	
-	@OneToOne(fetch = FetchType.LAZY)
-    @MapsId
-    private Planets_General planet;
+	public Planets_Ships() {
+		
+	}
 	
 	public Planets_Ships(int planetId, int lightFighter, int heavyFighter, int cruiser, int battleship,
 			int battlecruiser, int bomber, int destroyer, int deathStar, int smallCargoShip, int largeCargoShip,

@@ -12,7 +12,6 @@ public abstract class Planets_Def_ {
 	public static volatile SingularAttribute<Planets_Def, Integer> rocketLauncher;
 	public static volatile SingularAttribute<Planets_Def, Integer> largeShieldDome;
 	public static volatile SingularAttribute<Planets_Def, Integer> interplanetaryMissle;
-	public static volatile SingularAttribute<Planets_Def, Planets_General> planet;
 	public static volatile SingularAttribute<Planets_Def, Integer> lightLaser;
 	public static volatile SingularAttribute<Planets_Def, Integer> gaussCannon;
 	public static volatile SingularAttribute<Planets_Def, Integer> heavyLaser;

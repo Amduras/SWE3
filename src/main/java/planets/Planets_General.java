@@ -2,6 +2,7 @@ package planets;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -22,8 +23,6 @@ public class Planets_General implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int planetId;
-	
-
 
 	private int galaxy;
 	private int solarsystem;
@@ -40,16 +39,18 @@ public class Planets_General implements Serializable {
 	private int deut = 17896;
 	private int energy = 47896; 
 	private String name = "DingDong des Todes";
+	private int userid;
+//	@ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
+//	@JoinColumn(name="user_id", nullable=false)
+//	private User user;
 	
+	public Planets_General() {
+		
+	}
 	
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name="user_id", nullable=false)
-	private User user;
-	
-	public Planets_General(int planetId, int galaxy, int solarsystem, int position, Moon moon, long debrisFieldMetal,
+	public Planets_General( int galaxy, int solarsystem, int position, Moon moon, long debrisFieldMetal,
 			long debrisFieldCris, long debrisFieldDeut, int slots, int moonSlots, int temperature, int metal,
-			int crystal, int deut, int energy, String name, User user) {
-		this.planetId = planetId;
+			int crystal, int deut, int energy, String name, int userID) {
 		this.galaxy = galaxy;
 		this.solarsystem = solarsystem;
 		this.position = position;
@@ -65,7 +66,7 @@ public class Planets_General implements Serializable {
 		this.deut = deut;
 		this.energy = energy;
 		this.name = name;
-		this.user = user;
+		this.userid = userID;
 	}
 	
 	public int getPlanetId() {
@@ -195,14 +196,23 @@ public class Planets_General implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
+//
+//	public User getUser() {
+//		return user;
+//	}
+//
+//	public void setUser(User user) {
+//		this.user = user;
+//	}
 
-	public User getUser() {
-		return user;
+	public int getUserId() {
+		return userid;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setUserId(int userid) {
+		this.userid = userid;
 	}
+	
 	
 	
 }

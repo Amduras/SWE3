@@ -40,10 +40,12 @@ public class Planets_Buildings implements Serializable {
 	private int sensorPhalanx;
 	private int jumpgate;
 	
-	@OneToOne(fetch = FetchType.LAZY)
-    @MapsId
-    private Planets_General planet;
 	
+	
+	public Planets_Buildings() {
+		
+	}
+
 	public Planets_Buildings(int planetId, int metalMine, int crystalMine, int deutSyn, int solarPlant,
 			int fusionReactor, int metalStorage, int crystalStorage, int deutTank, int metallHideout,
 			int crystalHideout, int deutHideout, int roboticFactory, int shipyard, int researchlab, int alliancedepot,
@@ -72,14 +74,6 @@ public class Planets_Buildings implements Serializable {
 		this.lunarBase = lunarBase;
 		this.sensorPhalanx = sensorPhalanx;
 		this.jumpgate = jumpgate;
-	}
-
-	public Planets_General getPlanet() {
-		return planet;
-	}
-
-	public void setPlanet(Planets_General planet) {
-		this.planet = planet;
 	}
 
 	public int getPlanetId() {

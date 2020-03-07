@@ -43,7 +43,7 @@ public class LoginHandler implements Serializable{
 
 	@PostConstruct
 	public void init() {
-		pHandler = new PlanetHandler(em);
+		pHandler = new PlanetHandler(em, utx);
 		Query query = em.createQuery("select k from User k where k.username = :username");
 		query.setParameter("username", "admin");
 		@SuppressWarnings("unchecked")
@@ -56,7 +56,6 @@ public class LoginHandler implements Serializable{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			pHandler.createNewPlanet(user);
 			em.persist(user);
 			try {
 				utx.commit();
@@ -65,6 +64,7 @@ public class LoginHandler implements Serializable{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			pHandler.createNewPlanet(user.getUserID());
 		}
 	}
 
@@ -74,12 +74,12 @@ public class LoginHandler implements Serializable{
 		query.setParameter("password", password);
 		try {
 			User  user = (User) query.getSingleResult();
-			query = em.createQuery("select k from Planets_General k where k.user = :user");
-			query.setParameter("user", user);
+			handler.setUser(user);
+			query = em.createQuery("select k from Planets_General k where k.userid = :userid");
+			query.setParameter("userid", handler.getUser().getUserID());
 			@SuppressWarnings("unchecked")
 			List<Planets_General> planet = query.getResultList();
 			pHandler.init(planet);
-			handler.setUser(user);
 			return"/main.xhtml?faces-redirect=true";
 		}catch (NoResultException e) {
 			System.out.println("Kein User vorhanden");
@@ -106,7 +106,7 @@ public class LoginHandler implements Serializable{
 				e.printStackTrace();
 			}
 			user = em.merge(user);
-			pHandler.createNewPlanet(user);
+			pHandler.createNewPlanet(user.getUserID());
 			em.persist(user);
 			try {
 				utx.commit();
@@ -182,6 +182,14 @@ public class LoginHandler implements Serializable{
 
 	public void setHandler(UserHandler handler) {
 		this.handler = handler;
+	}
+
+	public PlanetHandler getpHandler() {
+		return pHandler;
+	}
+
+	public void setpHandler(PlanetHandler pHandler) {
+		this.pHandler = pHandler;
 	}
 
 	

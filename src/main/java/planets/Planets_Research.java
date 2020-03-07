@@ -13,11 +13,9 @@ import javax.persistence.OneToOne;
 @NamedQuery(name="SelectPlanets_Research", query="Select k from Planets_Research k")
 @Entity
 public class Planets_Research implements Serializable {
-	
-	@Id
-	private int planetsId;
-	
 
+	@Id
+	private int planetId;
 
 	private int energy;
 	private int laser;
@@ -33,15 +31,15 @@ public class Planets_Research implements Serializable {
 	private int armour;
 	private int weapon;
 	private int shield;
+
+	public Planets_Research() {
 	
-	@OneToOne(fetch = FetchType.LAZY)
-    @MapsId
-    private Planets_General planet;
-	
-	public Planets_Research(int planetsId, int energy, int laser, int ion, int plasma, int combustion, int impulse,
+	}
+
+	public Planets_Research(int planetId, int energy, int laser, int ion, int plasma, int combustion, int impulse,
 			int hyperspace, int espionage, int computer, int astrophysics, int gravitation, int armour, int weapon,
 			int shield) {
-		this.planetsId = planetsId;
+		this.planetId = planetId;
 		this.energy = energy;
 		this.laser = laser;
 		this.ion = ion;
@@ -58,12 +56,12 @@ public class Planets_Research implements Serializable {
 		this.shield = shield;
 	}
 
-	public int getPlanetsId() {
-		return planetsId;
+	public int getPlanetId() {
+		return planetId;
 	}
 
-	public void setPlanetsId(int planetsId) {
-		this.planetsId = planetsId;
+	public void setPlanetId(int planetId) {
+		this.planetId = planetId;
 	}
 
 	public int getEnergy() {
@@ -177,6 +175,6 @@ public class Planets_Research implements Serializable {
 	public void setShield(int shield) {
 		this.shield = shield;
 	}
-	
-	
+
+
 }

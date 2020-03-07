@@ -6,9 +6,18 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.transaction.HeuristicMixedException;
+import javax.transaction.HeuristicRollbackException;
+import javax.transaction.NotSupportedException;
+import javax.transaction.RollbackException;
+import javax.transaction.SystemException;
+import javax.transaction.UserTransaction;
 
-import model.User;
-import planets.*;
+import planets.Planets_Buildings;
+import planets.Planets_Def;
+import planets.Planets_General;
+import planets.Planets_Research;
+import planets.Planets_Ships;
 
 @ManagedBean(name="planetHandler")
 @SessionScoped
@@ -17,6 +26,8 @@ public class PlanetHandler {
 	private List<Planets_General> planets;
 	
 	private EntityManager em;
+	
+	private UserTransaction utx;
 	
 	private int ownedPlanets;
 	private int activePlanet = 0;
@@ -27,28 +38,58 @@ public class PlanetHandler {
 	private Planets_Research pr;
 	private Planets_Ships ps;
 	
-	public PlanetHandler(EntityManager em) {
+	public PlanetHandler() {
+		
+	}
+	
+	public PlanetHandler(EntityManager em, UserTransaction utx) {
 		this.em = em;
+		this.utx = utx;
 	}
 	/*** Get Lists of owned planets and init active ***/
 	public void init(List<Planets_General> planets) {
 		this.planets = planets;
 		this.setOwnedPlanets(planets.size());
-		
 		updateDataset();	
 	}
 	
-	public void createNewPlanet(User user) {
-		Planets_Buildings pbt = new Planets_Buildings(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-		Planets_Def pdt = new Planets_Def(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-		Planets_General pgt = new Planets_General(0, 0, 0, 0, null, 0, 0, 0, 193, 0, 500, 200, 0, 0, 0, "Heimatplanet",user);
-		Planets_Research prt = new Planets_Research(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-		Planets_Ships pst = new Planets_Ships(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+	public void createNewPlanet(int userID) {
+		Planets_General pgt = new Planets_General( 0, 0, 0, null, 0, 0, 0, 193, 0, 500, 200, 0, 0, 0, "Heimatplanet",userID);
+		try {
+			utx.begin();
+		} catch (NotSupportedException | SystemException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		em.persist(pgt);
+		try {
+			utx.commit();
+		} catch (SecurityException | IllegalStateException | RollbackException | HeuristicMixedException
+				| HeuristicRollbackException | SystemException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		Planets_Buildings pbt = new Planets_Buildings(pgt.getPlanetId(), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+		Planets_Def pdt = new Planets_Def(pgt.getPlanetId(), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+		Planets_Research prt = new Planets_Research(pgt.getPlanetId(), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+		Planets_Ships pst = new Planets_Ships(pgt.getPlanetId(), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+		try {
+			utx.begin();
+		} catch (NotSupportedException | SystemException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		em.persist(pbt);
 		em.persist(pdt);
-		em.persist(pgt);
 		em.persist(prt);
 		em.persist(pst);
+		try {
+			utx.commit();
+		} catch (SecurityException | IllegalStateException | RollbackException | HeuristicMixedException
+				| HeuristicRollbackException | SystemException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public void changePlanet(int ind) {
@@ -59,6 +100,7 @@ public class PlanetHandler {
 	}
 
 	public void updateRes() {
+		System.out.println(pg);
 		int m = pg.getMetal();
 		int c = pg.getCrystal();
 		int d = pg.getDeut();
@@ -122,7 +164,7 @@ public class PlanetHandler {
 			pb = (Planets_Buildings)res;
 	}
 	private void updateDef() {
-		Query query = em.createQuery("select k from Planets_Def k where k.planet_planetId = :id");
+		Query query = em.createQuery("select k from Planets_Def k where k.planetId = :id");
 		query.setParameter("id", pg.getPlanetId());
 		Object res = query.getSingleResult();
 		if(res == null)
@@ -131,7 +173,7 @@ public class PlanetHandler {
 			pd = (Planets_Def)res;
 	}
 	private void updateResearch() {
-		Query query = em.createQuery("select k from Planets_Research k where k.planet_planetId = :id");
+		Query query = em.createQuery("select k from Planets_Research k where k.planetId = :id");
 		query.setParameter("id", pg.getPlanetId());
 		Object res = query.getSingleResult();
 		if(res == null)
@@ -140,7 +182,7 @@ public class PlanetHandler {
 			pr = (Planets_Research)res;
 	}
 	private void updateShips() {
-		Query query = em.createQuery("select k from Planets_Ships k where k.planet_planetId = :id");
+		Query query = em.createQuery("select k from Planets_Ships k where k.planetId = :id");
 		query.setParameter("id", pg.getPlanetId());
 		Object res = query.getSingleResult();
 		if(res == null)

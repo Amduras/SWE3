@@ -30,9 +30,9 @@ public class Planets_Def implements Serializable {
 	private int antiBallisticMissle;
 	private int interplanetaryMissle;
 	
-	@OneToOne(fetch = FetchType.LAZY)
-    @MapsId
-    private Planets_General planet;
+	public Planets_Def() {
+		
+	}
 	
 	public Planets_Def(int planetId, int rocketLauncher, int lightLaser, int heavyLaser, int ionCannon, int gaussCannon,
 			int plasmaTurret, int smallShieldDome, int largeShieldDome, int antiBallisticMissle,

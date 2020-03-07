@@ -11,7 +11,6 @@ public abstract class Planets_Ships_ {
 	public static volatile SingularAttribute<Planets_Ships, Integer> battleship;
 	public static volatile SingularAttribute<Planets_Ships, Integer> bomber;
 	public static volatile SingularAttribute<Planets_Ships, Integer> heavyFighter;
-	public static volatile SingularAttribute<Planets_Ships, Planets_General> planet;
 	public static volatile SingularAttribute<Planets_Ships, Integer> deathStar;
 	public static volatile SingularAttribute<Planets_Ships, Integer> largeCargoShip;
 	public static volatile SingularAttribute<Planets_Ships, Integer> smallCargoShip;

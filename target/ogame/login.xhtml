@@ -39,25 +39,21 @@
 					</p:tab>
 					<p:tab title="Registrieren">
 						<h:form>
-							<h:outputLabel style="float:left; color:white"
-								value="E-Mail-Adresse:" />
-							<br />
-							<h:inputText value="#{userHandler.email}"
-								required="true" requiredMessage="Eingabe fehlt" />
+							
 							<br />
 							<br />
 							<h:outputLabel style="float:left; color:white" value="Name:" />
 							<br />
-							<h:inputText value="#{userHandler.username}" />
+							<h:inputText value="#{loginHandler.username}" />
 							<br />
 							<br />
 							<h:outputLabel style="float:left; color:white;" value="Passwort:" />
 							<br />
-							<p:password value="#{userHandler.password}" />
+							<p:password value="#{loginHandler.password}" />
 							<br />
 							<br />
 							<br />
-							<h:commandButton action="#{userHandler.neuerUser()}"
+							<h:commandButton action="#{loginHandler.neuerUser()}"
 								value="Registrieren" />
 						</h:form>
 					</p:tab>
