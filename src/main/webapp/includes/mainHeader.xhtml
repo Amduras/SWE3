@@ -27,10 +27,10 @@
 				</thead>
 				<tbody>
 					<tr class="res_table">
-						<td id="metal"><p:outputLabel id="res_table_metal" value="#{planetHandler.activePlanet.metal}"/></td>
-						<td id="crystal"><p:outputLabel id="res_table_crystal" value="#{planetHandler.activePlanet.crystal}"/></td>
-						<td id="deut"><p:outputLabel  id="res_table_deut" value="#{planetHandler.activePlanet.deut}"/></td>
-						<td id="energy"><p:outputLabel id="res_table_energy" value="#{planetHandler.activePlanet.energy}"/></td>
+						<td id="metal"><p:outputLabel id="res_table_metal" value="#{planetHandler.pg.metal}"/></td>
+						<td id="crystal"><p:outputLabel id="res_table_crystal" value="#{planetHandler.pg.crystal}"/></td>
+						<td id="deut"><p:outputLabel  id="res_table_deut" value="#{planetHandler.pg.deut}"/></td>
+						<td id="energy"><p:outputLabel id="res_table_energy" value="#{planetHandler.pg.energy}"/></td>
 						<p:poll interval="1" listener="#{planetHandler.updateRes}" update="res_table_metal res_table_crystal res_table_deut"/>
 					</tr>
 					<tr class="res_table">

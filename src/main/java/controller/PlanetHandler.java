@@ -5,10 +5,8 @@ import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import Task.ResUpdateTask;
 import model.User;
 import planets.*;
 
@@ -37,7 +35,7 @@ public class PlanetHandler {
 		this.planets = planets;
 		this.setOwnedPlanets(planets.size());
 		
-		//updateDataset();	
+		updateDataset();	
 	}
 	
 	public void createNewPlanet(User user) {
@@ -117,7 +115,6 @@ public class PlanetHandler {
 	private void updateBuildings() {
 		Query query = em.createQuery("select k from Planets_Buildings k where k.planetId = :id");
 		query.setParameter("id", pg.getPlanetId());
-		@SuppressWarnings("unchecked")
 		Object res = query.getSingleResult();
 		if(res == null)
 			System.err.println("Planets_Buildings with id="+pg.getPlanetId()+"was not found.");
@@ -127,7 +124,6 @@ public class PlanetHandler {
 	private void updateDef() {
 		Query query = em.createQuery("select k from Planets_Def k where k.planet_planetId = :id");
 		query.setParameter("id", pg.getPlanetId());
-		@SuppressWarnings("unchecked")
 		Object res = query.getSingleResult();
 		if(res == null)
 			System.err.println("Planets_Buildings with id="+pg.getPlanetId()+"was not found.");
@@ -137,7 +133,6 @@ public class PlanetHandler {
 	private void updateResearch() {
 		Query query = em.createQuery("select k from Planets_Research k where k.planet_planetId = :id");
 		query.setParameter("id", pg.getPlanetId());
-		@SuppressWarnings("unchecked")
 		Object res = query.getSingleResult();
 		if(res == null)
 			System.err.println("Planets_Buildings with id="+pg.getPlanetId()+"was not found.");
@@ -147,7 +142,6 @@ public class PlanetHandler {
 	private void updateShips() {
 		Query query = em.createQuery("select k from Planets_Ships k where k.planet_planetId = :id");
 		query.setParameter("id", pg.getPlanetId());
-		@SuppressWarnings("unchecked")
 		Object res = query.getSingleResult();
 		if(res == null)
 			System.err.println("Planets_Buildings with id="+pg.getPlanetId()+"was not found.");
@@ -157,9 +151,9 @@ public class PlanetHandler {
 	private void updateDataset() {
 		pg = planets.get(activePlanet);
 		
-//		updateBuildings();
-//		updateDef();
-//		updateResearch();
-//		updateShips();	
+		updateBuildings();
+		updateDef();
+		updateResearch();
+		updateShips();	
 	}
 }
