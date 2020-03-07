@@ -1,37 +1,45 @@
 package controller;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
+import javax.annotation.Resource;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.transaction.HeuristicMixedException;
+import javax.transaction.HeuristicRollbackException;
+import javax.transaction.NotSupportedException;
+import javax.transaction.RollbackException;
+import javax.transaction.SystemException;
+import javax.transaction.UserTransaction;
 
 import enums.AuthLvl;
 import model.User;
 
 @ManagedBean(name="roles")
-@SessionScoped
+@ViewScoped
 public class RoleHandler implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	private User user;
 	private User selectedUser;
 
-	private AuthLvl[] rights = {AuthLvl.BANNED, AuthLvl.RESTRICTED, AuthLvl.USER, AuthLvl.GA, AuthLvl.SGA};
-	private AuthLvl[] userRights = new AuthLvl[5];
+	private List<String> rights = new ArrayList<>( Arrays.asList("BANNED", "RESTRICTED", "USER", "GA", "SGA"));
+	private String newRight;
+	
+	@PersistenceContext
+	private EntityManager em;
+
+	@Resource
+	private UserTransaction utx;
 	
 	public RoleHandler() {
-		System.out.println("Role");
-	}
-	
-	public void onRowSelect() {
-		System.out.println("läuft");
-//		user = (User) event.getObject();
-//		System.out.println(user.getUsername());
-	}
-	
-	public void test() {
-		System.out.println("Test");
 	}
 	
 	public User getUser() {
@@ -42,20 +50,12 @@ public class RoleHandler implements Serializable{
 		this.user = user;
 	}
 
-	public AuthLvl[] getRights() {
+	public List<String> getRights() {
 		return rights;
 	}
 
-	public void setRights(AuthLvl[] rights) {
+	public void setRights(List<String> rights) {
 		this.rights = rights;
-	}
-
-	public AuthLvl[] getUserRights() {
-		return userRights;
-	}
-
-	public void setUserRights(AuthLvl[] userRights) {
-		this.userRights = userRights;
 	}
 	
 	public User getSelectedUser() {
@@ -63,7 +63,42 @@ public class RoleHandler implements Serializable{
 	}
 
 	public void setSelectedUser(User selectedUser) {
-		System.out.println("Gesetzt");
+		System.out.println("Gesetzt:" +selectedUser.getUsername());
 		this.selectedUser = selectedUser;
+	}
+
+	public String getNewRight() {
+		return newRight;
+	}
+
+	public void setNewRight(String newRight) {
+		if(selectedUser != null) {
+			if(!newRight.toLowerCase().equals(selectedUser.getAuthLvl().getLabel())) {
+				this.newRight = newRight;
+				Query query = em.createQuery("update User set authlvl = :authlvl where username = :username");
+				query.setParameter("authlvl", (int) AuthLvl.valueOf(newRight).ordinal());
+				query.setParameter("username", selectedUser.getUsername());
+				try {
+					utx.begin();
+				} catch (NotSupportedException | SystemException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				query.executeUpdate();
+				try {
+					utx.commit();
+				} catch (SecurityException | IllegalStateException | RollbackException | HeuristicMixedException
+						| HeuristicRollbackException | SystemException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				FacesContext.getCurrentInstance().getViewRoot().getViewMap().remove("roles");
+			} else {
+				System.out.println("Nimm ne andere rolle trottel!");
+			}
+		} else {
+			System.out.println("Kein User gewählt");
+		}
+		
 	}
 }

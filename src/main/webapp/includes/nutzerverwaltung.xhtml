@@ -7,11 +7,13 @@
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
 	xmlns:p="http://primefaces.org/ui">
+	<f:event listener="#{loginHandler.checkLoggedIn}" type="preRenderView" />
 
 	<p:dataTable id="testTable" var="user" value="#{userHandler.users}"
-		rowClasses="odd,even" headerClass="header" 
-		scrollable="true" scrollHeight="200" styleClass="userTable">
+		rowClasses="odd,even" headerClass="header" scrollable="true"
+		scrollHeight="200" styleClass="userTable">
 		<f:facet name="header">Nutzer</f:facet>
+		<!-- <p:ajax event="rowSelect" update=":mainForm:rightsView:selectedUser" /> -->
 		<p:column headerText="NutzerID">
 			<p:outputLabel value="#{user.userID}" />
 		</p:column>
@@ -21,8 +23,12 @@
 		<p:column headerText="E-Mail">
 			<p:outputLabel value="#{user.email}" />
 		</p:column>
-		<p:column>
-			<p:commandButton action="#{roles.test}" process="@form"/>
+		<p:column style="width:32px;text-align: center">
+			<p:commandButton icon="pi pi-search" title="View"
+				update=":mainForm:rightsView:selectedUser">
+				<f:setPropertyActionListener value="#{user}"
+					target="#{roles.selectedUser}" />
+			</p:commandButton>
 		</p:column>
 	</p:dataTable>
 
@@ -30,10 +36,17 @@
 		<p:tabView id="rightsView">
 			<p:tab title="Status">
 				<div id="leftTable">
-					<p:dataTable var="roles" value="#{roles.rights}">
+					<p:dataTable var="role" value="#{roles.rights}">
 						<p:column>
 							<f:facet name="header">verfügbare Rechte</f:facet>
-							<p:outputLabel value="#{roles}" />
+							<p:outputLabel value="#{role}" />
+						</p:column>
+						<p:column style="width:32px;text-align: center">
+							<p:commandButton icon="pi pi-search" title="View"
+							update=":mainForm:rightsView:selectedUser">
+								<f:setPropertyActionListener value="#{role}"
+									target="#{roles.newRight}" />
+							</p:commandButton>
 						</p:column>
 					</p:dataTable>
 				</div>

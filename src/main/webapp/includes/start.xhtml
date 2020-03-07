@@ -9,19 +9,5 @@
 	xmlns:p="http://primefaces.org/ui">
 
 	<f:event listener="#{loginHandler.checkLoggedIn}" type="preRenderView" />
-	<div id="header">
-		<ui:insert name="header">
-		</ui:insert>
-	</div>
-	<div id="content">
-		<ui:insert name="content">
-			<div class="logintab" style="background-color: silver;">
-				<i class="fa fa-thumbs-up fa-5x"></i>
-			</div>
-		</ui:insert>
-	</div>
-	<div id="footer">
-		<ui:insert name="footer">
-		</ui:insert>
-	</div>
+	<h:outputLabel style="color: white;"> test</h:outputLabel>
 </ui:composition>
