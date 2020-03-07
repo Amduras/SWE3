@@ -83,7 +83,7 @@ public class LoginHandler implements Serializable{
 			query.setParameter("user", handler.getUser());
 			@SuppressWarnings("unchecked")
 			List<Planets_General> planet = query.getResultList();
-			pHandler.setActivePlanet(planet.get(0));
+			pHandler.init(planet, em);
 			return"/main.xhtml?faces-redirect=true";
 		} else { 
 			return null;

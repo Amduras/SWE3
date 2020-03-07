@@ -21,27 +21,43 @@
 		<ui:insert name="content">
 			<table id="buildings">
 				<tr>
-					<td id="buidlings_cell" style="background-image: url('resources/images/buildings/supply/00_metal_mine.jpg');background-size: cover;">
-						<p:outputLabel value="#{planetHandler.activePlanet.metal}" style="color: orange;font-size: 18px;"/>
+					<td id="buildings_head" colspan="5">Versorgung</td>
+				</tr>
+				<tr>
+					<td id="buidlings_cell"><h:graphicImage style="width: 100%; height: 50%;"
+								url="resources/images/buildings/supply/00_metal_mine.jpg" />
+						<p:outputLabel  styleClass="buildings_level_output" value="#{planetHandler.activePlanet.metal}"/>
 					</td>
 					<td id="buidlings_cell"><h:graphicImage style="width: 100%; height: 50%;"
 								url="resources/images/buildings/supply/01_crystal_mine.jpg" />
-						<p:outputLabel value="#{planetHandler.activePlanet.metal}" style="color: orange;font-size: 18px;"/>
+						<p:outputLabel  styleClass="buildings_level_output" value="#{planetHandler.activePlanet.metal}"/>
 					</td>
-					<td><h:graphicImage style="width: 100%; height: 50%;"
-								url="resources/images/buildings/supply/02_deut_synth.jpg" />0</td>
-					<td><h:graphicImage style="width: 100%; height: 50%;"
-								url="resources/images/buildings/supply/03_solar_power_plant.jpg" />0</td>
-					<td><h:graphicImage style="width: 100%; height: 50%;"
-								url="resources/images/buildings/supply/04_fusion_reactor.jpg" />0</td>
+					<td id="buidlings_cell"><h:graphicImage style="width: 100%; height: 50%;"
+								url="resources/images/buildings/supply/02_deut_synth.jpg" />
+						 <p:outputLabel  styleClass="buildings_level_output" value="#{planetHandler.activePlanet.metal}"/>
+					</td>
+					<td id="buidlings_cell"><h:graphicImage style="width: 100%; height: 50%;"
+								url="resources/images/buildings/supply/03_solar_power_plant.jpg" />
+						<p:outputLabel  styleClass="buildings_level_output" value="#{planetHandler.activePlanet.metal}"/>
+					</td>
+					<td id="buidlings_cell"><h:graphicImage style="width: 100%; height: 50%;"
+								url="resources/images/buildings/supply/04_fusion_reactor.jpg" />
+						<p:outputLabel  styleClass="buildings_level_output" value="#{planetHandler.activePlanet.metal}"/>
+					</td>
 				</tr>
 				<tr>
-					<td><h:graphicImage style="width: 100%; height: 50%;"
-								url="resources/images/buildings/supply/05_metal_storage.jpg" />0</td>
-					<td><h:graphicImage style="width: 100%; height: 50%;"
-								url="resources/images/buildings/supply/06_crystal_storage.jpg" />0</td>
-					<td><h:graphicImage style="width: 100%; height: 50%;"
-								url="resources/images/buildings/supply/07_deut_storage.jpg" />0</td>
+					<td id="buidlings_cell"><h:graphicImage style="width: 100%; height: 50%;"
+								url="resources/images/buildings/supply/05_metal_storage.jpg" />
+						<p:outputLabel  styleClass="buildings_level_output" value="#{planetHandler.activePlanet.metal}"/>
+					</td>
+					<td id="buidlings_cell"><h:graphicImage style="width: 100%; height: 50%;"
+								url="resources/images/buildings/supply/06_crystal_storage.jpg" />
+						<p:outputLabel  styleClass="buildings_level_output" value="#{planetHandler.activePlanet.metal}"/>
+					</td>
+					<td id="buidlings_cell"><h:graphicImage style="width: 100%; height: 50%;"
+								url="resources/images/buildings/supply/07_deut_storage.jpg" />
+						<p:outputLabel  styleClass="buildings_level_output" value="#{planetHandler.activePlanet.metal}"/>
+					</td>
 					<td></td>
 					<td></td>
 				</tr>

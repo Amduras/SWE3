@@ -18,15 +18,15 @@ public class Planets_Buildings implements Serializable {
 	private int planetId;
 	
 	private int metalMine;
-	private int crisMine;
+	private int crystalMine;
 	private int deutSyn;
 	private int solarPlant;
 	private int fusionReactor;
 	private int metalStorage;
-	private int crisStorage;
+	private int crystalStorage;
 	private int deutTank;
 	private int metallHideout;
-	private int crisHideout;
+	private int crystalHideout;
 	private int deutHideout;
 	private int roboticFactory;
 	private int shipyard;
@@ -72,12 +72,12 @@ public class Planets_Buildings implements Serializable {
 		this.metalMine = metalMine;
 	}
 
-	public int getCrisMine() {
-		return crisMine;
+	public int getCrystalMine() {
+		return crystalMine;
 	}
 
-	public void setCrisMine(int crisMine) {
-		this.crisMine = crisMine;
+	public void setCrystalMine(int crisMine) {
+		this.crystalMine = crisMine;
 	}
 
 	public int getDeutSyn() {
@@ -112,12 +112,12 @@ public class Planets_Buildings implements Serializable {
 		this.metalStorage = metalStorage;
 	}
 
-	public int getCrisStorage() {
-		return crisStorage;
+	public int getCrystalStorage() {
+		return crystalStorage;
 	}
 
-	public void setCrisStorage(int crisStorage) {
-		this.crisStorage = crisStorage;
+	public void setCrystalStorage(int crisStorage) {
+		this.crystalStorage = crisStorage;
 	}
 
 	public int getDeutTank() {
@@ -136,12 +136,12 @@ public class Planets_Buildings implements Serializable {
 		this.metallHideout = metallHideout;
 	}
 
-	public int getCrisHideout() {
-		return crisHideout;
+	public int getCrystalHideout() {
+		return crystalHideout;
 	}
 
-	public void setCrisHideout(int crisHideout) {
-		this.crisHideout = crisHideout;
+	public void setCrystalHideout(int crisHideout) {
+		this.crystalHideout = crisHideout;
 	}
 
 	public int getDeutHideout() {

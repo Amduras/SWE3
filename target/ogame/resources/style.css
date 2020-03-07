@@ -80,7 +80,6 @@ td {
 }
 #center_body_bottom{
 	width: 100%;
-  	height: 350px;
 	border: 4px solid black;
   	background: #15151e;
 }
@@ -151,19 +150,32 @@ td {
   clear: both;
 }
 #buildings{
-	width: 90%;
+	width: 100%;
+	max-width: 620px;
 	margin: auto;
-	margin-top: 10px;
 	border-collapse: collapse;
-	display: inline;	
 }
-#buidlings_cell{
+#buildings_head{
+	text-align: center;
+	color: white;
+	font-size: 20px;
+	background-image: linear-gradient(#292424, #9d9090);
+}
+#buildings_cell{
+	width: 20%;
 	vertical-align: bottom;
-	text-align: right;
 }
 #buidlings_cell:hover{
+	border-radius: 5px;
+    -moz-border-radius: 5px;
 	outline: 2px solid orange;
 }
+.buildings_level_output{
+	color: orange;
+	font-size: 18px; 
+	float:right;
+}
+
 /*class*/
 .headerBar{
 	/*background-color: transparent;*/
