@@ -10,6 +10,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ComponentSystemEvent;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.transaction.HeuristicMixedException;
@@ -75,18 +76,18 @@ public class LoginHandler implements Serializable{
 		Query query = em.createQuery("select k from User k where k.username = :username and k.password = :password ");
 		query.setParameter("username", username);
 		query.setParameter("password", password);
-		@SuppressWarnings("unchecked")
-		List<User> users = query.getResultList();
-		if(users.size() == 1) {
-			handler.setUser(users.get(0));
+		try {
+			User  user = (User) query.getSingleResult();
 			query = em.createQuery("select k from Planets_General k where k.user = :user");
-			query.setParameter("user", handler.getUser());
+			query.setParameter("user", user);
 			@SuppressWarnings("unchecked")
 			List<Planets_General> planet = query.getResultList();
 			pHandler.init(planet, em);
+			handler.setUser(user);
 			return"/main.xhtml?faces-redirect=true";
-		} else { 
-			return null;
+		}catch (NoResultException e) {
+			System.out.println("Kein User vorhanden");
+			return "/login.xhtml?faces-redirect=true";
 		}
 	}
 	

@@ -27,9 +27,9 @@ public class Planets_General implements Serializable {
 	private int solarsystem;
 	private int position;
 	private Moon moon;
-	private Long debrisFieldMetal;
-	private Long debrisFieldCris;
-	private Long debrisFieldDeut;
+	private long debrisFieldMetal;
+	private long debrisFieldCris;
+	private long debrisFieldDeut;
 	private int slots;
 	private int moonSlots;
 	private int temperature;

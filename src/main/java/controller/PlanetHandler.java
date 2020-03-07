@@ -34,7 +34,7 @@ public class PlanetHandler {
 		this.em = em;
 		this.setOwnedPlanets(planets.size());
 		
-		updateDataset();	
+		//updateDataset();	
 	}
 
 	public void changePlanet(int ind) {
@@ -99,7 +99,7 @@ public class PlanetHandler {
 		this.ownedPlanets = ownedPlanets;
 	}
 	private void updateBuildings() {
-		Query query = em.createQuery("select k from PlanetsBuildings k where k.planetId = :id");
+		Query query = em.createQuery("select k from Planets_Buildings k where k.planetId = :id");
 		query.setParameter("id", pg.getPlanetId());
 		@SuppressWarnings("unchecked")
 		Object res = query.getSingleResult();
@@ -109,7 +109,7 @@ public class PlanetHandler {
 			pb = (Planets_Buildings)res;
 	}
 	private void updateDef() {
-		Query query = em.createQuery("select k from Planets_Def k where k.planetId = :id");
+		Query query = em.createQuery("select k from Planets_Def k where k.planet_planetId = :id");
 		query.setParameter("id", pg.getPlanetId());
 		@SuppressWarnings("unchecked")
 		Object res = query.getSingleResult();
@@ -119,7 +119,7 @@ public class PlanetHandler {
 			pd = (Planets_Def)res;
 	}
 	private void updateResearch() {
-		Query query = em.createQuery("select k from Planets_Research k where k.planetId = :id");
+		Query query = em.createQuery("select k from Planets_Research k where k.planet_planetId = :id");
 		query.setParameter("id", pg.getPlanetId());
 		@SuppressWarnings("unchecked")
 		Object res = query.getSingleResult();
@@ -129,7 +129,7 @@ public class PlanetHandler {
 			pr = (Planets_Research)res;
 	}
 	private void updateShips() {
-		Query query = em.createQuery("select k from Planets_Ships k where k.planetId = :id");
+		Query query = em.createQuery("select k from Planets_Ships k where k.planet_planetId = :id");
 		query.setParameter("id", pg.getPlanetId());
 		@SuppressWarnings("unchecked")
 		Object res = query.getSingleResult();
@@ -141,9 +141,9 @@ public class PlanetHandler {
 	private void updateDataset() {
 		pg = planets.get(activePlanet);
 		
-		updateBuildings();
-		updateDef();
-		updateResearch();
-		updateShips();	
+//		updateBuildings();
+//		updateDef();
+//		updateResearch();
+//		updateShips();	
 	}
 }
