@@ -57,41 +57,6 @@ public class UserHandler {
 		}
 	}
 
-	public String neuerUser() {
-		Query query = em.createQuery("select k from User k where k.username = :username");
-		query.setParameter("username", username);
-		@SuppressWarnings("unchecked")
-		List<User> qusers = query.getResultList();
-		if(qusers.size() == 0) {
-			user = new User();
-			user.setAuthLvl(AuthLvl.USER);
-			user.setIsActive(IsActive.TRUE);
-			user.setUsername(username);
-			user.setPassword(password);
-			user.setEmail(email);
-			try {
-				utx.begin();
-			} catch (NotSupportedException | SystemException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			user = em.merge(user);
-			em.persist(user);
-			users.setWrappedData(em.createNamedQuery("SelectUsers").getResultList());
-			try {
-				utx.commit();
-			} catch (SecurityException | IllegalStateException | RollbackException | HeuristicMixedException
-					| HeuristicRollbackException | SystemException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			return "login";
-		} else {
-			return "login";
-		}
-		
-	}
-
 	public DataModel<User> getUsers() {
 		userList();
 		return users;

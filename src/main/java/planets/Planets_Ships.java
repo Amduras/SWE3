@@ -17,6 +17,8 @@ public class Planets_Ships implements Serializable {
 	@Id
 	private int planetId;
 	
+
+
 	private int lightFighter;
 	private int heavyFighter;
 	private int cruiser;
@@ -36,8 +38,24 @@ public class Planets_Ships implements Serializable {
     @MapsId
     private Planets_General planet;
 	
-	public Planets_Ships() {
-		
+	public Planets_Ships(int planetId, int lightFighter, int heavyFighter, int cruiser, int battleship,
+			int battlecruiser, int bomber, int destroyer, int deathStar, int smallCargoShip, int largeCargoShip,
+			int colonyShip, int recycler, int espionageProbe, int solarSattlelite) {
+		this.planetId = planetId;
+		this.lightFighter = lightFighter;
+		this.heavyFighter = heavyFighter;
+		this.cruiser = cruiser;
+		this.battleship = battleship;
+		this.battlecruiser = battlecruiser;
+		this.bomber = bomber;
+		this.destroyer = destroyer;
+		this.deathStar = deathStar;
+		this.smallCargoShip = smallCargoShip;
+		this.largeCargoShip = largeCargoShip;
+		this.colonyShip = colonyShip;
+		this.recycler = recycler;
+		this.espionageProbe = espionageProbe;
+		this.solarSattlelite = solarSattlelite;
 	}
 
 	public int getPlanetId() {
