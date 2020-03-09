@@ -22,6 +22,7 @@ import javax.transaction.UserTransaction;
 
 import enums.AuthLvl;
 import enums.IsActive;
+import model.Buildable;
 import model.User;
 import planets.Planets_General;
 
@@ -34,7 +35,6 @@ public class LoginHandler implements Serializable{
 	private String password;
 	private UserHandler handler = new UserHandler();
 	private GalaxyHandler gHandler;
-	private PlanetHandler pHandler;
 
 	@PersistenceContext
 	private EntityManager em;
@@ -45,7 +45,7 @@ public class LoginHandler implements Serializable{
 	@PostConstruct
 	public void init() {
 		gHandler = new GalaxyHandler();
-		pHandler = new PlanetHandler(em, utx, gHandler);
+		planetHandler = new PlanetHandler(em, utx, gHandler);
 		Query query = em.createQuery("select k from User k where k.username = :username");
 		query.setParameter("username", "admin");
 		@SuppressWarnings("unchecked")
@@ -58,6 +58,7 @@ public class LoginHandler implements Serializable{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			install();
 			em.persist(user);
 			try {
 				utx.commit();
@@ -66,8 +67,21 @@ public class LoginHandler implements Serializable{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			pHandler.createNewPlanet(user.getUserID());
+			planetHandler.createNewPlanet(user.getUserID());
 		}
+	}
+
+	private void install() {
+		// name		type	baseCostMetal baseCostCrystal baseCostDeut baseCostEnergy	resFactor	energyFactor	Descr	rec
+		//type 0= building 1=tech 2=ship
+		em.persist(new Buildable("Metallmine", 0, 40, 15, 0, 10, 1.5, 1.1, "Hauptrohstoff für den Bau tragender Strukturen von Bauwerken und Schiffen.", "test"));
+		em.persist(new Buildable("Kristallmine", 0, 30, 15, 0, 10, 1.6, 1.1, "Hier wird Kristall abgebaut - der Hauptrohstoff für elektronische Bauteile und Legierungen.", "test"));
+		em.persist(new Buildable("Deuterium-Synthetisierer", 0, 150, 50, 0, 20, 1.5, 1.1, "Deuterium-Synthetisierer entziehen dem Wasser eines Planeten den geringen Deuteriumanteil.", "test"));
+		em.persist(new Buildable("Solarkraftwerk", 0, 50, 20, 0, 20, 1.5, 1.1, "Solarkraftwerke gewinnen aus Sonneneinstrahlung die Energie, die einige Gebäude für den Betrieb benötigen.", "test"));
+		em.persist(new Buildable("Fusionskraftwerk", 0, 500, 200, 100, 30, 1.8, 1.05, "Das Fusionskraftwerk gewinnt Energie aus der Fusion von 2 schweren Wasserstoffatomen zu einem Heliumatom.", "test"));
+		em.persist(new Buildable("Metallspeicher", 0, 500, 0, 0, 0, 2, 0, "Lagerstätte für rohe Metallerze, bevor sie weiter verarbeitet werden.", "test"));
+		em.persist(new Buildable("Kristallspeicher", 0, 500, 250, 0, 0, 2, 0, "Lagerstätte für rohe Kristalle, bevor sie weiterverarbeitet werden.", "test"));
+		em.persist(new Buildable("Deuteriumtank", 0, 500, 500, 0, 0, 2, 0, "Riesige Tanks zur Lagerung des neu gewonnenen Deuteriums.", "test"));
 	}
 
 	public String login() {
@@ -81,7 +95,7 @@ public class LoginHandler implements Serializable{
 			query.setParameter("userid", handler.getUser().getUserID());
 			@SuppressWarnings("unchecked")
 			List<Planets_General> planets = query.getResultList();
-			pHandler.init(planets);
+			planetHandler.init(planet);
 			query = em.createQuery("select galaxy from Planets_General k where k.userid = :userid and name = :name");
 			query.setParameter("userid", handler.getUser().getUserID());
 			query.setParameter("name", "Heimatplanet");
@@ -118,7 +132,7 @@ public class LoginHandler implements Serializable{
 				e.printStackTrace();
 			}
 			user = em.merge(user);
-			pHandler.createNewPlanet(user.getUserID());
+			planetHandler.createNewPlanet(user.getUserID());
 			em.persist(user);
 			try {
 				utx.commit();
@@ -195,12 +209,12 @@ public class LoginHandler implements Serializable{
 		this.handler = handler;
 	}
 
-	public PlanetHandler getpHandler() {
-		return pHandler;
+	public PlanetHandler getPlanetHandler() {
+		return planetHandler;
 	}
 
-	public void setpHandler(PlanetHandler pHandler) {
-		this.pHandler = pHandler;
+	public void setPlanetHandler(PlanetHandler pHandler) {
+		this.planetHandler = pHandler;
 	}
 
 	

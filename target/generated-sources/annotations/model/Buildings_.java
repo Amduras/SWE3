@@ -14,6 +14,7 @@ public abstract class Buildings_ {
 	public static volatile SingularAttribute<Buildings, Integer> deuCost;
 	public static volatile SingularAttribute<Buildings, Integer> crisCost;
 	public static volatile SingularAttribute<Buildings, Long> time;
+	public static volatile SingularAttribute<Buildings, Integer> energy;
 
 }
 

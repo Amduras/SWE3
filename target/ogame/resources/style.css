@@ -69,9 +69,9 @@ td {
 }
 #center_body{
 }
-#center_body_top{
+#mainForm\:center_body_top{
 	width: 100%;
-  	height: 250px;
+  	height: 300px;
 	border: 4px solid black;
 	border-style: none solid solid solid;
   	background: #15151e;
@@ -175,7 +175,58 @@ td {
 	font-size: 18px; 
 	float:right;
 }
-
+.table_buildings_top{
+	width: 100%;
+	height: 100%;
+	border-collapse: collapse;
+	table-layout: fixed;
+}
+.td_buildings_top_img{
+	width: 35%;
+	height: 60%;
+	background: black;
+}
+.td_buildings_top_head_left{
+	height: 10%;
+	width: 15%;
+	background-image: linear-gradient(#292424, #9d9090);
+}
+.td_buildings_top_head_middle{
+	height: 10%;
+	width: 25%;
+	background-image: linear-gradient(#292424, #9d9090);
+	color: orange;
+	font-size: 18px; 
+}
+.td_buildings_top_head_right{
+	height: 10%;
+	width: 25%;
+	background-image: linear-gradient(#292424, #9d9090);
+	color: orange;
+	font-size: 18px;
+	text-align: right;
+}
+.td_buildings_top_body{
+	height: 50%;
+	background: #15151e;
+}
+.td_buildings_top_button{
+	height: 50%;
+	background: #15151e;
+	vertical-align: bottom;
+}
+.buildings_top_button{
+	width: 100%;
+	height: 20%;
+}
+.td_buildings_top_descr{
+	height: 40%;
+	background: #15151e;
+}
+.td_buildings_top_rec{
+	height: 40%;
+	background: #15151e;
+}
 /*class*/
 .headerBar{
 	/*background-color: transparent;*/
