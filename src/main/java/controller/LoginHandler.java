@@ -35,6 +35,7 @@ public class LoginHandler implements Serializable{
 	private String password;
 	private UserHandler handler = new UserHandler();
 	private GalaxyHandler gHandler;
+	private PlanetHandler planetHandler;
 
 	@PersistenceContext
 	private EntityManager em;
@@ -95,7 +96,7 @@ public class LoginHandler implements Serializable{
 			query.setParameter("userid", handler.getUser().getUserID());
 			@SuppressWarnings("unchecked")
 			List<Planets_General> planets = query.getResultList();
-			planetHandler.init(planet);
+			planetHandler.init(planets);
 			query = em.createQuery("select galaxy from Planets_General k where k.userid = :userid and name = :name");
 			query.setParameter("userid", handler.getUser().getUserID());
 			query.setParameter("name", "Heimatplanet");
