@@ -26,10 +26,8 @@ import planets.Planets_General;
 @SessionScoped
 public class GalaxyHandler {
 
-	@PersistenceContext
 	private EntityManager em;
 
-	@Resource
 	private UserTransaction utx;
 
 	private int galaxyForTable;
@@ -39,6 +37,11 @@ public class GalaxyHandler {
 
 	public GalaxyHandler() {
 
+	}
+
+	public GalaxyHandler(EntityManager em, UserTransaction utx) {
+		this.em = em;
+		this.utx = utx;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -203,7 +206,7 @@ public class GalaxyHandler {
 	public void setSystemForTable(int systemForTable) {
 		this.systemForTable = systemForTable;
 	}
-	
+
 	public boolean existPlanet(int i) {
 		if(planets.get(i) != null) {
 			return true;
@@ -211,9 +214,10 @@ public class GalaxyHandler {
 			return false;
 		}
 	}
-	
+
+
 	@SuppressWarnings("unchecked")
-	public List<Planets_General> getPlanets() {
+	public void createPlanetList() {
 		Query query = em.createQuery("select k from Planets_General k where k.solarsystem = :system and k.galaxy = :galaxy");
 		query.setParameter("system", getSystemForTable());
 		query.setParameter("galaxy", getGalaxyForTable());
@@ -236,9 +240,28 @@ public class GalaxyHandler {
 			}
 			planets=tmpList;
 		}
+	}
+
+	public void colonizs() {
+
+	}
+
+	public void spy(int position) {
+
+	}
+
+	public void message(int position) {
+
+	}
+
+	public void attack(int position) {
+
+	}
+
+	public List<Planets_General> getPlanets() {
 		return planets;
 	}
-	
+
 	public void setPlanets(List<Planets_General> planets) {
 		this.planets = planets;
 	}

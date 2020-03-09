@@ -18,7 +18,7 @@
 					<h:graphicImage id="leftGalaxy"
 						url="resources/images/galaxies/arrow_left.png">
 						<p:ajax event="click"
-							listener="#{galaxyHandler.changeGalaxy(true)}"
+							listener="#{loginHandler.gHandler.changeGalaxy(true)}"
 							update=":mainForm:galaxieTable :mainForm:changeGrid" />
 					</h:graphicImage>
 				</p:column>
@@ -30,7 +30,7 @@
 					<h:graphicImage id="rightGalaxy"
 						url="resources/images/galaxies/arrow_right.png">
 						<p:ajax event="click"
-							listener="#{galaxyHandler.changeGalaxy(false)}"
+							listener="#{loginHandler.gHandler.changeGalaxy(false)}"
 							update=":mainForm:galaxieTable :mainForm:changeGrid" />
 					</h:graphicImage>
 				</p:column>
@@ -39,7 +39,7 @@
 					<h:graphicImage id="leftSystem"
 						url="resources/images/galaxies/arrow_left.png">
 						<p:ajax event="click"
-							listener="#{galaxyHandler.changeSystem(true)}"
+							listener="#{loginHandler.gHandler.changeSystem(true)}"
 							update=":mainForm:galaxieTable :mainForm:changeGrid" />
 					</h:graphicImage>
 				</p:column>
@@ -51,42 +51,42 @@
 					<h:graphicImage id="rightSystem"
 						url="resources/images/galaxies/arrow_right.png">
 						<p:ajax event="click"
-							listener="#{galaxyHandler.changeSystem(false)}"
+							listener="#{loginHandler.gHandler.changeSystem(false)}"
 							update=":mainForm:galaxieTable :mainForm:changeGrid" />
 					</h:graphicImage>
 				</p:column>
 			</p:row>
 		</f:facet>
 	</p:panelGrid>
-	<p:dataTable id="galaxieTable" value="#{galaxyHandler.planets}" var="planets"
+	<p:dataTable id="galaxieTable" value="#{loginHandler.gHandler.planets}" var="planets"
 	rowIndexVar="rowid">
 		<p:column headerText="Position">
 			<p:outputLabel value="#{rowid+1}" />
 		</p:column>
 		<p:column headerText="Name">
-			<h:panelGroup rendered="#{galaxyHandler.existPlanet(rowid) == false}">
+			<h:panelGroup rendered="#{loginHandler.gHandler.existPlanet(rowid) == false}">
 				<h:graphicImage url="resources/images/galaxies/kolonisieren.png" title="Kolonisieren">
-					<p:ajax event="click" update=":mainForm:galaxieTable" listener="#{galaxyHandler.test()}"/>
+					<p:ajax event="click" update=":mainForm:galaxieTable" listener="#{loginHandler.gHandler.colonize()}"/>
 				</h:graphicImage>
 			</h:panelGroup>
-			<p:outputLabel value="#{planets.name}" rendered="#{galaxyHandler.existPlanet(rowid) == true}"/>
+			<p:outputLabel value="#{planets.name}" rendered="#{loginHandler.gHandler.existPlanet(rowid) == true}"/>
 		</p:column>
 		<p:column headerText="Spieler">
 			<p:outputLabel value="#{planets.getUserId()}" />
 		</p:column>
 		<p:column headerText="Aktion">
-			<h:panelGroup rendered="#{galaxyHandler.existPlanet(rowid) == false}">
+			<h:panelGroup rendered="#{loginHandler.gHandler.existPlanet(rowid) == false}">
 				<h:graphicImage url="resources/images/galaxies/spionage.png" title="Spionage">
-					<p:ajax event="click" update=":mainForm:galaxieTable" listener="#{galaxyHandler.spy(rowid)}"/>
+					<p:ajax event="click" update=":mainForm:galaxieTable" listener="#{loginHandler.gHandler.spy(rowid)}"/>
 				</h:graphicImage>
 				<h:graphicImage url="resources/images/galaxies/message.png" title="Nachricht schreiben">
-					<p:ajax event="click" update=":mainForm:galaxieTable" listener="#{galaxyHandler.message(rowid)}"/>
+					<p:ajax event="click" update=":mainForm:galaxieTable" listener="#{loginHandler.gHandler.message(rowid)}"/>
 				</h:graphicImage>
 				<h:graphicImage url="resources/images/galaxies/angriff.png" title="Angriff">
-					<p:ajax event="click" update=":mainForm:galaxieTable" listener="#{galaxyHandler.attack(rowid)}"/>
+					<p:ajax event="click" update=":mainForm:galaxieTable" listener="#{loginHandler.gHandler.attack(rowid)}"/>
 				</h:graphicImage>
 			</h:panelGroup>
-			<p:outputLabel value="" rendered="#{galaxyHandler.existPlanet(rowid)} == true"/>
+			<p:outputLabel value="" rendered="#{loginHandler.gHandler.existPlanet(rowid)} == true"/>
 		</p:column>
 	</p:dataTable>
 </ui:composition>
