@@ -27,11 +27,11 @@
 				</thead>
 				<tbody>
 					<tr class="res_table">
-						<td id="metal"><p:outputLabel id="res_table_metal" value="#{loginHandler.pHandler.pg.metal}"/></td>
-						<td id="crystal"><p:outputLabel id="res_table_crystal" value="#{loginHandler.pHandler.pg.crystal}"/></td>
-						<td id="deut"><p:outputLabel  id="res_table_deut" value="#{loginHandler.pHandler.pg.deut}"/></td>
-						<td id="energy"><p:outputLabel id="res_table_energy" value="#{loginHandler.pHandler.pg.energy}"/></td>
-						<p:poll interval="5" listener="#{loginHandler.pHandler.updateRes}" update="res_table_metal res_table_crystal res_table_deut"/>
+						<td id="metal"><p:outputLabel id="res_table_metal" value="#{loginHandler.planetHandler.pg.metal}"/></td>
+						<td id="crystal"><p:outputLabel id="res_table_crystal" value="#{loginHandler.planetHandler.pg.crystal}"/></td>
+						<td id="deut"><p:outputLabel  id="res_table_deut" value="#{loginHandler.planetHandler.pg.deut}"/></td>
+						<td id="energy"><p:outputLabel id="res_table_energy" value="#{loginHandler.planetHandler.pg.energy}"/></td>
+						<p:poll interval="5" listener="#{loginHandler.planetHandler.updateRes}" update="res_table_metal res_table_crystal res_table_deut"/>
 					</tr>
 					<tr class="res_table">
 						<td id="metal_storage">/<p:outputLabel value="#{planet.getMetalStorage()}"/></td>

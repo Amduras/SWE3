@@ -20,7 +20,8 @@ public class Buildings implements Serializable{
 	private int metalCost;
 	private int crisCost;
 	private int deuCost;
-	private Long time;
+	private int energy;
+	private long time;
 	private int max;
 	
 	public Buildings() {
@@ -59,11 +60,11 @@ public class Buildings implements Serializable{
 		this.deuCost = deuCost;
 	}
 
-	public Long getTime() {
+	public long getTime() {
 		return time;
 	}
 
-	public void setTime(Long time) {
+	public void setTime(long time) {
 		this.time = time;
 	}
 
@@ -73,6 +74,14 @@ public class Buildings implements Serializable{
 
 	public void setMax(int max) {
 		this.max = max;
+	}
+
+	public int getEnergy() {
+		return energy;
+	}
+
+	public void setEnergy(int energy) {
+		this.energy = energy;
 	}
 	
 	

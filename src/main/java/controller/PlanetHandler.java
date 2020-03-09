@@ -38,6 +38,8 @@ public class PlanetHandler {
 	private Planets_Research pr;
 	private Planets_Ships ps;
 	
+	private BuildHandler buildHandler = new BuildHandler(this, em);
+	
 	public PlanetHandler() {
 		
 	}
@@ -54,7 +56,7 @@ public class PlanetHandler {
 	}
 	
 	public void createNewPlanet(int userID) {
-		Planets_General pgt = new Planets_General( 0, 0, 0, null, 0, 0, 0, 193, 0, 500, 200, 0, 0, 0, "Heimatplanet",userID);
+		Planets_General pgt = new Planets_General( 0, 0, 0, null, 0, 0, 0, 193, 0, 0, 500, 200, 0, 0, "Heimatplanet", userID);
 		try {
 			utx.begin();
 		} catch (NotSupportedException | SystemException e1) {
@@ -100,7 +102,6 @@ public class PlanetHandler {
 	}
 
 	public void updateRes() {
-		System.out.println(pg);
 		int m = pg.getMetal();
 		int c = pg.getCrystal();
 		int d = pg.getDeut();
@@ -197,5 +198,13 @@ public class PlanetHandler {
 		updateDef();
 		updateResearch();
 		updateShips();	
+	}
+
+	public BuildHandler getBuildHandler() {
+		return buildHandler;
+	}
+
+	public void setBuildHandler(BuildHandler buildHandler) {
+		this.buildHandler = buildHandler;
 	}
 }

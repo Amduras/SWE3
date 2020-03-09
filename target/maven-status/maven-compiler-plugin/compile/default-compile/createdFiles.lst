@@ -7,6 +7,7 @@ enums\Moon.class
 model\User_.class
 controller\IncludeController.class
 controller\ListenerView.class
+model\Buildable_.class
 planets\Planets_Def_.class
 model\Buildings_.class
 planets\Planets_Research_.class
