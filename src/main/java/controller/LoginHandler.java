@@ -36,6 +36,8 @@ public class LoginHandler implements Serializable{
 	private UserHandler handler = new UserHandler();
 	private GalaxyHandler gHandler;
 	private PlanetHandler planetHandler;
+	private BuildHandler buildHandler;
+	
 
 	@PersistenceContext
 	private EntityManager em;
@@ -47,6 +49,7 @@ public class LoginHandler implements Serializable{
 	public void init() {
 		gHandler = new GalaxyHandler();
 		planetHandler = new PlanetHandler(em, utx, gHandler);
+		buildHandler = new BuildHandler(planetHandler,em);
 		Query query = em.createQuery("select k from User k where k.username = :username");
 		query.setParameter("username", "admin");
 		@SuppressWarnings("unchecked")
@@ -216,6 +219,14 @@ public class LoginHandler implements Serializable{
 
 	public void setPlanetHandler(PlanetHandler pHandler) {
 		this.planetHandler = pHandler;
+	}
+
+	public BuildHandler getBuildHandler() {
+		return buildHandler;
+	}
+
+	public void setBuildHandler(BuildHandler buildHandler) {
+		this.buildHandler = buildHandler;
 	}
 
 	

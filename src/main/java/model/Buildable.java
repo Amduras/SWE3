@@ -29,6 +29,10 @@ public class Buildable implements Serializable{
 	private String descr;
 	private String rec;
 	
+	public Buildable() {
+		
+	}
+	
 	public Buildable(String name, int type, int baseCostMetal, int baseCostCrystal, int baseCostDeut, int baseCostEnergy, double resFactor, double energyFactor, String descr, String rec) {
 		super();
 		this.name = name;
