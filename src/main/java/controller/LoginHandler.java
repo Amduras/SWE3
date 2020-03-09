@@ -33,11 +33,12 @@ public class LoginHandler implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private String username;
 	private String password;
-	private UserHandler handler = new UserHandler();
+	private UserHandler handler;
 	private GalaxyHandler gHandler;
 	private PlanetHandler planetHandler;
 	private BuildHandler buildHandler;
-	
+	private RoleHandler roleHandler;
+
 
 	@PersistenceContext
 	private EntityManager em;
@@ -47,9 +48,11 @@ public class LoginHandler implements Serializable{
 
 	@PostConstruct
 	public void init() {
+		handler = new UserHandler(em, utx);
 		gHandler = new GalaxyHandler(em, utx);
 		planetHandler = new PlanetHandler(em, utx, gHandler);
 		buildHandler = new BuildHandler(planetHandler,em);
+		roleHandler = new RoleHandler(em, utx);
 		Query query = em.createQuery("select k from User k where k.username = :username");
 		query.setParameter("username", "admin");
 		@SuppressWarnings("unchecked")
@@ -111,13 +114,13 @@ public class LoginHandler implements Serializable{
 			id = (int) query.getSingleResult();
 			gHandler.setSystemForTable(id);
 			gHandler.setUser(user);
-			gHandler.createPlanetList();
+			//			gHandler.createPlanetList();
 			return"/main.xhtml?faces-redirect=true";
 		}catch (NoResultException e) {
 			return "/login.xhtml?faces-redirect=true";
 		}
 	}
-	
+
 	public String neuerUser() {
 		Query query = em.createQuery("select k from User k where k.username = :username");
 		query.setParameter("username", username);
@@ -130,14 +133,12 @@ public class LoginHandler implements Serializable{
 			user.setUsername(username);
 			user.setPassword(password);
 			user.setEmail("asd@web.de");
-						
+
 			try {
 				utx.begin();
 			} catch (NotSupportedException | SystemException e) {
 				e.printStackTrace();
 			}
-			user = em.merge(user);
-			planetHandler.createNewPlanet(user.getUserID());
 			em.persist(user);
 			try {
 				utx.commit();
@@ -146,18 +147,31 @@ public class LoginHandler implements Serializable{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			planetHandler.createNewPlanet(user.getUserID());
 			return "login";
 		} else {
 			return "login";
 		}
-		
+
 	}
-	
+
 	public boolean isAdmin() {
+		Query query = em.createQuery("select k from User k where k.username = :username and k.password = :password ");
+		query.setParameter("username", username);
+		query.setParameter("password", password);
+		User  user = (User) query.getSingleResult();
+		handler.setUser(user);
 		if(handler.getUser().getAuthLvl() == AuthLvl.SGA) {
 			return true;
 		} else {
 			return false;
+		}
+	}
+	
+	public void isBanned() {
+		FacesContext context = FacesContext.getCurrentInstance();
+		if(handler.getUser().getAuthLvl() == AuthLvl.BANNED) {
+			context.getApplication().getNavigationHandler().handleNavigation(context, null, "/login.xhtml?faces-redirect=true");
 		}
 	}
 	
@@ -238,7 +252,11 @@ public class LoginHandler implements Serializable{
 		this.gHandler = gHandler;
 	}
 
-	
+	public RoleHandler getRoleHandler() {
+		return roleHandler;
+	}
 
-
+	public void setRoleHandler(RoleHandler roleHandler) {
+		this.roleHandler = roleHandler;
+	}
 }

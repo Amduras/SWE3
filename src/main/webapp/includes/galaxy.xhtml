@@ -10,7 +10,7 @@
 
 	<f:event listener="#{loginHandler.checkLoggedIn}" type="preRenderView" />
 	
-	<p:panelGrid id="changeGrid" class="ui-noborder">
+	<p:panelGrid id="changeGrid">
 		<f:facet name="header">
 			<p:row>
 				<p:column style="font-weight: bold;">Galaxy</p:column>
@@ -59,7 +59,7 @@
 		</f:facet>
 	</p:panelGrid>
 	<p:dataTable id="galaxieTable" value="#{loginHandler.gHandler.planets}" var="planets"
-	rowIndexVar="rowid">
+	rowIndexVar="rowid" styleClass="userTable">
 		<p:column headerText="Position">
 			<p:outputLabel value="#{rowid+1}" />
 		</p:column>

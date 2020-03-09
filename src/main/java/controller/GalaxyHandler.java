@@ -100,9 +100,9 @@ public class GalaxyHandler {
 	public int getFreePosition(int galaxyId, int systemId, boolean start) {
 		if(start) {
 			for(int i = 4; i <= 12; ++i) {
-				Query query = em.createQuery("select k from Planets_General where k.galaxy = :galaxyId"
-						+ "and k.solarsystem = :systemId"
-						+ "and k.position = :position");
+				Query query = em.createQuery("select k from Planets_General k where k.galaxy = :galaxyId"
+						+ " and k.solarsystem = :systemId"
+						+ " and k.position = :position");
 				query.setParameter("galaxyId", galaxyId);
 				query.setParameter("systemId", systemId);
 				query.setParameter("position", i);
@@ -114,9 +114,9 @@ public class GalaxyHandler {
 			}
 		} else {
 			for(int i = 0; i < 16; ++i) {
-				Query query = em.createQuery("select k from Planets_General where k.galaxy = :galaxyId"
-						+ "and k.solarsystem = :systemId"
-						+ "and k.position = :position");
+				Query query = em.createQuery("select k from Planets_General k where k.galaxy = :galaxyId"
+						+ " and k.solarsystem = :systemId"
+						+ " and k.position = :position");
 				query.setParameter("galaxyId", galaxyId);
 				query.setParameter("systemId", systemId);
 				query.setParameter("position", i);
@@ -224,19 +224,12 @@ public class GalaxyHandler {
 		planets = query.getResultList();
 		List<Planets_General> tmpList = new ArrayList<>();
 		Solarsystem tmpSystem = new Solarsystem();
-		int j = 0;
+		for(int i = 0; i < 15; ++i) {
+			tmpList.add(null);
+		}
 		if(planets.size() != 0) {
-			for(int i = 0; i < tmpSystem.getPlanets(); ++i) {
-				if(j < planets.size()) {
-					if(planets.get(j).getPosition() == i) {
-						tmpList.add(planets.get(j));
-						++j;
-					} else {
-						tmpList.add(null);
-					}
-				} else {
-					tmpList.add(null);
-				}
+			for(int i = 0; i < planets.size(); ++i) {
+				tmpList.set(planets.get(i).getPosition(), planets.get(i));
 			}
 			planets=tmpList;
 		}
@@ -259,6 +252,7 @@ public class GalaxyHandler {
 	}
 
 	public List<Planets_General> getPlanets() {
+		createPlanetList();
 		return planets;
 	}
 

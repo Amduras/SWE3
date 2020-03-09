@@ -1,13 +1,11 @@
 package controller;
 
 
-import javax.annotation.Resource;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.transaction.HeuristicMixedException;
 import javax.transaction.HeuristicRollbackException;
 import javax.transaction.NotSupportedException;
@@ -22,10 +20,8 @@ import model.User;
 @SessionScoped
 public class UserHandler {
 
-	@PersistenceContext
 	private EntityManager em;
 	
-	@Resource
 	private UserTransaction utx;
 
 	private DataModel<User> users = new ListDataModel<User>();

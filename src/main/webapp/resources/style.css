@@ -244,57 +244,63 @@ td {
 	background-color: #15151e;
 }
 
-/*#j_idt20\:j_idt55\:j_idt57, #j_idt20\:j_idt55\:j_idt60,
-#j_idt20\:j_idt55\:j_idt63{
-	background-color: black;
-	color: white;
-}*/
 .userTable.ui-datatable .ui-datatable-header{
-background: black !important;
+background: #15151e;
 color: white;
 }
 
 .userTable.ui-datatable .ui-datatable-header{
-background: black !important;
+background: #15151e;
 color: white;
 }
 
 .userTable.ui-datatable .ui-datatable-even{
-background: black ;
+background: #15151e;
 color: white;
 }
 
+.userTable.ui-datatable .ui-datatable-odd{
+	background: #15151e;
+	color: white;
+}
+
+
 .userTable.ui-datatable .ui-datatable-odd.ui-state-hover{
-background: black ;
+background: #15151e;
 color: white;
 }
 
 .userTable.ui-datatable .ui-datatable-even.ui-state-hover{
-background: black ;
+background: #15151e;
 color: white;
 }
 
 .userTable.ui-datatable .ui-datatable-even.ui-state-highlight{
-background: black ;
+background: #15151e;
 color: white;
 }
 
 .userTable.ui-datatable .ui-datatable-odd.ui-state-highlight{
-background: black ;
+background: #15151e;
 color: white;
 }
 
 .mystyle.ui-datatable .ui-datatable-data-empty td {
-color:red;
+background: #15151e;
 font-weight:bold;
 }
 .ui-datatable.userTable th {
-background: black;
+background: #15151e;
 color: white;
 }
-
-
 .userTable.ui-datatable .ui-expanded-row-content{
-background:black;
+background: #15151e;
 color: white;
+}
+.ui-widget-content .ui-datatable-empty-message{
+background: #15151e;
+color: white;
+}
+.ui-tabs-nav.ui-helper-reset.ui-helper-clearfix.ui-widget-header.ui-corner-all{
+	background: #15151e;
 }

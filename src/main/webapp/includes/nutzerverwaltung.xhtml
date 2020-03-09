@@ -9,7 +9,7 @@
 	xmlns:p="http://primefaces.org/ui">
 	<f:event listener="#{loginHandler.checkLoggedIn}" type="preRenderView" />
 
-	<p:dataTable id="testTable" var="user" value="#{userHandler.users}"
+	<p:dataTable id="testTable" var="user" value="#{loginHandler.handler.users}"
 		rowClasses="odd,even" headerClass="header" scrollable="true"
 		scrollHeight="200" styleClass="userTable">
 		<f:facet name="header">Nutzer</f:facet>
@@ -26,32 +26,37 @@
 			<p:commandButton icon="pi pi-search" title="View"
 				update=":mainForm:rightsView:selectedUser">
 				<f:setPropertyActionListener value="#{user}"
-					target="#{roles.selectedUser}" />
+					target="#{loginHandler.roleHandler.selectedUser}" />
 			</p:commandButton>
 		</p:column>
 	</p:dataTable>
 
 	<div id="tappedPanel">
-		<p:tabView id="rightsView">
-			<p:tab title="Status">
+		<p:tabView id="rightsView" style="background: #15151e; color:white">
+			<p:tab title="Status" titleStyle="background: #15151e; color:white;">
 				<div id="leftTable">
-					<p:dataTable var="role" value="#{roles.rights}">
+					<p:dataTable var="role" value="#{loginHandler.roleHandler.rights}" styleClass="userTable">
 						<p:column>
 							<f:facet name="header">verfügbare Rechte</f:facet>
 							<p:outputLabel value="#{role}" />
 						</p:column>
 						<p:column style="width:32px;text-align: center">
 							<p:commandButton icon="pi pi-search" title="View"
-							update=":mainForm:rightsView:selectedUser">
+							update=":mainForm:rightsView:selectedUser :menuForm">
 								<f:setPropertyActionListener value="#{role}"
-									target="#{roles.newRight}" />
+									target="#{loginHandler.roleHandler.newRight}" />
 							</p:commandButton>
 						</p:column>
 					</p:dataTable>
 				</div>
 				<div id="rightTable">
 					<p:dataTable id="selectedUser" var="user"
-						value="#{roles.selectedUser}">
+						value="#{loginHandler.roleHandler.selectedUser}" styleClass="userTable"
+						emptyMessage="Bitte Nutzer auswählen">
+						<p:column>
+							<f:facet name="header">Nutzer</f:facet>
+							<p:outputLabel value="#{user.username}" />
+						</p:column>
 						<p:column>
 							<f:facet name="header">Nutzer Rechte</f:facet>
 							<p:outputLabel value="#{user.authLvl}" />
