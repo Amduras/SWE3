@@ -19,26 +19,31 @@ import javax.transaction.UserTransaction;
 
 import model.Galaxy;
 import model.Solarsystem;
+import model.User;
 import planets.Planets_General;
 
 @ManagedBean(name="galaxyHandler")
 @SessionScoped
 public class GalaxyHandler {
 
-	@PersistenceContext
 	private EntityManager em;
 
-	@Resource
 	private UserTransaction utx;
-	
+
 	private int galaxyForTable;
 	private int systemForTable;
 	private List<Planets_General> planets = new ArrayList<>();
-	
+	private User user = null;
+
 	public GalaxyHandler() {
-		
+
 	}
-	
+
+	public GalaxyHandler(EntityManager em, UserTransaction utx) {
+		this.em = em;
+		this.utx = utx;
+	}
+
 	@SuppressWarnings("unchecked")
 	public Solarsystem getFreeSystem(int galaxyId) {
 		Query query = em.createQuery("select k from Solarsystem k where k.galaxyId = :galaxyId");
@@ -125,7 +130,7 @@ public class GalaxyHandler {
 
 		return 0;
 	}
-	
+
 	public void changeGalaxy(boolean left) {
 		if(left) {
 			int min = getMinGalaxy();
@@ -149,13 +154,13 @@ public class GalaxyHandler {
 		int min = (int) query.getSingleResult();
 		return min;
 	}
-	
+
 	public int getMaxGalaxy() {
 		Query query = em.createQuery("select max(galaxyId) from Galaxy k");
 		int max = (int) query.getSingleResult();
 		return max;
 	}
-	
+
 	public void changeSystem(boolean left) {
 		if(left) {
 			int min = getMinSystem();
@@ -179,13 +184,13 @@ public class GalaxyHandler {
 		int min = (int) query.getSingleResult();
 		return min;
 	}
-	
+
 	public int getMaxSystem() {
 		Query query = em.createQuery("select max(systemId) from Solarsystem k");
 		int max = (int) query.getSingleResult();
 		return max;
 	}
-	
+
 	public int getGalaxyForTable() {
 		return galaxyForTable;
 	}
@@ -202,18 +207,71 @@ public class GalaxyHandler {
 		this.systemForTable = systemForTable;
 	}
 
+	public boolean existPlanet(int i) {
+		if(planets.get(i) != null) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+
 	@SuppressWarnings("unchecked")
-	public List<Planets_General> getPlanets() {
+	public void createPlanetList() {
 		Query query = em.createQuery("select k from Planets_General k where k.solarsystem = :system and k.galaxy = :galaxy");
 		query.setParameter("system", getSystemForTable());
 		query.setParameter("galaxy", getGalaxyForTable());
 		planets = query.getResultList();
-		System.out.println("Planets: "+planets.size());
+		List<Planets_General> tmpList = new ArrayList<>();
+		Solarsystem tmpSystem = new Solarsystem();
+		int j = 0;
+		if(planets.size() != 0) {
+			for(int i = 0; i < tmpSystem.getPlanets(); ++i) {
+				if(j < planets.size()) {
+					if(planets.get(j).getPosition() == i) {
+						tmpList.add(planets.get(j));
+						++j;
+					} else {
+						tmpList.add(null);
+					}
+				} else {
+					tmpList.add(null);
+				}
+			}
+			planets=tmpList;
+		}
+	}
+
+	public void colonizs() {
+
+	}
+
+	public void spy(int position) {
+
+	}
+
+	public void message(int position) {
+
+	}
+
+	public void attack(int position) {
+
+	}
+
+	public List<Planets_General> getPlanets() {
 		return planets;
 	}
 
 	public void setPlanets(List<Planets_General> planets) {
 		this.planets = planets;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 }
 

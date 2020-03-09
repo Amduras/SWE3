@@ -47,7 +47,7 @@ public class LoginHandler implements Serializable{
 
 	@PostConstruct
 	public void init() {
-		gHandler = new GalaxyHandler();
+		gHandler = new GalaxyHandler(em, utx);
 		planetHandler = new PlanetHandler(em, utx, gHandler);
 		buildHandler = new BuildHandler(planetHandler,em);
 		Query query = em.createQuery("select k from User k where k.username = :username");
@@ -156,9 +156,10 @@ public class LoginHandler implements Serializable{
 			query.setParameter("name", "Heimatplanet");
 			id = (int) query.getSingleResult();
 			gHandler.setSystemForTable(id);
+			gHandler.setUser(user);
+			gHandler.createPlanetList();
 			return"/main.xhtml?faces-redirect=true";
 		}catch (NoResultException e) {
-			System.out.println("Kein User vorhanden");
 			return "/login.xhtml?faces-redirect=true";
 		}
 	}
@@ -273,6 +274,14 @@ public class LoginHandler implements Serializable{
 
 	public void setBuildHandler(BuildHandler buildHandler) {
 		this.buildHandler = buildHandler;
+	}
+
+	public GalaxyHandler getgHandler() {
+		return gHandler;
+	}
+
+	public void setgHandler(GalaxyHandler gHandler) {
+		this.gHandler = gHandler;
 	}
 
 	

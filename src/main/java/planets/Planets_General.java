@@ -194,14 +194,6 @@ public class Planets_General implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
-//
-//	public User getUser() {
-//		return user;
-//	}
-//
-//	public void setUser(User user) {
-//		this.user = user;
-//	}
 
 	public int getUserId() {
 		return userid;
