@@ -1,6 +1,7 @@
 package controller;
 
 import java.util.List;
+import java.util.ListIterator;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -13,6 +14,8 @@ import javax.transaction.RollbackException;
 import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 
+import model.Galaxy;
+import model.Solarsystem;
 import planets.Planets_Buildings;
 import planets.Planets_Def;
 import planets.Planets_General;
@@ -22,29 +25,30 @@ import planets.Planets_Ships;
 @ManagedBean(name="planetHandler")
 @SessionScoped
 public class PlanetHandler {
-	
+
 	private List<Planets_General> planets;
-	
+
 	private EntityManager em;
-	
+
 	private UserTransaction utx;
-	
+
 	private int ownedPlanets;
 	private int activePlanet = 0;
-	
+
 	private Planets_Buildings pb;
 	private Planets_Def pd;
 	private Planets_General pg;
 	private Planets_Research pr;
 	private Planets_Ships ps;
-	
+	private GalaxyHandler galaxyHandler;
 	public PlanetHandler() {
-		
+
 	}
-	
-	public PlanetHandler(EntityManager em, UserTransaction utx) {
+
+	public PlanetHandler(EntityManager em, UserTransaction utx, GalaxyHandler galaxyHandler) {
 		this.em = em;
 		this.utx = utx;
+		this.galaxyHandler = galaxyHandler;
 	}
 	/*** Get Lists of owned planets and init active ***/
 	public void init(List<Planets_General> planets) {
@@ -52,9 +56,70 @@ public class PlanetHandler {
 		this.setOwnedPlanets(planets.size());
 		updateDataset();	
 	}
-	
+
 	public void createNewPlanet(int userID) {
-		Planets_General pgt = new Planets_General( 0, 0, 0, null, 0, 0, 0, 193, 0, 500, 200, 0, 0, 0, "Heimatplanet",userID);
+		Query query = em.createQuery("select k from Galaxy k");
+		Galaxy galaxy = null;
+		@SuppressWarnings("unchecked")
+		List<Galaxy> galaxies = query.getResultList();
+		if(galaxies.size() == 0) {
+			galaxy = new Galaxy();
+			try {
+				utx.begin();
+			} catch (NotSupportedException | SystemException e3) {
+				// TODO Auto-generated catch block
+				e3.printStackTrace();
+			}
+			em.persist(galaxy);
+			try {
+				utx.commit();
+			} catch (SecurityException | IllegalStateException | RollbackException | HeuristicMixedException
+					| HeuristicRollbackException | SystemException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			}
+		} else {
+			ListIterator<Galaxy> iter = galaxies.listIterator();
+			boolean found = false;
+			while(iter.hasNext() && !found) {
+				Galaxy next = iter.next();
+				if(next.getMaxSystems() > 0) {
+					galaxy = next;
+					found = true;
+				}
+			}
+		}
+		Solarsystem system;
+		int position = 6;
+		query = em.createQuery("select k from Solarsystem k");
+		@SuppressWarnings("unchecked")
+		List<Solarsystem> systems = query.getResultList();
+		if(systems.size() == 0) {
+			system = new Solarsystem(galaxy.getGalaxyId());
+			query = em.createQuery("select k from Galaxy k where k.galaxyId = :galaxyId");
+			query.setParameter("galaxyId", galaxy.getGalaxyId());
+			galaxy.setMaxSystems(galaxy.getMaxSystems()-1);
+			system.setPlanets(system.getPlanets()-1);
+			try {
+				utx.begin();
+			} catch (NotSupportedException | SystemException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			em.merge(galaxy);
+			em.persist(system);
+			try {
+				utx.commit();
+			} catch (SecurityException | IllegalStateException | RollbackException | HeuristicMixedException
+					| HeuristicRollbackException | SystemException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} else {
+			system = galaxyHandler.getFreeSystem(galaxy.getGalaxyId());
+			position = galaxyHandler.getFreePosition(galaxy.getGalaxyId(), system.getSystemId(), true);
+		}
+		Planets_General pgt = new Planets_General( galaxy.getGalaxyId(), system.getSystemId(), position, null, 0, 0, 0, 193, 0, 500, 200, 0, 0, 0, "Heimatplanet",userID);
 		try {
 			utx.begin();
 		} catch (NotSupportedException | SystemException e1) {
@@ -94,13 +159,12 @@ public class PlanetHandler {
 
 	public void changePlanet(int ind) {
 		/** save existing dataset ? **/
-		
+
 		activePlanet = ind;
 		updateDataset();
 	}
 
 	public void updateRes() {
-		System.out.println(pg);
 		int m = pg.getMetal();
 		int c = pg.getCrystal();
 		int d = pg.getDeut();
@@ -192,7 +256,7 @@ public class PlanetHandler {
 	}
 	private void updateDataset() {
 		pg = planets.get(activePlanet);
-		
+
 		updateBuildings();
 		updateDef();
 		updateResearch();

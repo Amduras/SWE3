@@ -75,16 +75,18 @@ public class RoleHandler implements Serializable{
 		if(selectedUser != null) {
 			if(!newRight.toLowerCase().equals(selectedUser.getAuthLvl().getLabel())) {
 				this.newRight = newRight;
-				Query query = em.createQuery("update User set authlvl = :authlvl where username = :username");
-				query.setParameter("authlvl", (int) AuthLvl.valueOf(newRight).ordinal());
-				query.setParameter("username", selectedUser.getUsername());
+				selectedUser.setAuthLvl(AuthLvl.valueOf(newRight));
+//				Query query = em.createQuery("update User set authlvl = :authlvl where username = :username");
+//				query.setParameter("authlvl", (int) AuthLvl.valueOf(newRight).ordinal());
+//				query.setParameter("username", selectedUser.getUsername());
 				try {
 					utx.begin();
 				} catch (NotSupportedException | SystemException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				query.executeUpdate();
+				em.merge(selectedUser);
+//				query.executeUpdate();
 				try {
 					utx.commit();
 				} catch (SecurityException | IllegalStateException | RollbackException | HeuristicMixedException

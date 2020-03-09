@@ -4,7 +4,9 @@ C:\Users\sip90\Desktop\studium\swe3\ogame\src\main\java\ships\Ships_Build.java
 C:\Users\sip90\Desktop\studium\swe3\ogame\src\main\java\enums\IsActive.java
 C:\Users\sip90\Desktop\studium\swe3\ogame\src\main\java\controller\PlanetHandler.java
 C:\Users\sip90\Desktop\studium\swe3\ogame\src\main\java\enums\JobType.java
+C:\Users\sip90\Desktop\studium\swe3\ogame\src\main\java\controller\GalaxyHandler.java
 C:\Users\sip90\Desktop\studium\swe3\ogame\src\main\java\Task\ResUpdateTask.java
+C:\Users\sip90\Desktop\studium\swe3\ogame\src\main\java\model\Solarsystem.java
 C:\Users\sip90\Desktop\studium\swe3\ogame\src\main\java\Task\OneTimeTask.java
 C:\Users\sip90\Desktop\studium\swe3\ogame\src\main\java\model\Research.java
 C:\Users\sip90\Desktop\studium\swe3\ogame\src\main\java\Task\SchedulingTask.java
@@ -24,6 +26,7 @@ C:\Users\sip90\Desktop\studium\swe3\ogame\src\main\java\ships\Ships_Tech.java
 C:\Users\sip90\Desktop\studium\swe3\ogame\src\main\java\controller\IncludeController.java
 C:\Users\sip90\Desktop\studium\swe3\ogame\src\main\java\controller\QueryController.java
 C:\Users\sip90\Desktop\studium\swe3\ogame\src\main\java\controller\ListenerView.java
+C:\Users\sip90\Desktop\studium\swe3\ogame\src\main\java\model\Galaxy.java
 C:\Users\sip90\Desktop\studium\swe3\ogame\src\main\java\planets\Planets_Buildings.java
 C:\Users\sip90\Desktop\studium\swe3\ogame\src\main\java\controller\LoginHandler.java
 C:\Users\sip90\Desktop\studium\swe3\ogame\src\main\java\model\Buildings.java

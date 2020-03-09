@@ -24,12 +24,21 @@ public class UserHandler {
 
 	@PersistenceContext
 	private EntityManager em;
-
+	
 	@Resource
 	private UserTransaction utx;
 
 	private DataModel<User> users = new ListDataModel<User>();
 	private User user = null;
+	
+	public UserHandler() {
+		
+	}
+	
+	public UserHandler(EntityManager em, UserTransaction utx) {
+		this.em = em;
+		this.utx = utx;
+	}
 
 	public void userList() {
 		try {

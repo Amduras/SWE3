@@ -40,9 +40,7 @@ public class Planets_General implements Serializable {
 	private int energy = 47896; 
 	private String name = "DingDong des Todes";
 	private int userid;
-//	@ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
-//	@JoinColumn(name="user_id", nullable=false)
-//	private User user;
+
 	
 	public Planets_General() {
 		
@@ -213,6 +211,20 @@ public class Planets_General implements Serializable {
 		this.userid = userid;
 	}
 	
+	public int getMetalAsInt() {
+		return (int) metal;
+	}
 	
+	public int getCrystalAsInt() {
+		return (int) crystal;
+	}
+	
+	public int getDeutAsInt() {
+		return (int) deut;
+	}
+	
+	public int getEnergyAsInt() {
+		return (int) energy;
+	}
 	
 }

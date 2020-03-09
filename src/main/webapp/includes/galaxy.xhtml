@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:p="http://primefaces.org/ui">
+
+	<f:event listener="#{loginHandler.checkLoggedIn}" type="preRenderView" />
+
+	<p:panelGrid id="changeGrid" class="ui-noborder">
+		<f:facet name="header">
+			<p:row>
+				<p:column style="font-weight: bold;">Galaxy</p:column>
+				<p:column>
+					<h:graphicImage id="leftGalaxy"
+						url="resources/images/arrow_left.png">
+						<p:ajax event="click"
+							listener="#{galaxyHandler.changeGalaxy(true)}"
+							update=":mainForm:galaxieTable :mainForm:changeGrid" />
+					</h:graphicImage>
+				</p:column>
+				<p:column>
+					<p:inputText id="galaxyInput"
+						value="#{galaxyHandler.galaxyForTable}" size="3" />
+				</p:column>
+				<p:column>
+					<h:graphicImage id="rightGalaxy"
+						url="resources/images/arrow_right.png">
+						<p:ajax event="click"
+							listener="#{galaxyHandler.changeGalaxy(false)}"
+							update=":mainForm:galaxieTable :mainForm:changeGrid" />
+					</h:graphicImage>
+				</p:column>
+				<p:column style="font-weight: bold;">System</p:column>
+				<p:column>
+					<h:graphicImage id="leftSystem"
+						url="resources/images/arrow_left.png">
+						<p:ajax event="click"
+							listener="#{galaxyHandler.changeSystem(true)}"
+							update=":mainForm:galaxieTable :mainForm:changeGrid" />
+					</h:graphicImage>
+				</p:column>
+				<p:column>
+					<p:inputText id="systemInput"
+						value="#{galaxyHandler.systemForTable}" size="3" />
+				</p:column>
+				<p:column>
+					<h:graphicImage id="rightSystem"
+						url="resources/images/arrow_right.png">
+						<p:ajax event="click"
+							listener="#{galaxyHandler.changeSystem(false)}"
+							update=":mainForm:galaxieTable :mainForm:changeGrid" />
+					</h:graphicImage>
+				</p:column>
+			</p:row>
+		</f:facet>
+	</p:panelGrid>
+	<p:panelGrid id="galaxieTable" value="#{galaxyHandler.getPlanets()}"
+		var="planets">
+		<p:row>
+			<p:column>Position</p:column>
+			<p:column>Name</p:column>
+			<p:column>Spieler</p:column>
+			<p:column>Aktion</p:column>
+		</p:row>
+		<p:row>
+			<p:column>
+				<h:outputText value="#{planets.planetId}" />
+			</p:column>
+		</p:row>
+	</p:panelGrid>
+</ui:composition>

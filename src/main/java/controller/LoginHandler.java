@@ -33,6 +33,7 @@ public class LoginHandler implements Serializable{
 	private String username;
 	private String password;
 	private UserHandler handler = new UserHandler();
+	private GalaxyHandler gHandler;
 	private PlanetHandler pHandler;
 
 	@PersistenceContext
@@ -43,7 +44,8 @@ public class LoginHandler implements Serializable{
 
 	@PostConstruct
 	public void init() {
-		pHandler = new PlanetHandler(em, utx);
+		gHandler = new GalaxyHandler();
+		pHandler = new PlanetHandler(em, utx, gHandler);
 		Query query = em.createQuery("select k from User k where k.username = :username");
 		query.setParameter("username", "admin");
 		@SuppressWarnings("unchecked")
@@ -78,8 +80,18 @@ public class LoginHandler implements Serializable{
 			query = em.createQuery("select k from Planets_General k where k.userid = :userid");
 			query.setParameter("userid", handler.getUser().getUserID());
 			@SuppressWarnings("unchecked")
-			List<Planets_General> planet = query.getResultList();
-			pHandler.init(planet);
+			List<Planets_General> planets = query.getResultList();
+			pHandler.init(planets);
+			query = em.createQuery("select galaxy from Planets_General k where k.userid = :userid and name = :name");
+			query.setParameter("userid", handler.getUser().getUserID());
+			query.setParameter("name", "Heimatplanet");
+			int id = (int) query.getSingleResult();
+			gHandler.setGalaxyForTable(id);
+			query = em.createQuery("select solarsystem from Planets_General k where k.userid = :userid and name = :name");
+			query.setParameter("userid", handler.getUser().getUserID());
+			query.setParameter("name", "Heimatplanet");
+			id = (int) query.getSingleResult();
+			gHandler.setSystemForTable(id);
 			return"/main.xhtml?faces-redirect=true";
 		}catch (NoResultException e) {
 			System.out.println("Kein User vorhanden");
@@ -138,16 +150,15 @@ public class LoginHandler implements Serializable{
 	}
 
 	public String logout () {
-		Query query = em.createQuery("UPDATE User SET lastlogin = :time where username = :username");
-		query.setParameter("time", System.currentTimeMillis());
-		query.setParameter("username", handler.getUser().getUsername());
+		User user = handler.getUser();
+		user.setLastlogin(System.currentTimeMillis());
 		try {
 			utx.begin();
 		} catch (NotSupportedException | SystemException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		query.executeUpdate();
+		em.merge(user);
 		try {
 			utx.commit();
 		} catch (SecurityException | IllegalStateException | RollbackException | HeuristicMixedException
