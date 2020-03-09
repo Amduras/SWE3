@@ -41,7 +41,6 @@ public class PlanetHandler {
 	private Planets_Research pr;
 	private Planets_Ships ps;
 	private GalaxyHandler galaxyHandler;
-	private BuildHandler buildHandler = new BuildHandler(this, em);
 	
 	public PlanetHandler() {
 
@@ -263,13 +262,5 @@ public class PlanetHandler {
 		updateDef();
 		updateResearch();
 		updateShips();	
-	}
-
-	public BuildHandler getBuildHandler() {
-		return buildHandler;
-	}
-
-	public void setBuildHandler(BuildHandler buildHandler) {
-		this.buildHandler = buildHandler;
 	}
 }

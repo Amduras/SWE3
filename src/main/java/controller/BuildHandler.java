@@ -1,5 +1,7 @@
 package controller;
 
+import java.util.List;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.persistence.EntityManager;
@@ -7,6 +9,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import model.Buildable;
+import model.User;
 
 @ManagedBean(name="buildHandler")
 @SessionScoped
@@ -39,10 +42,11 @@ public class BuildHandler {
 		descr = "alles";
 		rec = "alles";
 	}
+	
 	public void setActive(int id){
-		
 		Query query = em.createQuery("select k from Buildable k where k.id = :id");
 		query.setParameter("id", id+1);
+
 		try {
 			Object res = query.getSingleResult();
 			
@@ -66,7 +70,8 @@ public class BuildHandler {
 				}
 				descr = b.getDescr();
 				rec = b.getRec();
-		} catch(NoResultException e){		
+		} catch(NoResultException e){	
+			System.out.println("KEine werte in DB");
 		}
 	}
 		/*	
