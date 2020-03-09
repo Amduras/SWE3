@@ -22,8 +22,8 @@ public class Planets_Def implements Serializable {
 	private int rocketLauncher;
 	private int lightLaser;
 	private int heavyLaser;
-	private int ionCannon;
 	private int gaussCannon;
+	private int ionCannon;	
 	private int plasmaTurret;
 	private int smallShieldDome;
 	private int largeShieldDome;
@@ -34,15 +34,15 @@ public class Planets_Def implements Serializable {
 		
 	}
 	
-	public Planets_Def(int planetId, int rocketLauncher, int lightLaser, int heavyLaser, int ionCannon, int gaussCannon,
+	public Planets_Def(int planetId, int rocketLauncher, int lightLaser, int heavyLaser, int gaussCannon, int ionCannon,
 			int plasmaTurret, int smallShieldDome, int largeShieldDome, int antiBallisticMissle,
 			int interplanetaryMissle) {
 		this.planetId = planetId;
 		this.rocketLauncher = rocketLauncher;
 		this.lightLaser = lightLaser;
 		this.heavyLaser = heavyLaser;
-		this.ionCannon = ionCannon;
 		this.gaussCannon = gaussCannon;
+		this.ionCannon = ionCannon;
 		this.plasmaTurret = plasmaTurret;
 		this.smallShieldDome = smallShieldDome;
 		this.largeShieldDome = largeShieldDome;

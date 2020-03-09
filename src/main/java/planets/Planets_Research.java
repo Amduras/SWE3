@@ -20,6 +20,7 @@ public class Planets_Research implements Serializable {
 	private int energy;
 	private int laser;
 	private int ion;
+	private int hyperspacetech;
 	private int plasma;
 	private int combustion;
 	private int impulse;
@@ -28,7 +29,7 @@ public class Planets_Research implements Serializable {
 	private int computer;
 	private int astrophysics;
 	private int gravitation;
-	private int armour;
+	private int armor;
 	private int weapon;
 	private int shield;
 
@@ -36,13 +37,14 @@ public class Planets_Research implements Serializable {
 	
 	}
 
-	public Planets_Research(int planetId, int energy, int laser, int ion, int plasma, int combustion, int impulse,
-			int hyperspace, int espionage, int computer, int astrophysics, int gravitation, int armour, int weapon,
-			int shield) {
+	public Planets_Research(int planetId, int energy, int laser, int ion, int hyperspacetech, int plasma,
+			int combustion, int impulse, int hyperspace, int espionage, int computer, int astrophysics, int gravitation,
+			int armor, int weapon, int shield) {
 		this.planetId = planetId;
 		this.energy = energy;
 		this.laser = laser;
 		this.ion = ion;
+		this.hyperspacetech = hyperspacetech;
 		this.plasma = plasma;
 		this.combustion = combustion;
 		this.impulse = impulse;
@@ -51,10 +53,14 @@ public class Planets_Research implements Serializable {
 		this.computer = computer;
 		this.astrophysics = astrophysics;
 		this.gravitation = gravitation;
-		this.armour = armour;
+		this.armor = armor;
 		this.weapon = weapon;
 		this.shield = shield;
 	}
+
+
+
+
 
 	public int getPlanetId() {
 		return planetId;
@@ -152,12 +158,12 @@ public class Planets_Research implements Serializable {
 		this.gravitation = gravitation;
 	}
 
-	public int getArmour() {
-		return armour;
+	public int getArmor() {
+		return armor;
 	}
 
-	public void setArmour(int armour) {
-		this.armour = armour;
+	public void setArmor(int armour) {
+		this.armor = armour;
 	}
 
 	public int getWeapon() {
@@ -174,6 +180,14 @@ public class Planets_Research implements Serializable {
 
 	public void setShield(int shield) {
 		this.shield = shield;
+	}
+
+	public int getHyperspacetech() {
+		return hyperspacetech;
+	}
+
+	public void setHyperspacetech(int hyperspacetech) {
+		this.hyperspacetech = hyperspacetech;
 	}
 
 

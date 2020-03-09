@@ -17,22 +17,26 @@
 				<tr>
 					<td rowspan="2" class="td_buildings_top_img">
 						<h:graphicImage style="width: 100%; height: 100%;"
-								url="resources/images/buildings/supply/00_metal_mine.jpg"/>
+								url="resources/images/buildable/#{loginHandler.buildHandler.id}.jpg"/>
 					</td>
 					<td class="td_buildings_top_head_left"></td>
 					<td class="td_buildings_top_head_middle"><p:outputLabel value="#{loginHandler.buildHandler.name}"/></td>
-					<td class="td_buildings_top_head_right">Stufe: <p:outputLabel value="#{loginHandler.planetHandler.pb.metalMine}"/></td>
+					<td class="td_buildings_top_head_right">Stufe: <p:outputLabel value="#{loginHandler.buildHandler.lvl}"/></td>
 					
 				</tr>
 				<tr>
 					<td colspan="2" class="td_buildings_top_body">
-					<p>Produktionsdauer: <p:outputLabel value="#{loginHandler.buildHandler.time}"/></p>
+					<p>Produktionsdauer: <p:outputLabel value="#{loginHandler.buildHandler.timeM}"/>m <p:outputLabel value="#{loginHandler.buildHandler.timeS}"/>s</p>
 					<p>Energieverbrauch: <p:outputLabel value="#{loginHandler.buildHandler.energy}"/></p>
 					<p>Metal: <p:outputLabel value="#{loginHandler.buildHandler.metal}"/></p>
 					<p>Kristall: <p:outputLabel value="#{loginHandler.buildHandler.crystal}"/></p>
 					<p>Deuterium: <p:outputLabel value="#{loginHandler.buildHandler.deut}"/></p>
 					</td>
-					<td  class="td_buildings_top_button"><h:commandButton styleClass="buildings_top_button"/></td>
+					<td  class="td_buildings_top_button">
+						<h:graphicImage class="buildings_top_button"
+								url="resources/images/button_build.jpg">
+							<p:ajax event="click" listener="#{loginHandler.buildHandler.build()}" update=":mainForm:center_body_top"/>
+						</h:graphicImage></td>
 				</tr>
 				<tr>
 					<td class="td_buildings_top_descr" colspan="2"><p:outputLabel value="#{loginHandler.buildHandler.descr}"/></td>
@@ -52,54 +56,54 @@
 				<tr>
 					<td id="buidlings_cell" >
 						<h:graphicImage style="width: 100%; height: 50%;"
-								url="resources/images/buildings/supply/00_metal_mine.jpg">
-							<p:ajax event="click" listener="#{loginHandler.buildHandler.setActive(0)}" update=":mainForm:center_body_top"/>
+								url="resources/images/buildable/1.jpg">
+							<p:ajax event="click" listener="#{loginHandler.buildHandler.setActive(1)}" update=":mainForm:center_body_top"/>
 						</h:graphicImage>
 						<p:outputLabel  styleClass="buildings_level_output" value="#{loginHandler.planetHandler.pb.metalMine}"/>
 							 
 					</td>
 					<td id="buidlings_cell">
 						<h:graphicImage style="width: 100%; height: 50%;"
-								url="resources/images/buildings/supply/01_crystal_mine.jpg">
-							<p:ajax event="click" listener="#{loginHandler.buildHandler.setActive(1)}" update=":mainForm:center_body_top"/>
+								url="resources/images/buildable/2.jpg">
+							<p:ajax event="click" listener="#{loginHandler.buildHandler.setActive(2)}" update=":mainForm:center_body_top"/>
 						</h:graphicImage>
 						<p:outputLabel  styleClass="buildings_level_output" value="#{loginHandler.planetHandler.pb.crystalMine}"/>
 					</td>
 					<td id="buidlings_cell"><h:graphicImage style="width: 100%; height: 50%;"
-								url="resources/images/buildings/supply/02_deut_synth.jpg">
-							<p:ajax event="click" listener="#{loginHandler.buildHandler.setActive(2)}" update=":mainForm:center_body_top"/>
+								url="resources/images/buildable/3.jpg">
+							<p:ajax event="click" listener="#{loginHandler.buildHandler.setActive(3)}" update=":mainForm:center_body_top"/>
 						</h:graphicImage>
 						 <p:outputLabel  styleClass="buildings_level_output" value="#{loginHandler.planetHandler.pb.crystalMine}"/>
 					</td>
 					<td id="buidlings_cell"><h:graphicImage style="width: 100%; height: 50%;"
-								url="resources/images/buildings/supply/03_solar_power_plant.jpg">
-							<p:ajax event="click" listener="#{loginHandler.buildHandler.setActive(3)}" update=":mainForm:center_body_top"/>
+								url="resources/images/buildable/4.jpg">
+							<p:ajax event="click" listener="#{loginHandler.buildHandler.setActive(4)}" update=":mainForm:center_body_top"/>
 						</h:graphicImage>
 						<p:outputLabel  styleClass="buildings_level_output" value="#{loginHandler.planetHandler.pb.solarPlant}"/>
 					</td>
 					<td id="buidlings_cell"><h:graphicImage style="width: 100%; height: 50%;"
-								url="resources/images/buildings/supply/04_fusion_reactor.jpg">
-							<p:ajax event="click" listener="#{loginHandler.buildHandler.setActive(4)}" update=":mainForm:center_body_top"/>
+								url="resources/images/buildable/5.jpg">
+							<p:ajax event="click" listener="#{loginHandler.buildHandler.setActive(5)}" update=":mainForm:center_body_top"/>
 						</h:graphicImage>
 						<p:outputLabel  styleClass="buildings_level_output" value="#{loginHandler.planetHandler.pb.fusionReactor}"/>
 					</td>
 				</tr>
 				<tr>
 					<td id="buidlings_cell"><h:graphicImage style="width: 100%; height: 50%;"
-								url="resources/images/buildings/supply/05_metal_storage.jpg">
-							<p:ajax event="click" listener="#{loginHandler.buildHandler.setActive(5)}" update=":mainForm:center_body_top"/>
+								url="resources/images/buildable/6.jpg">
+							<p:ajax event="click" listener="#{loginHandler.buildHandler.setActive(6)}" update=":mainForm:center_body_top"/>
 						</h:graphicImage>
 						<p:outputLabel  styleClass="buildings_level_output" value="#{loginHandler.planetHandler.pb.metalStorage}"/>
 					</td>
 					<td id="buidlings_cell"><h:graphicImage style="width: 100%; height: 50%;"
-								url="resources/images/buildings/supply/06_crystal_storage.jpg">
-							<p:ajax event="click" listener="#{loginHandler.buildHandler.setActive(6)}" update=":mainForm:center_body_top"/>
+								url="resources/images/buildable/7.jpg">
+							<p:ajax event="click" listener="#{loginHandler.buildHandler.setActive(7)}" update=":mainForm:center_body_top"/>
 						</h:graphicImage>
 						<p:outputLabel  styleClass="buildings_level_output" value="#{loginHandler.planetHandler.pb.crystalStorage}"/>
 					</td>
 					<td id="buidlings_cell"><h:graphicImage style="width: 100%; height: 50%;"
-								url="resources/images/buildings/supply/07_deut_storage.jpg">
-							<p:ajax event="click" listener="#{loginHandler.buildHandler.setActive(7)}" update=":mainForm:center_body_top"/>
+								url="resources/images/buildable/8.jpg">
+							<p:ajax event="click" listener="#{loginHandler.buildHandler.setActive(8)}" update=":mainForm:center_body_top"/>
 						</h:graphicImage>
 						<p:outputLabel  styleClass="buildings_level_output" value="#{loginHandler.planetHandler.pb.deutTank}"/>
 					</td>
@@ -109,6 +113,4 @@
 			</table>
 		</ui:insert>
 	</div>
-	
-	
 </ui:composition>

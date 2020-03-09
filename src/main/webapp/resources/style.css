@@ -209,6 +209,7 @@ td {
 .td_buildings_top_body{
 	height: 50%;
 	background: #15151e;
+	color: grey;
 }
 .td_buildings_top_button{
 	height: 50%;
@@ -216,16 +217,19 @@ td {
 	vertical-align: bottom;
 }
 .buildings_top_button{
-	width: 100%;
+	width: 80%;
 	height: 20%;
+	margin-right: 10px;
 }
 .td_buildings_top_descr{
 	height: 40%;
 	background: #15151e;
+	color: grey;
 }
 .td_buildings_top_rec{
 	height: 40%;
 	background: #15151e;
+	color: grey;
 }
 /*class*/
 .headerBar{
