@@ -110,6 +110,7 @@ public class LoginHandler implements Serializable{
 			query.setParameter("name", "Heimatplanet");
 			id = (int) query.getSingleResult();
 			gHandler.setSystemForTable(id);
+			gHandler.setUser(user);
 			return"/main.xhtml?faces-redirect=true";
 		}catch (NoResultException e) {
 			System.out.println("Kein User vorhanden");
@@ -227,6 +228,14 @@ public class LoginHandler implements Serializable{
 
 	public void setBuildHandler(BuildHandler buildHandler) {
 		this.buildHandler = buildHandler;
+	}
+
+	public GalaxyHandler getgHandler() {
+		return gHandler;
+	}
+
+	public void setgHandler(GalaxyHandler gHandler) {
+		this.gHandler = gHandler;
 	}
 
 	

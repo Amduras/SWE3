@@ -9,14 +9,14 @@
 	xmlns:p="http://primefaces.org/ui">
 
 	<f:event listener="#{loginHandler.checkLoggedIn}" type="preRenderView" />
-
+	
 	<p:panelGrid id="changeGrid" class="ui-noborder">
 		<f:facet name="header">
 			<p:row>
 				<p:column style="font-weight: bold;">Galaxy</p:column>
 				<p:column>
 					<h:graphicImage id="leftGalaxy"
-						url="resources/images/arrow_left.png">
+						url="resources/images/galaxies/arrow_left.png">
 						<p:ajax event="click"
 							listener="#{galaxyHandler.changeGalaxy(true)}"
 							update=":mainForm:galaxieTable :mainForm:changeGrid" />
@@ -24,11 +24,11 @@
 				</p:column>
 				<p:column>
 					<p:inputText id="galaxyInput"
-						value="#{galaxyHandler.galaxyForTable}" size="3" />
+						value="#{loginHandler.gHandler.getGalaxyForTable()}" size="3" />
 				</p:column>
 				<p:column>
 					<h:graphicImage id="rightGalaxy"
-						url="resources/images/arrow_right.png">
+						url="resources/images/galaxies/arrow_right.png">
 						<p:ajax event="click"
 							listener="#{galaxyHandler.changeGalaxy(false)}"
 							update=":mainForm:galaxieTable :mainForm:changeGrid" />
@@ -37,7 +37,7 @@
 				<p:column style="font-weight: bold;">System</p:column>
 				<p:column>
 					<h:graphicImage id="leftSystem"
-						url="resources/images/arrow_left.png">
+						url="resources/images/galaxies/arrow_left.png">
 						<p:ajax event="click"
 							listener="#{galaxyHandler.changeSystem(true)}"
 							update=":mainForm:galaxieTable :mainForm:changeGrid" />
@@ -45,11 +45,11 @@
 				</p:column>
 				<p:column>
 					<p:inputText id="systemInput"
-						value="#{galaxyHandler.systemForTable}" size="3" />
+						value="#{loginHandler.gHandler.getSystemForTable()}" size="3" />
 				</p:column>
 				<p:column>
 					<h:graphicImage id="rightSystem"
-						url="resources/images/arrow_right.png">
+						url="resources/images/galaxies/arrow_right.png">
 						<p:ajax event="click"
 							listener="#{galaxyHandler.changeSystem(false)}"
 							update=":mainForm:galaxieTable :mainForm:changeGrid" />
@@ -58,18 +58,35 @@
 			</p:row>
 		</f:facet>
 	</p:panelGrid>
-	<p:panelGrid id="galaxieTable" value="#{galaxyHandler.getPlanets()}"
-		var="planets">
-		<p:row>
-			<p:column>Position</p:column>
-			<p:column>Name</p:column>
-			<p:column>Spieler</p:column>
-			<p:column>Aktion</p:column>
-		</p:row>
-		<p:row>
-			<p:column>
-				<h:outputText value="#{planets.planetId}" />
-			</p:column>
-		</p:row>
-	</p:panelGrid>
+	<p:dataTable id="galaxieTable" value="#{galaxyHandler.planets}" var="planets"
+	rowIndexVar="rowid">
+		<p:column headerText="Position">
+			<p:outputLabel value="#{rowid+1}" />
+		</p:column>
+		<p:column headerText="Name">
+			<h:panelGroup rendered="#{galaxyHandler.existPlanet(rowid) == false}">
+				<h:graphicImage url="resources/images/galaxies/kolonisieren.png" title="Kolonisieren">
+					<p:ajax event="click" update=":mainForm:galaxieTable" listener="#{galaxyHandler.test()}"/>
+				</h:graphicImage>
+			</h:panelGroup>
+			<p:outputLabel value="#{planets.name}" rendered="#{galaxyHandler.existPlanet(rowid) == true}"/>
+		</p:column>
+		<p:column headerText="Spieler">
+			<p:outputLabel value="#{planets.getUserId()}" />
+		</p:column>
+		<p:column headerText="Aktion">
+			<h:panelGroup rendered="#{galaxyHandler.existPlanet(rowid) == false}">
+				<h:graphicImage url="resources/images/galaxies/spionage.png" title="Spionage">
+					<p:ajax event="click" update=":mainForm:galaxieTable" listener="#{galaxyHandler.spy(rowid)}"/>
+				</h:graphicImage>
+				<h:graphicImage url="resources/images/galaxies/message.png" title="Nachricht schreiben">
+					<p:ajax event="click" update=":mainForm:galaxieTable" listener="#{galaxyHandler.message(rowid)}"/>
+				</h:graphicImage>
+				<h:graphicImage url="resources/images/galaxies/angriff.png" title="Angriff">
+					<p:ajax event="click" update=":mainForm:galaxieTable" listener="#{galaxyHandler.attack(rowid)}"/>
+				</h:graphicImage>
+			</h:panelGroup>
+			<p:outputLabel value="" rendered="#{galaxyHandler.existPlanet(rowid)} == true"/>
+		</p:column>
+	</p:dataTable>
 </ui:composition>
