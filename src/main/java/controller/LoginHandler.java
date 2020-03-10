@@ -52,7 +52,7 @@ public class LoginHandler implements Serializable{
 		handler = new UserHandler(em, utx);
 		gHandler = new GalaxyHandler(em, utx);
 		planetHandler = new PlanetHandler(em, utx, gHandler);
-		buildHandler = new BuildHandler(planetHandler,em);
+		buildHandler = new BuildHandler(planetHandler,em,utx);
 		roleHandler = new RoleHandler(em, utx);
 		Query query = em.createQuery("select k from User k where k.username = :username");
 		query.setParameter("username", "admin");
