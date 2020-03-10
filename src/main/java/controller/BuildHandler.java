@@ -2,11 +2,13 @@ package controller;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
+import javax.transaction.UserTransaction;
 
 import Task.BuildTask;
 import model.Buildable;
@@ -17,6 +19,7 @@ public class BuildHandler {
 
 	private PlanetHandler planetHandler;
 	private EntityManager em;
+	private UserTransaction utx;
 	private int userId;
 	
 	private int id;
@@ -37,9 +40,10 @@ public class BuildHandler {
 	private String rec;
 	private boolean newPage;
 	
-	public BuildHandler(PlanetHandler p, EntityManager em) {
+	public BuildHandler(PlanetHandler p, EntityManager em, UserTransaction utx) {
 		this.planetHandler = p;
 		this.em = em;
+		this.utx = utx;
 		id = 1;
 		type = 0;
 		name = "alles";
@@ -103,7 +107,7 @@ public class BuildHandler {
 				System.out.println("qwerty");
 				Date d = new Date(System.currentTimeMillis()+(time*1000));
 				System.out.println("TIME Calc: " + new Timestamp(d.getTime()));
-				new BuildTask(type,d,id,userId,planetHandler.getPg().getPlanetId());
+				new BuildTask(type,d,id,userId,planetHandler.getPg().getPlanetId(),em,utx);
 			}
 		}
 		else {

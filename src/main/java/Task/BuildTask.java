@@ -20,9 +20,10 @@ import planets.Planets_Buildings;
 
 public class BuildTask implements Task, Serializable{
 	
-	@PersistenceContext
+	
+	
 	private EntityManager em;
-	@Resource
+	
 	private UserTransaction utx;
 	
 	private static final long serialVersionUID = 1L;
@@ -34,12 +35,14 @@ public class BuildTask implements Task, Serializable{
 	private int player;
 	private int planet;
 	
-	public BuildTask(int type, Date time, int upgradeId, int player, int planet) {
+	public BuildTask(int type, Date time, int upgradeId, int player, int planet, EntityManager em, UserTransaction utx) {
 		this.type = type;
 		this.time = time;
 		this.upgradeId = upgradeId;
 		this.player = player;
 		this.planet = planet;
+		this.em = em;
+		this.utx = utx;
 		
 		/** Add to queue for schedule **/
 		QHandler.queued.add(this);
