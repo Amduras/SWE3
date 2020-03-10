@@ -19,40 +19,40 @@
 					</p:menuitem>
 					<p:menuitem class="menuItem"
 						action="#{includeController.setPage('supply')}" update="center_body" render="col_center"
-						actionListener="#{loginHandler.buildHandler.setNewPage('true')}">
+						actionListener="#{loginHandler.buildHandler.setNewPage('true', 'buildings')}">
 						<i class="fa fa-gavel fa-2x" style="color: white;">Versorgung</i>
 					</p:menuitem>
 					<p:menuitem class="menuItem"
 						action="#{includeController.setPage('facility')}" update=":mainForm"
-						actionListener="#{loginHandler.buildHandler.setNewPage('true')}">
+						actionListener="#{loginHandler.buildHandler.setNewPage('true', 'buildings')}">
 						<i class="fa fa-space-shuttle fa-2x" style="color: white;">Anlagen</i>
 					</p:menuitem>
 					<p:menuitem class="menuItem"
 						action="#{includeController.setPage('research')}" update=":mainForm"
-						actionListener="#{loginHandler.buildHandler.setNewPage('true')}">
-						<i class="fa fa-rebel fa-2x" style="color: white;">Forschung</i>
+						actionListener="#{loginHandler.buildHandler.setNewPage('true', 'research')}">
+						<i class="fa fa-graduation-cap fa-2x" style="color: white;">Forschung</i>
 					</p:menuitem>
 					<p:menuitem class="menuItem"
 						action="#{includeController.setPage('shipyard')}" update=":mainForm"
-						actionListener="#{loginHandler.buildHandler.setNewPage('true')}">
-						<i class="fa fa-graduation-cap fa-2x" style="color: white;">Schiffswerft</i>
+						actionListener="#{loginHandler.buildHandler.setNewPage('true', 'ships')}">
+						<i class="fa fa-rebel fa-2x" style="color: white;">Schiffswerft</i>
 					</p:menuitem>
 					<p:menuitem class="menuItem"
 						action="#{includeController.setPage('def')}" update=":mainForm"
-						actionListener="#{loginHandler.buildHandler.setNewPage('true')}">
+						actionListener="#{loginHandler.buildHandler.setNewPage('true', 'def')}">
 						<i class="fa fa-sun-o fa-2x" style="color: white;">Verteidigung</i>
 					</p:menuitem>
 					<p:menuitem class="menuItem"
-					actionListener="#{loginHandler.buildHandler.setNewPage('true')}">
+					actionListener="#{loginHandler.buildHandler.setNewPage('true', 'str')}">
 						<i class="fa fa-sun-o fa-2x" style="color: white;">Flotte</i>
 					</p:menuitem>
 					<p:menuitem class="menuItem"
 						action="#{includeController.setPage('galaxy')}" update="center_body" render="col_center"
-						actionListener="#{loginHandler.buildHandler.setNewPage('true')}">
+						actionListener="#{loginHandler.buildHandler.setNewPage('true', 'str')}">
 						<i class="fa fa-sun-o fa-2x" style="color: white;">Galaxie</i>
 					</p:menuitem>
 					<p:menuitem class="menuItem"
-					aactionListener="#{loginHandler.buildHandler.setNewPage('true')}">
+					aactionListener="#{loginHandler.buildHandler.setNewPage('true', 'str')}">
 						<i class="fa fa-laptop fa-2x" style="color: white;">Messages</i>
 					</p:menuitem>
 					<p:submenu label="Adminbereich"

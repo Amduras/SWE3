@@ -219,7 +219,7 @@ public class PlanetHandler {
 	public void setOwnedPlanets(int ownedPlanets) {
 		this.ownedPlanets = ownedPlanets;
 	}
-	private void updateBuildings() {
+	public void updateBuildings() {
 		Query query = em.createQuery("select k from Planets_Buildings k where k.planetId = :id");
 		query.setParameter("id", pg.getPlanetId());
 		Object res = query.getSingleResult();
@@ -228,7 +228,7 @@ public class PlanetHandler {
 		else
 			pb = (Planets_Buildings)res;
 	}
-	private void updateDef() {
+	public void updateDef() {
 		Query query = em.createQuery("select k from Planets_Def k where k.planetId = :id");
 		query.setParameter("id", pg.getPlanetId());
 		Object res = query.getSingleResult();
@@ -237,7 +237,7 @@ public class PlanetHandler {
 		else
 			pd = (Planets_Def)res;
 	}
-	private void updateResearch() {
+	public void updateResearch() {
 		Query query = em.createQuery("select k from Planets_Research k where k.planetId = :id");
 		query.setParameter("id", pg.getPlanetId());
 		Object res = query.getSingleResult();
@@ -246,7 +246,7 @@ public class PlanetHandler {
 		else
 			pr = (Planets_Research)res;
 	}
-	private void updateShips() {
+	public void updateShips() {
 		Query query = em.createQuery("select k from Planets_Ships k where k.planetId = :id");
 		query.setParameter("id", pg.getPlanetId());
 		Object res = query.getSingleResult();

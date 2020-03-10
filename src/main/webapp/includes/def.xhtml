@@ -35,7 +35,7 @@
 					</td>
 					<td  class="td_buildings_top_button">
 						<h:graphicImage class="buildings_top_button"
-								url="resources/images/button_build.jpg">
+								url="resources/images/button_build.jpg" title="Bauen">
 							<p:ajax event="click" listener="#{loginHandler.buildHandler.build()}" update=":mainForm:center_body_top"/>
 						</h:graphicImage></td>
 				</tr>
@@ -54,7 +54,7 @@
 			<table id="buildings">
 			
 				<tr>
-					<td id="buildings_head" colspan="5">Verteidigungsanlagen</td>
+					<td id="buildings_head" colspan="5"><p:outputLabel value="Verteidigungsanlagen - #{loginHandler.planetHandler.pg.name}"/></td>
 				</tr>
 				<tr>
 					<td id="buidlings_cell" >
