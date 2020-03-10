@@ -44,7 +44,7 @@ public class BuildHandler {
 		this.planetHandler = p;
 		this.em = em;
 		this.utx = utx;
-		id = 1;
+		id = 0;
 		type = 0;
 		name = "alles";
 		lvl = 0;
@@ -59,7 +59,8 @@ public class BuildHandler {
 	}
 	
 	public void setActive(int id){
-		newPage=false;
+		if(id == this.id || this.id==0)
+			newPage=!newPage;
 		this.id = id;
 		Query query = em.createQuery("select k from Buildable k where k.id = :id");
 		query.setParameter("id", id);
@@ -131,11 +132,29 @@ public class BuildHandler {
 		return newPage;
 	}
 
-	public void setNewPage(String str) {
+	public void setNewPage(String str, String update) {
+		this.id = 0;
 		if(str.equals("true")) {
 			this.newPage = true;
 		} else {
 			this.newPage = false;
+		}
+		
+		switch(update) {
+		case "buildings":
+			planetHandler.updateBuildings();
+			break;
+		case "def":
+			planetHandler.updateDef();
+			break;
+		case "research":
+			planetHandler.updateResearch();
+			break;
+		case "ships":
+			planetHandler.updateShips();
+			break;
+		default: 
+			break;
 		}
 	}
 	

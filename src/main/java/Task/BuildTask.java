@@ -4,10 +4,8 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.transaction.HeuristicMixedException;
 import javax.transaction.HeuristicRollbackException;
@@ -16,6 +14,7 @@ import javax.transaction.RollbackException;
 import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 
+import controller.PlanetHandler;
 import controller.QHandler;
 import planets.Planets_Buildings;
 import planets.Planets_Def;
@@ -41,7 +40,6 @@ public class BuildTask implements Task, Serializable{
 		this.planet = planet;
 		this.em = em;
 		this.utx = utx;
-		
 		/** Add to queue for schedule **/
 		QHandler.queued.add(this);
 	}

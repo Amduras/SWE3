@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
+import javax.enterprise.event.Event;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -38,7 +39,6 @@ public class LoginHandler implements Serializable{
 	private PlanetHandler planetHandler;
 	private BuildHandler buildHandler;
 	private RoleHandler roleHandler;
-	private boolean newPage = true;
 
 
 	@PersistenceContext
@@ -78,7 +78,7 @@ public class LoginHandler implements Serializable{
 			planetHandler.createNewPlanet(user.getUserID());
 		}
 	}
-
+	
 	private void install() {
 		// name		type	baseCostMetal baseCostCrystal baseCostDeut baseCostEnergy	resFactor	energyFactor	Descr	rec
 		//type 0= building 1=tech 2=ship
