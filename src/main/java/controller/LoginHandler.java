@@ -38,6 +38,7 @@ public class LoginHandler implements Serializable{
 	private PlanetHandler planetHandler;
 	private BuildHandler buildHandler;
 	private RoleHandler roleHandler;
+	private boolean newPage = true;
 
 
 	@PersistenceContext
@@ -166,7 +167,7 @@ public class LoginHandler implements Serializable{
 			return "/login.xhtml?faces-redirect=true";
 		}
 	}
-
+	
 	public String neuerUser() {
 		Query query = em.createQuery("select k from User k where k.username = :username");
 		query.setParameter("username", username);
@@ -248,7 +249,7 @@ public class LoginHandler implements Serializable{
 		FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
 		return"/login.xhtml?faces-redirect=true";
 	}
-
+	
 	public String getUsername() {
 		return username;
 	}

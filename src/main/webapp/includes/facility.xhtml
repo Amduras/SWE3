@@ -9,20 +9,24 @@
 	xmlns:p="http://primefaces.org/ui">
 
 	<f:event listener="#{loginHandler.checkLoggedIn}" type="preRenderView" />
-	
-	
+
+
 	<h:panelGroup id="center_body_top" styleClass="center_body_top" layout="block">
+	<h:graphicImage url="resources/images/overview/facility.jpg" style="width:100%; height:100%;" rendered="#{loginHandler.buildHandler.newPage}"/>
+		<h:panelGroup styleClass="#{loginHandler.buildHandler.newPage ? 'hide' : 'show'}">
 		<ui:insert name="content">
 			<table class="table_buildings_top">
 				<tr>
-					<td rowspan="2" class="td_buildings_top_img">
-						<h:graphicImage style="width: 100%; height: 100%;"
-								url="resources/images/buildable/#{loginHandler.buildHandler.id}.jpg"/>
+					<td rowspan="2" class="td_buildings_top_img"><h:graphicImage
+							style="width: 100%; height: 100%;"
+							url="resources/images/buildable/#{loginHandler.buildHandler.id}.jpg" />
 					</td>
 					<td class="td_buildings_top_head_left"></td>
-					<td class="td_buildings_top_head_middle"><p:outputLabel value="#{loginHandler.buildHandler.name}"/></td>
-					<td class="td_buildings_top_head_right">Stufe: <p:outputLabel value="#{loginHandler.buildHandler.lvl}"/></td>
-					
+					<td class="td_buildings_top_head_middle"><p:outputLabel
+							value="#{loginHandler.buildHandler.name}" /></td>
+					<td class="td_buildings_top_head_right">Stufe: <p:outputLabel
+							value="#{loginHandler.buildHandler.lvl}" /></td>
+
 				</tr>
 				<tr>
 					<td colspan="2" class="td_buildings_top_body">
@@ -32,21 +36,25 @@
 					<p>Kristall: <p:outputLabel value="#{loginHandler.buildHandler.crystal}"/></p>
 					<p>Deuterium: <p:outputLabel value="#{loginHandler.buildHandler.deut}"/></p>
 					</td>
-					<td  class="td_buildings_top_button">
-						<h:graphicImage class="buildings_top_button"
-								url="resources/images/button_build.jpg">
-							<p:ajax event="click" listener="#{loginHandler.buildHandler.build()}" update=":mainForm:center_body_top"/>
+					<td class="td_buildings_top_button"><h:graphicImage
+							class="buildings_top_button"
+							url="resources/images/button_build.jpg">
+							<p:ajax event="click"
+								listener="#{loginHandler.buildHandler.build()}"
+								update=":mainForm:center_body_top" />
 						</h:graphicImage></td>
 				</tr>
 				<tr>
-					<td class="td_buildings_top_descr" colspan="2"><p:outputLabel value="#{loginHandler.buildHandler.descr}"/></td>
-					<td class="td_buildings_top_rec" colspan="2"><p:outputLabel value="#{loginHandler.buildHandler.rec}"/></td>
+					<td class="td_buildings_top_descr" colspan="2"><p:outputLabel
+							value="#{loginHandler.buildHandler.descr}" /></td>
+					<td class="td_buildings_top_rec" colspan="2"><p:outputLabel
+							value="#{loginHandler.buildHandler.rec}" /></td>
 				</tr>
 			</table>
 		</ui:insert>
+		</h:panelGroup>
 	</h:panelGroup>
 
-	
 	<div id="center_body_bottom">
 		<ui:insert name="content">
 			<table id="buildings">
@@ -54,52 +62,67 @@
 					<td id="buildings_head" colspan="5">Anlagen</td>
 				</tr>
 				<tr>
-					<td id="buidlings_cell" >
-						<h:graphicImage style="width: 100%; height: 50%;"
-								url="resources/images/buildable/9.jpg">
-							<p:ajax event="click" listener="#{loginHandler.buildHandler.setActive(9)}" update=":mainForm:center_body_top"/>
-						</h:graphicImage>
-						<p:outputLabel  styleClass="buildings_level_output" value="#{loginHandler.planetHandler.pb.roboticFactory}"/>							 
-					</td>
-					<td id="buidlings_cell">
-						<h:graphicImage style="width: 100%; height: 50%;"
-								url="resources/images/buildable/10.jpg">
-							<p:ajax event="click" listener="#{loginHandler.buildHandler.setActive(10)}" update=":mainForm:center_body_top"/>
-						</h:graphicImage>
-						<p:outputLabel  styleClass="buildings_level_output" value="#{loginHandler.planetHandler.pb.shipyard}"/>
-					</td>
-					<td id="buidlings_cell"><h:graphicImage style="width: 100%; height: 50%;"
-								url="resources/images/buildable/11.jpg">
-							<p:ajax event="click" listener="#{loginHandler.buildHandler.setActive(11)}" update=":mainForm:center_body_top"/>
-						</h:graphicImage>
-						 <p:outputLabel  styleClass="buildings_level_output" value="#{loginHandler.planetHandler.pb.researchlab}"/>
-					</td>
-					<td id="buidlings_cell"><h:graphicImage style="width: 100%; height: 50%;"
-								url="resources/images/buildable/12.jpg">
-							<p:ajax event="click" listener="#{loginHandler.buildHandler.setActive(12)}" update=":mainForm:center_body_top"/>
-						</h:graphicImage>
-						<p:outputLabel  styleClass="buildings_level_output" value="#{loginHandler.planetHandler.pb.alliancedepot}"/>
-					</td>
-					<td id="buidlings_cell"><h:graphicImage style="width: 100%; height: 50%;"
-								url="resources/images/buildable/13.jpg">
-							<p:ajax event="click" listener="#{loginHandler.buildHandler.setActive(13)}" update=":mainForm:center_body_top"/>
-						</h:graphicImage>
-						<p:outputLabel  styleClass="buildings_level_output" value="#{loginHandler.planetHandler.pb.missleSilo}"/>
-					</td>
+					<td id="buidlings_cell"><h:graphicImage
+							style="width: 100%; height: 50%;"
+							url="resources/images/buildable/9.jpg">
+							<p:ajax event="click"
+								listener="#{loginHandler.buildHandler.setActive(9)}"
+								update=":mainForm:center_body_top" />
+							<p:ajax event="click"
+								listener="#{loginHandler.buildHandler.setActive(9)}"
+								update=":mainForm:center_body_top" />
+						</h:graphicImage> <p:outputLabel styleClass="buildings_level_output"
+							value="#{loginHandler.planetHandler.pb.roboticFactory}" /></td>
+					<td id="buidlings_cell"><h:graphicImage
+							style="width: 100%; height: 50%;"
+							url="resources/images/buildable/10.jpg">
+							<p:ajax event="click"
+								listener="#{loginHandler.buildHandler.setActive(10)}"
+								update=":mainForm:center_body_top" />
+						</h:graphicImage> <p:outputLabel styleClass="buildings_level_output"
+							value="#{loginHandler.planetHandler.pb.shipyard}" /></td>
+					<td id="buidlings_cell"><h:graphicImage
+							style="width: 100%; height: 50%;"
+							url="resources/images/buildable/11.jpg">
+							<p:ajax event="click"
+								listener="#{loginHandler.buildHandler.setActive(11)}"
+								update=":mainForm:center_body_top" />
+						</h:graphicImage> <p:outputLabel styleClass="buildings_level_output"
+							value="#{loginHandler.planetHandler.pb.researchlab}" /></td>
+					<td id="buidlings_cell"><h:graphicImage
+							style="width: 100%; height: 50%;"
+							url="resources/images/buildable/12.jpg">
+							<p:ajax event="click"
+								listener="#{loginHandler.buildHandler.setActive(12)}"
+								update=":mainForm:center_body_top" />
+						</h:graphicImage> <p:outputLabel styleClass="buildings_level_output"
+							value="#{loginHandler.planetHandler.pb.alliancedepot}" /></td>
+					<td id="buidlings_cell"><h:graphicImage
+							style="width: 100%; height: 50%;"
+							url="resources/images/buildable/13.jpg">
+							<p:ajax event="click"
+								listener="#{loginHandler.buildHandler.setActive(13)}"
+								update=":mainForm:center_body_top" />
+						</h:graphicImage> <p:outputLabel styleClass="buildings_level_output"
+							value="#{loginHandler.planetHandler.pb.missleSilo}" /></td>
 				</tr>
 				<tr>
-					<td id="buidlings_cell"><h:graphicImage style="width: 100%; height: 50%;"
-								url="resources/images/buildable/14.jpg">
-							<p:ajax event="click" listener="#{loginHandler.buildHandler.setActive(14)}" update=":mainForm:center_body_top"/>
-						</h:graphicImage>
-						<p:outputLabel  styleClass="buildings_level_output" value="#{loginHandler.planetHandler.pb.naniteFactory}"/>
-					</td>
-					<td id="buidlings_cell"><h:graphicImage style="width: 100%; height: 50%;"
-								url="resources/images/buildable/15.jpg">
-							<p:ajax event="click" listener="#{loginHandler.buildHandler.setActive(15)}" update=":mainForm:center_body_top"/>
-						</h:graphicImage>
-						<p:outputLabel  styleClass="buildings_level_output" value="#{loginHandler.planetHandler.pb.terraformer}"/>
-					</td>
+					<td id="buidlings_cell"><h:graphicImage
+							style="width: 100%; height: 50%;"
+							url="resources/images/buildable/14.jpg">
+							<p:ajax event="click"
+								listener="#{loginHandler.buildHandler.setActive(14)}"
+								update=":mainForm:center_body_top" />
+						</h:graphicImage> <p:outputLabel styleClass="buildings_level_output"
+							value="#{loginHandler.planetHandler.pb.naniteFactory}" /></td>
+					<td id="buidlings_cell"><h:graphicImage
+							style="width: 100%; height: 50%;"
+							url="resources/images/buildable/15.jpg">
+							<p:ajax event="click"
+								listener="#{loginHandler.buildHandler.setActive(15)}"
+								update=":mainForm:center_body_top" />
+						</h:graphicImage> <p:outputLabel styleClass="buildings_level_output"
+							value="#{loginHandler.planetHandler.pb.terraformer}" /></td>
 					<td></td>
 					<td></td>
 					<td></td>

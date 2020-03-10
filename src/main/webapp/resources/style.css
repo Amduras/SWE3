@@ -308,3 +308,11 @@ color: white;
 .ui-tabs-nav.ui-helper-reset.ui-helper-clearfix.ui-widget-header.ui-corner-all{
 	background: #15151e;
 }
+
+.show {
+    display: block;
+}
+
+.hide {
+    display: none;
+}
