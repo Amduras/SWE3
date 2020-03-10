@@ -164,6 +164,7 @@ public class PlanetHandler {
 		activePlanet = ind;
 		updateDataset();
 	}
+	
 
 	public void updateRes() {
 		int m = pg.getMetal();

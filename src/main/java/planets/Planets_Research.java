@@ -9,6 +9,8 @@ import javax.persistence.MapsId;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 
+import Task.BuildTask;
+
 @SuppressWarnings("serial")
 @NamedQuery(name="SelectPlanets_Research", query="Select k from Planets_Research k")
 @Entity
@@ -32,7 +34,9 @@ public class Planets_Research implements Serializable {
 	private int armor;
 	private int weapon;
 	private int shield;
-
+	
+	private BuildTask task;
+	
 	public Planets_Research() {
 	
 	}
@@ -188,6 +192,14 @@ public class Planets_Research implements Serializable {
 
 	public void setHyperspacetech(int hyperspacetech) {
 		this.hyperspacetech = hyperspacetech;
+	}
+
+	public BuildTask getTask() {
+		return task;
+	}
+
+	public void setTask(BuildTask task) {
+		this.task = task;
 	}
 
 

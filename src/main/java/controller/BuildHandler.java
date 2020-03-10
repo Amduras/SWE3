@@ -108,7 +108,7 @@ public class BuildHandler {
 				System.out.println("qwerty");
 				Date d = new Date(System.currentTimeMillis()+(time*1000));
 				System.out.println("TIME Calc: " + new Timestamp(d.getTime()));
-				new BuildTask(type,d,id,userId,planetHandler.getPg().getPlanetId(),em,utx);
+				new BuildTask(type,d,id,planetHandler.getPg().getPlanetId(),em,utx);
 			}
 		}
 		else {

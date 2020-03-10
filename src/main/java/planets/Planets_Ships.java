@@ -1,6 +1,8 @@
 package planets;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -8,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.MapsId;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
+
+import Task.BuildTask;
 
 @SuppressWarnings("serial")
 @NamedQuery(name="SelectPlanets_Ships", query="Select k from Planets_Ships k")
@@ -33,6 +37,8 @@ public class Planets_Ships implements Serializable {
 	private int recycler;
 	private int espionageProbe;
 	private int solarSattlelite;
+	
+	private List<BuildTask> task = new ArrayList<BuildTask>();
 	
 	public Planets_Ships() {
 		
@@ -176,6 +182,14 @@ public class Planets_Ships implements Serializable {
 
 	public void setSolarSattlelite(int solarSattlelite) {
 		this.solarSattlelite = solarSattlelite;
+	}
+
+	public List<BuildTask> getTask() {
+		return task;
+	}
+
+	public void setTask(List<BuildTask> task) {
+		this.task = task;
 	}
 	
 	

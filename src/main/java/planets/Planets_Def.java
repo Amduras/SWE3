@@ -1,6 +1,8 @@
 package planets;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -8,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.MapsId;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
+
+import Task.BuildTask;
 
 @SuppressWarnings("serial")
 @NamedQuery(name="SelectPlanets_Def", query="Select k from Planets_Def k")
@@ -29,6 +33,8 @@ public class Planets_Def implements Serializable {
 	private int largeShieldDome;
 	private int antiBallisticMissle;
 	private int interplanetaryMissle;
+	
+	private List<BuildTask> task = new ArrayList<BuildTask>();
 	
 	public Planets_Def() {
 		
@@ -136,6 +142,14 @@ public class Planets_Def implements Serializable {
 
 	public void setInterplanetaryMissle(int interplanetaryMissle) {
 		this.interplanetaryMissle = interplanetaryMissle;
+	}
+
+	public List<BuildTask> getTask() {
+		return task;
+	}
+
+	public void setTask(List<BuildTask> task) {
+		this.task = task;
 	}
 	
 	
