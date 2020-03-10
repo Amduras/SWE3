@@ -17,7 +17,7 @@ public class IncludeController implements Serializable{
 	
 	@PostConstruct
 	public void init() {
-			page="start";
+			page="overview";
 	}
 
 	public String getPage() {

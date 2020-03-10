@@ -12,7 +12,15 @@
 	
 	
 	<h:panelGroup id="center_body_top" styleClass="center_body_top" layout="block">
-	<h:graphicImage url="resources/images/overview/research.jpg" style="width:100%; height:100%;" rendered="#{loginHandler.buildHandler.newPage}"/>
+		<h:panelGroup style="position:relative; width:100%; height:100%;"
+		styleClass="center_body_top #{loginHandler.buildHandler.newPage ? 'show' : 'hide'}" layout="block">
+		<h:graphicImage url="resources/images/overview/research.jpg"
+			width="100%" height="100%" />
+		<div id="imgBoxTop">
+			<p:outputLabel styleClass="imgTextLeft"
+				value="Research - #{loginHandler.planetHandler.pg.name}" />
+		</div>
+		</h:panelGroup>
 		<h:panelGroup styleClass="#{loginHandler.buildHandler.newPage ? 'hide' : 'show'}">
 		<ui:insert name="content">
 			<table class="table_buildings_top">
@@ -54,8 +62,8 @@
 		<ui:insert name="content">
 			<table id="buildings">
 				<tr>
-					<td id="buildings_head" colspan="5"><p:outputLabel value="Grundlagenforschung - #{loginHandler.planetHandler.pg.name}"/></td>
-					<td id="buildings_head" colspan="3"><p:outputLabel value="Antriebsforschung - #{loginHandler.planetHandler.pg.name}"/></td>
+					<td id="buildings_head" colspan="5">Grundlagenforschung</td>
+					<td id="buildings_head" colspan="3">Antriebsforschung</td>
 				</tr>
 				<tr>
 					<td id="buidlings_cell" >
@@ -111,8 +119,8 @@
 					</td>
 				</tr>
 				<tr>
-					<td id="buildings_head" colspan="5"><p:outputLabel value="Erweiterte Forschung - #{loginHandler.planetHandler.pg.name}"/></td>
-					<td id="buildings_head" colspan="3"><p:outputLabel value="Kampfforschung - #{loginHandler.planetHandler.pg.name}"/></td>
+					<td id="buildings_head" colspan="5">Erweiterte Forschung</td>
+					<td id="buildings_head" colspan="3">Kampfforschung</td>
 				</tr>
 				<tr>
 					<td id="buidlings_cell">
