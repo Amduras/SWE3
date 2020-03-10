@@ -1,6 +1,7 @@
 package controller;
 
-import java.util.List;
+import java.sql.Date;
+import java.sql.Timestamp;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -8,6 +9,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
+import Task.BuildTask;
 import model.Buildable;
 
 @ManagedBean(name="buildHandler")
@@ -16,12 +18,14 @@ public class BuildHandler {
 
 	private PlanetHandler planetHandler;
 	private EntityManager em;
+	private int userId;
 	
 	private int id;
 	
 	private String name;
 	private int lvl;	
 	private int count;
+	private int type;
 	
 	private long metal;
 	private long crystal;
@@ -37,6 +41,7 @@ public class BuildHandler {
 		this.planetHandler = p;
 		this.em = em;
 		id = 1;
+		type = 0;
 		name = "alles";
 		lvl = 0;
 		count = 0;
@@ -62,7 +67,8 @@ public class BuildHandler {
 				Buildable b = (Buildable)res;
 				name = b.getName();
 				lvl = idToLvl(id)+1;
-				if(b.getType() == 2) {
+				type = b.getType();
+				if(type == 2) {
 					count = idToCount(id);
 				}
 				System.out.println(b.getBaseCostCrystal()+" "+ b.getResFactor() + " "+ lvl);
@@ -70,15 +76,15 @@ public class BuildHandler {
 				crystal = (long)(b.getBaseCostCrystal() * Math.pow(b.getResFactor(), lvl));
 				deut = (long)(b.getBaseCostDeut() * Math.pow(b.getResFactor(), lvl));
 				if(id == 3) {
-					energy = (long) Math.ceil((b.getBaseCostEnergy() * lvl * Math.pow(b.getEnergyFactor(), lvl)));
+					energy = (long) -Math.ceil((b.getBaseCostEnergy() * lvl * Math.pow(b.getEnergyFactor(), lvl)));
 				}
 				else if(id == 4) {
-					energy = (long) Math.ceil((b.getBaseCostEnergy() * lvl * Math.pow(b.getEnergyFactor(), lvl)));
+					energy = (long) -Math.ceil((b.getBaseCostEnergy() * lvl * Math.pow(b.getEnergyFactor(), lvl)));
 				}
 				else {
 					energy = (long) Math.ceil((b.getBaseCostEnergy() * lvl * Math.pow(b.getEnergyFactor(), lvl)));
 				}
-				if(b.getType() == 0) {
+				if(type == 0) {
 					time = (long)Math.ceil((metal+crystal) * 36 / (25 * (1 + planetHandler.getPb().getRoboticFactory()) * Math.pow(2, planetHandler.getPb().getNaniteFactory()) * 4));
 					if(time > 100)
 						time -= 90;
@@ -92,7 +98,30 @@ public class BuildHandler {
 		}
 	}
 	public void build() {
-		System.out.println("qwerty");
+		if(planetHandler.getPb().getTask() == null) {
+			System.out.println("ayooo");
+			if(checkRes() && checkRec()) {
+				System.out.println("qwerty");
+				Date d = new Date(System.currentTimeMillis()+(time*1000));
+				System.out.println("TIME Calc: " + new Timestamp(d.getTime()));
+				new BuildTask(type,d,id,userId,planetHandler.getPg().getPlanetId());
+			}
+		}
+		else {
+			System.out.println("Es wird bereits gebaut.");
+		}
+			
+	}
+	
+	private boolean checkRes() {
+		return (planetHandler.getPg().getMetal() >= metal &&
+				planetHandler.getPg().getCrystal() >= crystal &&
+				planetHandler.getPg().getDeut() >= deut &&
+				planetHandler.getPg().getEnergy() >= energy);
+	}
+	
+	private boolean checkRec() {
+		return true;
 	}
 	/*** starting from 1 not 0 ..
 	 * 00	mm
@@ -532,6 +561,9 @@ public class BuildHandler {
 			break;
 		}
 		return res;
+	}
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
 	public String getName() {
 		return name;

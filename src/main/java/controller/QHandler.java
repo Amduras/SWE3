@@ -43,13 +43,13 @@ public class QHandler implements ServletContextListener {
 				s = factory.getScheduler();
 				s.start();
 				/** Schedule Job checking for new Task **/
-				/*s.scheduleJob(
+				s.scheduleJob(
 						newJob(SchedulingTask.class)
 							.build(),
 						newTrigger()
 							.withSchedule(SimpleScheduleBuilder.repeatSecondlyForever())
 							.startNow()
-							.build());*/
+							.build());
 				
 			} catch (SchedulerException e) {
 					e.printStackTrace();

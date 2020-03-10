@@ -1,20 +1,40 @@
 package Task;
 
+import java.io.Serializable;
 import java.util.Date;
 
-import controller.QHandler;
-import enums.JobType;
+import javax.annotation.Resource;
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.transaction.HeuristicMixedException;
+import javax.transaction.HeuristicRollbackException;
+import javax.transaction.NotSupportedException;
+import javax.transaction.RollbackException;
+import javax.transaction.SystemException;
+import javax.transaction.UserTransaction;
 
-public class BuildTask implements Task{
+import controller.QHandler;
+import planets.Planets_Buildings;
+
+public class BuildTask implements Task, Serializable{
 	
-	private JobType type = JobType.BUILD_DEF;
+	@PersistenceContext
+	private EntityManager em;
+	@Resource
+	private UserTransaction utx;
+	
+	private static final long serialVersionUID = 1L;
+	//private JobType type = JobType.BUILD_DEF;
+	private int type;
 	private Date time;
 	//private int time = 40;
 	private int upgradeId;
 	private int player;
 	private int planet;
 	
-	public BuildTask(JobType type, Date time, int upgradeId, int player, int planet) {
+	public BuildTask(int type, Date time, int upgradeId, int player, int planet) {
 		this.type = type;
 		this.time = time;
 		this.upgradeId = upgradeId;
@@ -26,7 +46,7 @@ public class BuildTask implements Task{
 	}
 	
 	@Override
-	public JobType getType() {
+	public int getType() {
 		return type;
 	}
 
@@ -37,8 +57,34 @@ public class BuildTask implements Task{
 
 	@Override
 	public void executeTask() {
-		System.out.println("EX BT " + type.getLabel());	
+		System.out.println("---------------------------> EX BT " + type);
+		Query query = em.createQuery("select k from Planets_Buildings k where k.planetId = :id");
+		query.setParameter("id", planet);
+		try {
+			Object res = query.getSingleResult();
+			Planets_Buildings b = (Planets_Buildings)res;
+			b.setSolarPlant(b.getSolarPlant()+1);
+			b.setTask(null);
+			try {
+				utx.begin();
+			} catch (NotSupportedException | SystemException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			em.merge(b);
+			try {
+				utx.commit();
+			} catch (SecurityException | IllegalStateException | RollbackException | HeuristicMixedException
+					| HeuristicRollbackException | SystemException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}		
+		} catch(NoResultException e){	
+			System.out.println("Keine Werte in DB");
+		}	
 	}
+	
 
 	@Override
 	public void writeToDB() {

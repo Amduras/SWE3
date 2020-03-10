@@ -4,6 +4,8 @@ import static org.quartz.JobBuilder.newJob;
 import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
 import static org.quartz.TriggerBuilder.newTrigger;
 
+import java.sql.Timestamp;
+
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -20,6 +22,7 @@ public class SchedulingTask implements Job {
 			Task t = QHandler.queued.poll();
 			int uId = QHandler.uniqueCounter.getAndIncrement();
 			try {
+				System.out.println("TIME RED: " + new Timestamp(t.getTime().getTime()));
 				context.getScheduler().scheduleJob(
 						newJob(OneTimeTask.class)
 							.usingJobData("o", uId)

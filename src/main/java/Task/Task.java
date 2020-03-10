@@ -6,7 +6,7 @@ import enums.JobType;
 
 public interface Task {
 
-	JobType getType();
+	int getType();
 	
 	Date getTime();
 	

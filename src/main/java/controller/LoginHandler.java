@@ -149,6 +149,7 @@ public class LoginHandler implements Serializable{
 			@SuppressWarnings("unchecked")
 			List<Planets_General> planets = query.getResultList();
 			planetHandler.init(planets);
+			buildHandler.setUserId(user.getUserID());
 			query = em.createQuery("select galaxy from Planets_General k where k.userid = :userid and name = :name");
 			query.setParameter("userid", handler.getUser().getUserID());
 			query.setParameter("name", "Heimatplanet");

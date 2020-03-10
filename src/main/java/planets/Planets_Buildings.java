@@ -9,6 +9,8 @@ import javax.persistence.MapsId;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 
+import Task.BuildTask;
+
 @SuppressWarnings("serial")
 @NamedQuery(name="SelectPlanets_Buildings", query="Select k from Planets_Buildings k")
 @Entity
@@ -39,6 +41,8 @@ public class Planets_Buildings implements Serializable {
 	private int lunarBase;
 	private int sensorPhalanx;
 	private int jumpgate;
+	
+	private BuildTask task;
 	
 	
 	
@@ -258,6 +262,14 @@ public class Planets_Buildings implements Serializable {
 
 	public void setJumpgate(int jumpgate) {
 		this.jumpgate = jumpgate;
+	}
+
+	public BuildTask getTask() {
+		return task;
+	}
+
+	public void setTask(BuildTask task) {
+		this.task = task;
 	}
 	
 	
