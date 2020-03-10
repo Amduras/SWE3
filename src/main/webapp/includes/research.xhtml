@@ -12,6 +12,8 @@
 	
 	
 	<h:panelGroup id="center_body_top" styleClass="center_body_top" layout="block">
+	<h:graphicImage url="resources/images/overview/research.jpg" style="width:100%; height:100%;" rendered="#{loginHandler.buildHandler.newPage}"/>
+		<h:panelGroup styleClass="#{loginHandler.buildHandler.newPage ? 'hide' : 'show'}">
 		<ui:insert name="content">
 			<table class="table_buildings_top">
 				<tr>
@@ -44,6 +46,7 @@
 				</tr>
 			</table>
 		</ui:insert>
+		</h:panelGroup>
 	</h:panelGroup>
 
 	

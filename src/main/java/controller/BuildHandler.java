@@ -2,7 +2,6 @@ package controller;
 
 import java.sql.Date;
 import java.sql.Timestamp;
-
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.persistence.EntityManager;
@@ -36,6 +35,7 @@ public class BuildHandler {
 	private int timeS;
 	private String descr;
 	private String rec;
+	private boolean newPage;
 	
 	public BuildHandler(PlanetHandler p, EntityManager em) {
 		this.planetHandler = p;
@@ -55,9 +55,8 @@ public class BuildHandler {
 	}
 	
 	public void setActive(int id){
-		
+		newPage=false;
 		this.id = id;
-		
 		Query query = em.createQuery("select k from Buildable k where k.id = :id");
 		query.setParameter("id", id);
 
@@ -123,6 +122,19 @@ public class BuildHandler {
 	private boolean checkRec() {
 		return true;
 	}
+	
+	public boolean isNewPage() {
+		return newPage;
+	}
+
+	public void setNewPage(String str) {
+		if(str.equals("true")) {
+			this.newPage = true;
+		} else {
+			this.newPage = false;
+		}
+	}
+	
 	/*** starting from 1 not 0 ..
 	 * 00	mm
 	 * 01	cm
