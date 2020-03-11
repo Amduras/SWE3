@@ -18,14 +18,26 @@ public class Messages implements Serializable{
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int messagesId;
 	
-	private int fromUser;
+	private String fromUser;
+	private String toUser;
 	private Date dateSend;
 	private String content;
+	private boolean read;
+	private String subject;
 	
-	Messages(){
+	public Messages(){
 		
 	}
-
+	
+	public Messages(String fromUser, String toUser, String content, String subject){
+		this.fromUser = fromUser;
+		this.toUser = toUser;
+		this.dateSend = new Date();
+		this.content = content;
+		this.read = false;
+		this.subject = subject;
+	}
+	
 	public int getMessagesId() {
 		return messagesId;
 	}
@@ -34,11 +46,11 @@ public class Messages implements Serializable{
 		this.messagesId = messagesId;
 	}
 
-	public int getFromUser() {
+	public String getFromUser() {
 		return fromUser;
 	}
 
-	public void setFromUser(int fromUser) {
+	public void setFromUser(String fromUser) {
 		this.fromUser = fromUser;
 	}
 
@@ -56,6 +68,30 @@ public class Messages implements Serializable{
 
 	public void setContent(String content) {
 		this.content = content;
+	}
+
+	public boolean isRead() {
+		return read;
+	}
+
+	public void setRead(boolean read) {
+		this.read = read;
+	}
+
+	public String getToUser() {
+		return toUser;
+	}
+
+	public void setToUser(String toUser) {
+		this.toUser = toUser;
+	}
+
+	public String getSubject() {
+		return subject;
+	}
+
+	public void setSubject(String subject) {
+		this.subject = subject;
 	}
 	
 	

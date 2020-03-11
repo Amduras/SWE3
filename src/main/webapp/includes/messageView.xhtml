@@ -1,0 +1,88 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:p="http://primefaces.org/ui">
+
+	<f:event listener="#{loginHandler.checkLoggedIn}" type="preRenderView" />
+
+
+	<h:panelGroup id="center_body_top" styleClass="center_body_top"
+		layout="block" rendered="#{loginHandler.messageHandler.message.content != null}">
+		<h:panelGrid
+			rendered="#{loginHandler.messageHandler.message.content != null}">
+			<p:row>
+				<p:column>
+					<p:outputLabel styleClass="msgTextLeft" value="Von" />
+				</p:column>
+				<p:column>
+					<p:outputLabel styleClass="msgTextRight"
+						value="#{loginHandler.messageHandler.message.fromUser}" />
+				</p:column>
+			</p:row>
+			<p:row>
+				<p:column>
+					<p:outputLabel styleClass="msgTextLeft" value="Betreff" />
+				</p:column>
+				<p:column>
+					<p:outputLabel styleClass="msgTextRight"
+						value="#{loginHandler.messageHandler.message.subject}" />
+				</p:column>
+			</p:row>
+			<p:row>
+				<p:column>
+					<p:outputLabel styleClass="msgTextLeft" value="Text" />
+				</p:column>
+			</p:row>
+			<p:row>
+				<p:column>
+					<p:outputLabel styleClass="msgTextRight"
+						value="#{loginHandler.messageHandler.message.content}" />
+				</p:column>
+			</p:row>
+		</h:panelGrid>
+	</h:panelGroup>
+
+	<h:panelGroup id="center_body_bottom" styleClass="center_body_bottom"
+		layout="block">
+		<h:panelGrid>
+			<p:row>
+				<p:column width="50">
+					<p:outputLabel style="width: 50px" styleClass="msgTextLeft" value="An:" />
+				</p:column>
+				<p:column>
+					<p:inputText value="#{loginHandler.messageHandler.newMessageUser}"
+						style="background-color: #15151e; color:white;" size="30" />
+				</p:column>
+			</p:row>
+			<p:row>
+				<p:column>
+					<p:outputLabel style="width: 50px" styleClass="msgTextLeft" value="Betreff:" />
+				</p:column>
+				<p:column>
+					<p:inputText
+						value="#{loginHandler.messageHandler.newMessageSubject}"
+						style="background-color: #15151e; color:white;" size="30" />
+				</p:column>
+			</p:row>
+		</h:panelGrid>
+
+		<h:panelGrid>
+			<p:row>
+				<p:column>
+					<p:inputTextarea
+						value="#{loginHandler.messageHandler.newMessageContent}"
+						style="background-color: #15151e; color:white; width:99%;"
+						cols="300" rows="12"/>
+				</p:column>
+			</p:row>
+		</h:panelGrid>
+		<p:commandButton value="Senden" update=":mainForm"
+		action="#{includeController.setPage('messages')}"
+		actionListener="#{loginHandler.messageHandler.submit()}" />
+	</h:panelGroup>
+</ui:composition>

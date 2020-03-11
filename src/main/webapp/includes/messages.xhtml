@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:p="http://primefaces.org/ui">
+
+	<f:event listener="#{loginHandler.checkLoggedIn}" type="preRenderView" />
+
+
+	<h:panelGroup id="center_body_top" styleClass="center_body_top" layout="block">
+		<p:dataTable id="messagesTable"
+			value="#{loginHandler.messageHandler.messages}" var="messages"
+			rowIndexVar="rowid" styleClass="userTable"
+			emptyMessage="Keine Nachrichten vorhanden" scrollable="true"
+			scrollHeight="223">
+			<f:facet name="header">Nachrichten</f:facet>
+			<p:column headerText="Betreff">
+				<p:commandLink action="#{includeController.setPage('messageView')}"
+					actionListener="#{loginHandler.messageHandler.setMessage(rowid)}"
+					value="#{messages.subject}" update=":mainForm" />
+			</p:column>
+			<p:column headerText="Von">
+				<p:outputLabel value="#{messages.fromUser}" />
+			</p:column>
+			<p:column headerText="Datum">
+				<p:outputLabel value="#{messages.dateSend}" />
+			</p:column>
+			<p:column headerText="Aktion">
+				<h:panelGroup>
+					<p:commandLink action="#{loginHandler.messageHandler.remove(rowid)}" update=":mainForm:messagesTable">
+						<i class="fa fa-remove" style="color: white;" />
+					</p:commandLink>
+				</h:panelGroup>
+			</p:column>
+		</p:dataTable>
+		<p:commandButton value="Neue Nachricht" action="#{includeController.setPage('messageView')}"
+					actionListener="#{loginHandler.messageHandler.setMessage(-1)}" update=":mainForm" />
+	</h:panelGroup>
+</ui:composition>

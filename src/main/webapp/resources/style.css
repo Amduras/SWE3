@@ -77,7 +77,6 @@ td {
 #center_head{
 	height: 40px;
 	width: 100%;
-	
 	border: 4px solid #73AD21;
 	border-style: solid solid none solid;
 	background: white;
@@ -85,6 +84,15 @@ td {
 #center_body{
 }
 #mainForm\:center_body_top{
+	width: 100%;
+  	height: 300px;
+	border: 4px solid black;
+	border-style: none solid solid solid;
+  	background: #15151e;
+  	margin-top: -12px;
+  	margin-bottom: 25px;
+}
+#mainForm\:center_body_bottom{
 	width: 100%;
   	height: 300px;
 	border: 4px solid black;
@@ -349,6 +357,20 @@ color: white;
 
 .hide {
     display: none;
+}
+
+.msgTextLeft{
+	color:white;
+	font-size:15px;
+	font-size-adjust: inherit;
+	float:left;
+}
+
+.msgTextRight{
+	color:white;
+	font-size:15px;
+	font-size-adjust: inherit;
+	float:right;
 }
 
 .imgTextLeft{

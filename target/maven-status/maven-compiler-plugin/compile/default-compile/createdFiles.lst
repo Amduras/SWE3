@@ -21,6 +21,7 @@ controller\LoginHandler.class
 planets\Planets_Def.class
 planets\Planets_General_.class
 planets\Planets_Research.class
+controller\MessageHandler.class
 model\Research_.class
 ships\Ships_Build_.class
 enums\AuthLvl.class

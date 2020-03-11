@@ -52,7 +52,7 @@
 						<i class="fa fa-sun-o fa-2x" style="color: white;">Galaxie</i>
 					</p:menuitem>
 					<p:menuitem class="menuItem"
-					aactionListener="#{loginHandler.buildHandler.setNewPage('true', 'str')}">
+					action="#{includeController.setPage('messages')}" update=":mainForm">
 						<i class="fa fa-laptop fa-2x" style="color: white;">Messages</i>
 					</p:menuitem>
 					<p:submenu label="Adminbereich"
