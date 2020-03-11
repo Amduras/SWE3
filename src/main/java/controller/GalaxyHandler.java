@@ -149,13 +149,13 @@ public class GalaxyHandler {
 		}
 	}
 
-	public int getMinGalaxy() {
+	private int getMinGalaxy() {
 		Query query = em.createQuery("select min(galaxyId) from Galaxy k");
 		int min = (int) query.getSingleResult();
 		return min;
 	}
 
-	public int getMaxGalaxy() {
+	private int getMaxGalaxy() {
 		Query query = em.createQuery("select max(galaxyId) from Galaxy k");
 		int max = (int) query.getSingleResult();
 		return max;
@@ -179,13 +179,13 @@ public class GalaxyHandler {
 		}
 	}
 
-	public int getMinSystem() {
+	private int getMinSystem() {
 		Query query = em.createQuery("select min(systemId) from Solarsystem k");
 		int min = (int) query.getSingleResult();
 		return min;
 	}
 
-	public int getMaxSystem() {
+	private int getMaxSystem() {
 		Query query = em.createQuery("select max(systemId) from Solarsystem k");
 		int max = (int) query.getSingleResult();
 		return max;
@@ -235,7 +235,7 @@ public class GalaxyHandler {
 		}
 	}
 
-	public void colonizs() {
+	public void colonize() {
 
 	}
 

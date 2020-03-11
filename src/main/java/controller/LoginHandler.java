@@ -39,6 +39,7 @@ public class LoginHandler implements Serializable{
 	private PlanetHandler planetHandler;
 	private BuildHandler buildHandler;
 	private RoleHandler roleHandler;
+	private SettingsHandler settingsHandler;
 
 
 	@PersistenceContext
@@ -54,6 +55,7 @@ public class LoginHandler implements Serializable{
 		planetHandler = new PlanetHandler(em, utx, gHandler);
 		buildHandler = new BuildHandler(planetHandler,em,utx);
 		roleHandler = new RoleHandler(em, utx);
+		settingsHandler = new SettingsHandler(em, utx, "normal", 1, 1, 193,0.1,0.1,5,10);
 		Query query = em.createQuery("select k from User k where k.username = :username");
 		query.setParameter("username", "admin");
 		@SuppressWarnings("unchecked")
@@ -306,5 +308,13 @@ public class LoginHandler implements Serializable{
 
 	public void setRoleHandler(RoleHandler roleHandler) {
 		this.roleHandler = roleHandler;
+	}
+
+	public SettingsHandler getSettingsHandler() {
+		return settingsHandler;
+	}
+
+	public void setSettingsHandler(SettingsHandler settingsHandler) {
+		this.settingsHandler = settingsHandler;
 	}
 }

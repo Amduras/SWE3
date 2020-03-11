@@ -58,7 +58,9 @@
 					<p:submenu label="Adminbereich"
 						rendered="#{loginHandler.isAdmin()}" class="menuItem"
 						style="color:white;font-size:20px;">
-						<p:menuitem class="menuItem">
+						<p:menuitem class="menuItem"
+							action="#{includeController.setPage('settings')}"
+							update=":mainForm">
 							<i class="fa fa-gears fa-2x" style="color: white;">World
 								Settings</i>
 						</p:menuitem>

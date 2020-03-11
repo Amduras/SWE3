@@ -34,7 +34,7 @@ public class Planets_Def implements Serializable {
 	private int antiBallisticMissle;
 	private int interplanetaryMissle;
 	
-	private List<BuildTask> task = new ArrayList<BuildTask>();
+//	private List<BuildTask> task = new ArrayList<BuildTask>();
 	
 	public Planets_Def() {
 		
@@ -144,13 +144,13 @@ public class Planets_Def implements Serializable {
 		this.interplanetaryMissle = interplanetaryMissle;
 	}
 
-	public List<BuildTask> getTask() {
-		return task;
-	}
-
-	public void setTask(List<BuildTask> task) {
-		this.task = task;
-	}
+//	public List<BuildTask> getTask() {
+//		return task;
+//	}
+//
+//	public void setTask(List<BuildTask> task) {
+//		this.task = task;
+//	}
 	
 	
 }
