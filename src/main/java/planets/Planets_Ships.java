@@ -38,7 +38,7 @@ public class Planets_Ships implements Serializable {
 	private int espionageProbe;
 	private int solarSattlelite;
 	
-	private List<BuildTask> task = new ArrayList<BuildTask>();
+//	private List<BuildTask> task = new ArrayList<BuildTask>();
 	
 	public Planets_Ships() {
 		
@@ -184,13 +184,13 @@ public class Planets_Ships implements Serializable {
 		this.solarSattlelite = solarSattlelite;
 	}
 
-	public List<BuildTask> getTask() {
-		return task;
-	}
-
-	public void setTask(List<BuildTask> task) {
-		this.task = task;
-	}
+//	public List<BuildTask> getTask() {
+//		return task;
+//	}
+//
+//	public void setTask(List<BuildTask> task) {
+//		this.task = task;
+//	}
 	
 	
 }

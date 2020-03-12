@@ -27,7 +27,6 @@ import planets.Planets_General;
 public class GalaxyHandler {
 
 	private EntityManager em;
-
 	private UserTransaction utx;
 
 	private int galaxyForTable;
@@ -43,7 +42,7 @@ public class GalaxyHandler {
 		this.em = em;
 		this.utx = utx;
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	public Solarsystem getFreeSystem(int galaxyId) {
 		Query query = em.createQuery("select k from Solarsystem k where k.galaxyId = :galaxyId");
@@ -149,13 +148,13 @@ public class GalaxyHandler {
 		}
 	}
 
-	public int getMinGalaxy() {
+	private int getMinGalaxy() {
 		Query query = em.createQuery("select min(galaxyId) from Galaxy k");
 		int min = (int) query.getSingleResult();
 		return min;
 	}
 
-	public int getMaxGalaxy() {
+	private int getMaxGalaxy() {
 		Query query = em.createQuery("select max(galaxyId) from Galaxy k");
 		int max = (int) query.getSingleResult();
 		return max;
@@ -179,13 +178,13 @@ public class GalaxyHandler {
 		}
 	}
 
-	public int getMinSystem() {
+	private int getMinSystem() {
 		Query query = em.createQuery("select min(systemId) from Solarsystem k");
 		int min = (int) query.getSingleResult();
 		return min;
 	}
 
-	public int getMaxSystem() {
+	private int getMaxSystem() {
 		Query query = em.createQuery("select max(systemId) from Solarsystem k");
 		int max = (int) query.getSingleResult();
 		return max;
@@ -215,7 +214,30 @@ public class GalaxyHandler {
 		}
 	}
 
-
+	public boolean ownedBy(int i) {
+		if(existPlanet(i)) {
+			if(planets.get(i).getUserId() == user.getUserID()) {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			return true;
+		}
+	}
+	
+	public String getOwner(int i) {
+		if(existPlanet(i)) {
+			int userid = planets.get(i).getUserId();
+			Query query = em.createQuery("select k from User k where k.userID = :id");
+			query.setParameter("id", userid);
+			User user = (User) query.getSingleResult();
+			return user.getUsername();
+		} else {
+			return "";
+		}
+	}
+	
 	@SuppressWarnings("unchecked")
 	public void createPlanetList() {
 		Query query = em.createQuery("select k from Planets_General k where k.solarsystem = :system and k.galaxy = :galaxy");
@@ -223,7 +245,6 @@ public class GalaxyHandler {
 		query.setParameter("galaxy", getGalaxyForTable());
 		planets = query.getResultList();
 		List<Planets_General> tmpList = new ArrayList<>();
-		Solarsystem tmpSystem = new Solarsystem();
 		for(int i = 0; i < 15; ++i) {
 			tmpList.add(null);
 		}
@@ -235,20 +256,46 @@ public class GalaxyHandler {
 		}
 	}
 
-	public void colonizs() {
-
+	public void colonize(PlanetHandler planetHandler, int userid, int rowid) {
+		System.out.println("KOLONISIEREN");
+		planetHandler.colonizePlanet(userid, rowid, getGalaxyForTable(), getSystemForTable());
+		Query query = em.createQuery("select k from Solarsystem k where k.systemId = :id");
+		query.setParameter("id", getSystemForTable());
+		Solarsystem system = (Solarsystem) query.getSingleResult();
+		system.setPlanets(system.getPlanets()-1);
+		if(rowid >=3 || rowid <= 12) {
+			system.setFreeStartpositions(system.getFreeStartpositions()-1);
+		}
+		
+		try {
+			utx.begin();
+		} catch (NotSupportedException | SystemException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		em.merge(system);
+		try {
+			utx.commit();
+		} catch (SecurityException | IllegalStateException | RollbackException | HeuristicMixedException
+				| HeuristicRollbackException | SystemException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		planetHandler.createPlanetlist();
 	}
 
 	public void spy(int position) {
 
 	}
 
-	public void message(int position) {
-
+	public void message(IncludeController includeController, MessageHandler msgHandler, int i) {
+		msgHandler.setNewMessageUser(getOwner(i));
+		includeController.setPage("messageView");
+		
 	}
 
 	public void attack(int position) {
-
+		
 	}
 
 	public List<Planets_General> getPlanets() {

@@ -24,6 +24,7 @@ import javax.transaction.UserTransaction;
 import enums.AuthLvl;
 import enums.IsActive;
 import model.Buildable;
+import model.Messages;
 import model.User;
 import planets.Planets_General;
 
@@ -39,6 +40,8 @@ public class LoginHandler implements Serializable{
 	private PlanetHandler planetHandler;
 	private BuildHandler buildHandler;
 	private RoleHandler roleHandler;
+	private SettingsHandler settingsHandler;
+	private MessageHandler messageHandler;
 
 
 	@PersistenceContext
@@ -54,6 +57,8 @@ public class LoginHandler implements Serializable{
 		planetHandler = new PlanetHandler(em, utx, gHandler);
 		buildHandler = new BuildHandler(planetHandler,em,utx);
 		roleHandler = new RoleHandler(em, utx);
+		settingsHandler = new SettingsHandler(em, utx, "Electra", 1, 1, 193, 0.1, 0.1 , 5, 10);
+		messageHandler = new MessageHandler(em, utx);
 		Query query = em.createQuery("select k from User k where k.username = :username");
 		query.setParameter("username", "admin");
 		@SuppressWarnings("unchecked")
@@ -67,6 +72,7 @@ public class LoginHandler implements Serializable{
 				e.printStackTrace();
 			}
 			install();
+			genTestMsg(user);
 			em.persist(user);
 			try {
 				utx.commit();
@@ -77,6 +83,13 @@ public class LoginHandler implements Serializable{
 			}
 			planetHandler.createNewPlanet(user.getUserID());
 		}
+	}
+	
+	private void genTestMsg(User user) {
+		em.persist(new Messages("1","admin", "Das issen Test du lappen", "Test"));
+		em.persist(new Messages("1","admin", "Das issen Test2 du lappen", "Test2"));
+		em.persist(new Messages("1","admin", "Das issen Test3 du lappen", "Test3"));
+		em.persist(new Messages("1","admin", "Das issen Test4 du lappen", "Test4"));
 	}
 	
 	private void install() {
@@ -162,7 +175,7 @@ public class LoginHandler implements Serializable{
 			id = (int) query.getSingleResult();
 			gHandler.setSystemForTable(id);
 			gHandler.setUser(user);
-			//			gHandler.createPlanetList();
+			messageHandler.setUser(user);
 			return"/main.xhtml?faces-redirect=true";
 		}catch (NoResultException e) {
 			return "/login.xhtml?faces-redirect=true";
@@ -306,5 +319,21 @@ public class LoginHandler implements Serializable{
 
 	public void setRoleHandler(RoleHandler roleHandler) {
 		this.roleHandler = roleHandler;
+	}
+
+	public SettingsHandler getSettingsHandler() {
+		return settingsHandler;
+	}
+
+	public void setSettingsHandler(SettingsHandler settingsHandler) {
+		this.settingsHandler = settingsHandler;
+	}
+
+	public MessageHandler getMessageHandler() {
+		return messageHandler;
+	}
+
+	public void setMessageHandler(MessageHandler messageHandler) {
+		this.messageHandler = messageHandler;
 	}
 }

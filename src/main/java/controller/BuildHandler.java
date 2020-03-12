@@ -59,8 +59,11 @@ public class BuildHandler {
 	}
 	
 	public void setActive(int id){
-		if(id == this.id || this.id==0)
-			newPage=!newPage;
+		if(id!=this.id) {
+			newPage = false;
+		} else {
+			newPage = !newPage;
+		}
 		this.id = id;
 		Query query = em.createQuery("select k from Buildable k where k.id = :id");
 		query.setParameter("id", id);

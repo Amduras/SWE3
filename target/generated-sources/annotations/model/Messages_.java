@@ -9,7 +9,10 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(Messages.class)
 public abstract class Messages_ {
 
-	public static volatile SingularAttribute<Messages, Integer> fromUser;
+	public static volatile SingularAttribute<Messages, String> toUser;
+	public static volatile SingularAttribute<Messages, Boolean> read;
+	public static volatile SingularAttribute<Messages, String> fromUser;
+	public static volatile SingularAttribute<Messages, String> subject;
 	public static volatile SingularAttribute<Messages, Date> dateSend;
 	public static volatile SingularAttribute<Messages, Integer> messagesId;
 	public static volatile SingularAttribute<Messages, String> content;

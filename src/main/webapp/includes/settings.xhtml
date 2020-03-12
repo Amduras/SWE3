@@ -1,0 +1,128 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:p="http://primefaces.org/ui">
+	<f:event listener="#{loginHandler.checkLoggedIn}" type="preRenderView" />
+
+
+	<h:panelGroup id="center_body_top" style="position:relative;"
+		styleClass="center_body_top" layout="block">
+		<p:panelGrid id="settingsGrid" style="width:100%; height 100%;"
+			styleClass="transparentBackground">
+			<p:row>
+				<p:column>
+					<p:outputLabel styleClass="imgTextLeft" value="Name" />
+				</p:column>
+				<p:column>
+					<p:inputText styleClass="imgTextRight"
+						value="#{loginHandler.settingsHandler.settings.name}" size="3" />
+				</p:column>
+			</p:row>
+			<p:row>
+				<p:column>
+					<p:outputLabel styleClass="imgTextLeft" value="Gamespeed" />
+				</p:column>
+				<p:column>
+					<p:inputText styleClass="imgTextRight"
+						value="#{loginHandler.settingsHandler.settings.gameSpeed}"
+						size="3" />
+				</p:column>
+				<p:column>
+					<p:outputLabel styleClass="imgTextLeft" value="x" />
+				</p:column>
+			</p:row>
+			<p:row>
+				<p:column>
+					<p:outputLabel styleClass="imgTextLeft" value="Flottenspeed" />
+				</p:column>
+				<p:column>
+					<p:inputText styleClass="imgTextRight"
+						value="#{loginHandler.settingsHandler.settings.fleetSpeed}"
+						size="3" />
+				</p:column>
+				<p:column>
+					<p:outputLabel styleClass="imgTextLeft" value="x" />
+				</p:column>
+			</p:row>
+			<p:row>
+				<p:column>
+					<p:outputLabel styleClass="imgTextLeft" value="Startplanetgröße" />
+				</p:column>
+				<p:column>
+					<p:inputText styleClass="imgTextRight"
+						value="#{loginHandler.settingsHandler.settings.startingPlanetSize}"
+						size="3" />
+				</p:column>
+				<p:column>
+					<p:outputLabel styleClass="imgTextLeft" value="Plätze" />
+				</p:column>
+			</p:row>
+			<p:row>
+				<p:column>
+					<p:outputLabel styleClass="imgTextLeft"
+						value="Flotte zu Trümmerfeld" />
+				</p:column>
+				<p:column>
+					<p:inputText styleClass="imgTextRight"
+						value="#{loginHandler.settingsHandler.settings.fleetToDebrisFieldRatio}"
+						size="3" />
+				</p:column>
+				<p:column>
+					<p:outputLabel styleClass="imgTextLeft" value="%" />
+				</p:column>
+			</p:row>
+			<p:row>
+				<p:column>
+					<p:outputLabel styleClass="imgTextLeft"
+						value="Verteidigung zu Trümerfeld" />
+				</p:column>
+				<p:column>
+					<p:inputText styleClass="imgTextRight"
+						value="#{loginHandler.settingsHandler.settings.defToDebrisFieldRatio}"
+						size="3" />
+				</p:column>
+				<p:column>
+					<p:outputLabel styleClass="imgTextLeft" value="%" />
+				</p:column>
+			</p:row>
+			<p:row>
+				<p:column>
+					<p:outputLabel styleClass="imgTextLeft" value="Jumpgate cooldown" />
+				</p:column>
+				<p:column>
+					<p:inputText styleClass="imgTextRight"
+						value="#{loginHandler.settingsHandler.settings.jumpgateCooldown}"
+						size="3" />
+				</p:column>
+				<p:column>
+					<p:outputLabel styleClass="imgTextLeft" value="Tage" />
+				</p:column>
+			</p:row>
+			<p:row>
+				<p:column>
+					<p:outputLabel styleClass="imgTextLeft" value="Anfängerschutz" />
+				</p:column>
+				<p:column>
+					<p:inputText styleClass="imgTextRight"
+						value="#{loginHandler.settingsHandler.settings.protection}"
+						size="3" />
+				</p:column>
+				<p:column>
+					<p:outputLabel styleClass="imgTextLeft" value="Tage" />
+				</p:column>
+			</p:row>
+			<p:row>
+				<p:column colspan="3">
+					<p:commandButton value="Speichern" update=":mainForm:settingsGrid :realmName"
+						action="#{loginHandler.settingsHandler.updateSettings()}"
+						style="display: block; margin: 0px auto;" />
+				</p:column>
+			</p:row>
+		</p:panelGrid>
+	</h:panelGroup>
+</ui:composition>

@@ -118,9 +118,9 @@ public class BuildTask implements Task, Serializable{
 				Object res = query.getSingleResult();
 				Planets_Ships b = (Planets_Ships)res;
 				idToFieldS(b,upgradeId);
-				List<BuildTask> tl = b.getTask();
-				tl.remove(0);
-				b.setTask(tl);
+//				List<BuildTask> tl = b.getTask();
+//				tl.remove(0);
+//				b.setTask(tl);
 				try {
 					utx.begin();
 				} catch (NotSupportedException | SystemException e) {
@@ -147,9 +147,9 @@ public class BuildTask implements Task, Serializable{
 				Object res = query.getSingleResult();
 				Planets_Def b = (Planets_Def)res;
 				idToFieldD(b,upgradeId);
-				List<BuildTask> tl = b.getTask();
-				tl.remove(0);
-				b.setTask(tl);
+//				List<BuildTask> tl = b.getTask();
+//				tl.remove(0);
+//				b.setTask(tl);
 				try {
 					utx.begin();
 				} catch (NotSupportedException | SystemException e) {

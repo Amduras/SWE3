@@ -10,7 +10,7 @@
 
 	<f:event listener="#{loginHandler.checkLoggedIn}" type="preRenderView" />
 	
-	<p:panelGrid id="changeGrid">
+	<p:panelGrid id="changeGrid" style="width:100%;">
 		<f:facet name="header">
 			<p:row>
 				<p:column style="font-weight: bold;">Galaxy</p:column>
@@ -66,21 +66,22 @@
 		<p:column headerText="Name">
 			<h:panelGroup rendered="#{loginHandler.gHandler.existPlanet(rowid) == false}">
 				<h:graphicImage url="resources/images/galaxies/kolonisieren.png" title="Kolonisieren">
-					<p:ajax event="click" update=":mainForm:galaxieTable" listener="#{loginHandler.gHandler.colonize()}"/>
+					<p:ajax event="click" update=":mainForm:galaxieTable :userPlanets" 
+					listener="#{loginHandler.gHandler.colonize(loginHandler.planetHandler, loginHandler.handler.user.userID, rowid)}"/>
 				</h:graphicImage>
 			</h:panelGroup>
 			<p:outputLabel value="#{planets.name}" rendered="#{loginHandler.gHandler.existPlanet(rowid) == true}"/>
 		</p:column>
 		<p:column headerText="Spieler">
-			<p:outputLabel value="#{planets.getUserId()}" />
+			<p:outputLabel value="#{loginHandler.gHandler.getOwner(rowid)}" />
 		</p:column>
 		<p:column headerText="Aktion">
-			<h:panelGroup rendered="#{loginHandler.gHandler.existPlanet(rowid) == false}">
+			<h:panelGroup rendered="#{loginHandler.gHandler.ownedBy(rowid) == false}">
 				<h:graphicImage url="resources/images/galaxies/spionage.png" title="Spionage">
 					<p:ajax event="click" update=":mainForm:galaxieTable" listener="#{loginHandler.gHandler.spy(rowid)}"/>
 				</h:graphicImage>
 				<h:graphicImage url="resources/images/galaxies/message.png" title="Nachricht schreiben">
-					<p:ajax event="click" update=":mainForm:galaxieTable" listener="#{loginHandler.gHandler.message(rowid)}"/>
+					<p:ajax event="click" update=":mainForm" listener="#{loginHandler.gHandler.message(includeController, loginHandler.messageHandler, rowid)}" />
 				</h:graphicImage>
 				<h:graphicImage url="resources/images/galaxies/angriff.png" title="Angriff">
 					<p:ajax event="click" update=":mainForm:galaxieTable" listener="#{loginHandler.gHandler.attack(rowid)}"/>

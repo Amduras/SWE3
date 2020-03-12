@@ -19,17 +19,18 @@
 	<div id="content">
 		<ui:insert name="content" style="margin-top: 500">
 			<div align="center">
+				<p:growl id="growl" showDetail="true" /> 
 				<p:tabView class="logintab">
 					<p:tab title="Anmelden">
 						<h:form>
 							<h:outputLabel class="loginOutput" value="Name:"/>
 							<br />
-							<h:inputText value="#{loginHandler.username}" required="true"/>
+							<h:inputText value="#{loginHandler.username}" required="true" requiredMessage="Nutzernamen eingeben"/>
 							<br />
 							<br />
 							<h:outputLabel class="loginOutput" value="Passwort:"/>
 							<br />
-							<p:inputText value="#{loginHandler.password}" required="true"/>
+							<p:inputText value="#{loginHandler.password}" required="true" requiredMessage="Passwort eingeben"/>
 							<br />
 							<br />
 							<br />
@@ -44,12 +45,12 @@
 							<br />
 							<h:outputLabel style="float:left; color:white" value="Name:" />
 							<br />
-							<h:inputText value="#{loginHandler.username}" />
+							<h:inputText value="#{loginHandler.username}" required="true" requiredMessage="Geben sie ein Namen ein"/>
 							<br />
 							<br />
 							<h:outputLabel style="float:left; color:white;" value="Passwort:" />
 							<br />
-							<p:password value="#{loginHandler.password}" />
+							<p:password value="#{loginHandler.password}" required="true" requiredMessage="Geben sie ein Passwort ein"/>
 							<br />
 							<br />
 							<br />
