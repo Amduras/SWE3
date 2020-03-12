@@ -43,7 +43,8 @@
 						<i class="fa fa-sun-o fa-2x" style="color: white;">Verteidigung</i>
 					</p:menuitem>
 					<p:menuitem class="menuItem"
-					actionListener="#{loginHandler.buildHandler.setNewPage('true', 'str')}">
+					action="#{includeController.setPage('fleet')}" update=":mainForm"
+					actionListener="#{loginHandler.buildHandler.setNewPage('true', 'fleet')}">
 						<i class="fa fa-sun-o fa-2x" style="color: white;">Flotte</i>
 					</p:menuitem>
 					<p:menuitem class="menuItem"

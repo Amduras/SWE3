@@ -207,6 +207,23 @@ td {
 	width: 20%;
 	vertical-align: bottom;
 }
+#ships_cell{
+	width: 14.28%;
+	vertical-align: bottom;
+}
+#cell{
+		width: 14.28%;
+}
+.inp{
+	width: 90%;	
+}
+.button_next{
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 10px;
+	width: 30%;
+	height: 20px;
+}
 #buidlings_cell:hover{
 	border-radius: 5px;
     -moz-border-radius: 5px;

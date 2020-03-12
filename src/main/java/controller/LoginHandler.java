@@ -42,6 +42,7 @@ public class LoginHandler implements Serializable{
 	private RoleHandler roleHandler;
 	private SettingsHandler settingsHandler;
 	private MessageHandler messageHandler;
+	private FleetHandler fleetHandler;
 
 
 	@PersistenceContext
@@ -56,6 +57,7 @@ public class LoginHandler implements Serializable{
 		gHandler = new GalaxyHandler(em, utx);
 		planetHandler = new PlanetHandler(em, utx, gHandler);
 		buildHandler = new BuildHandler(planetHandler,em,utx);
+		setFleetHandler(new FleetHandler(planetHandler,em,utx));
 		roleHandler = new RoleHandler(em, utx);
 		settingsHandler = new SettingsHandler(em, utx, "Electra", 1, 1, 193, 0.1, 0.1 , 5, 10);
 		messageHandler = new MessageHandler(em, utx);
@@ -335,5 +337,13 @@ public class LoginHandler implements Serializable{
 
 	public void setMessageHandler(MessageHandler messageHandler) {
 		this.messageHandler = messageHandler;
+	}
+
+	public FleetHandler getFleetHandler() {
+		return fleetHandler;
+	}
+
+	public void setFleetHandler(FleetHandler fleetHandler) {
+		this.fleetHandler = fleetHandler;
 	}
 }
