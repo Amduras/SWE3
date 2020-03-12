@@ -102,6 +102,9 @@ public class MessageHandler implements Serializable{
 		} else {
 			this.message = new Messages();
 			this.message.setContent(null);
+			this.newMessageUser = null;
+			this.newMessageSubject = null;
+			this.newMessageContent = null;
 		}
 	}
 	

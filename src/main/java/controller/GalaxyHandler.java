@@ -256,8 +256,32 @@ public class GalaxyHandler {
 		}
 	}
 
-	public void colonize() {
-
+	public void colonize(PlanetHandler planetHandler, int userid, int rowid) {
+		System.out.println("KOLONISIEREN");
+		planetHandler.colonizePlanet(userid, rowid, getGalaxyForTable(), getSystemForTable());
+		Query query = em.createQuery("select k from Solarsystem k where k.systemId = :id");
+		query.setParameter("id", getSystemForTable());
+		Solarsystem system = (Solarsystem) query.getSingleResult();
+		system.setPlanets(system.getPlanets()-1);
+		if(rowid >=3 || rowid <= 12) {
+			system.setFreeStartpositions(system.getFreeStartpositions()-1);
+		}
+		
+		try {
+			utx.begin();
+		} catch (NotSupportedException | SystemException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		em.merge(system);
+		try {
+			utx.commit();
+		} catch (SecurityException | IllegalStateException | RollbackException | HeuristicMixedException
+				| HeuristicRollbackException | SystemException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		planetHandler.createPlanetlist();
 	}
 
 	public void spy(int position) {

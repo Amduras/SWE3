@@ -12,116 +12,117 @@
 
 	<h:panelGroup id="center_body_top" style="position:relative;"
 		styleClass="center_body_top" layout="block">
-			<p:panelGrid id="settingsGrid" style="width:100%; height 100%;" styleClass="transparentBackground">
-				<p:row>
-				<p:column colspan="3">
-					<h:graphicImage id="leftGalaxy"
-						url="resources/images/galaxies/arrow_left.png">
-						<p:ajax event="click"
-							listener="#{loginHandler.settingsHandler.changeSettings(true)}"
-							update=":mainForm:settingsGrid" />
-					</h:graphicImage>
-					<p:inputText id="galaxyInput"
+		<p:panelGrid id="settingsGrid" style="width:100%; height 100%;"
+			styleClass="transparentBackground">
+			<p:row>
+				<p:column>
+					<p:outputLabel styleClass="imgTextLeft" value="Name" />
+				</p:column>
+				<p:column>
+					<p:inputText styleClass="imgTextRight"
 						value="#{loginHandler.settingsHandler.settings.name}" size="3" />
-					<h:graphicImage id="rightGalaxy"
-						url="resources/images/galaxies/arrow_right.png">
-						<p:ajax event="click"
-							listener="#{loginHandler.settingsHandler.changeSettings(false)}"
-							update=":mainForm:settingsGrid" />
-					</h:graphicImage>
 				</p:column>
-				</p:row>
-				<p:row>
+			</p:row>
+			<p:row>
 				<p:column>
-					<p:outputLabel styleClass="imgTextLeft" value="Gamespeed"/>
+					<p:outputLabel styleClass="imgTextLeft" value="Gamespeed" />
 				</p:column>
 				<p:column>
 					<p:inputText styleClass="imgTextRight"
-						value="#{loginHandler.settingsHandler.settings.gameSpeed}" size="3" />
+						value="#{loginHandler.settingsHandler.settings.gameSpeed}"
+						size="3" />
 				</p:column>
 				<p:column>
-					<p:outputLabel styleClass="imgTextLeft" value="x"/>
+					<p:outputLabel styleClass="imgTextLeft" value="x" />
 				</p:column>
-				</p:row>
-				<p:row>
+			</p:row>
+			<p:row>
 				<p:column>
-					<p:outputLabel styleClass="imgTextLeft" value="Flottenspeed"/>
-					</p:column>
+					<p:outputLabel styleClass="imgTextLeft" value="Flottenspeed" />
+				</p:column>
 				<p:column>
 					<p:inputText styleClass="imgTextRight"
-						value="#{loginHandler.settingsHandler.settings.fleetSpeed}" size="3" />
+						value="#{loginHandler.settingsHandler.settings.fleetSpeed}"
+						size="3" />
 				</p:column>
 				<p:column>
-					<p:outputLabel styleClass="imgTextLeft" value="x"/>
+					<p:outputLabel styleClass="imgTextLeft" value="x" />
 				</p:column>
-				</p:row>
-				<p:row>
+			</p:row>
+			<p:row>
 				<p:column>
-					<p:outputLabel styleClass="imgTextLeft" value="Startplanetgröße"/>
-					</p:column>
+					<p:outputLabel styleClass="imgTextLeft" value="Startplanetgröße" />
+				</p:column>
 				<p:column>
 					<p:inputText styleClass="imgTextRight"
-						value="#{loginHandler.settingsHandler.settings.startingPlanetSize}" size="3" />
+						value="#{loginHandler.settingsHandler.settings.startingPlanetSize}"
+						size="3" />
 				</p:column>
 				<p:column>
-					<p:outputLabel styleClass="imgTextLeft" value="Plätze"/>
+					<p:outputLabel styleClass="imgTextLeft" value="Plätze" />
 				</p:column>
-				</p:row>
-				<p:row>
+			</p:row>
+			<p:row>
 				<p:column>
-					<p:outputLabel styleClass="imgTextLeft" value="Flotte zu Trümmerfeld"/>
-					</p:column>
+					<p:outputLabel styleClass="imgTextLeft"
+						value="Flotte zu Trümmerfeld" />
+				</p:column>
 				<p:column>
 					<p:inputText styleClass="imgTextRight"
-						value="#{loginHandler.settingsHandler.settings.fleetToDebrisFieldRatio}" size="3" />
+						value="#{loginHandler.settingsHandler.settings.fleetToDebrisFieldRatio}"
+						size="3" />
 				</p:column>
 				<p:column>
-					<p:outputLabel styleClass="imgTextLeft" value="%"/>
+					<p:outputLabel styleClass="imgTextLeft" value="%" />
 				</p:column>
-				</p:row>
-				<p:row>
+			</p:row>
+			<p:row>
 				<p:column>
-					<p:outputLabel styleClass="imgTextLeft" value="Verteidigung zu Trümerfeld"/>
-					</p:column>
+					<p:outputLabel styleClass="imgTextLeft"
+						value="Verteidigung zu Trümerfeld" />
+				</p:column>
 				<p:column>
 					<p:inputText styleClass="imgTextRight"
-						value="#{loginHandler.settingsHandler.settings.defToDebrisFieldRatio}" size="3" />
+						value="#{loginHandler.settingsHandler.settings.defToDebrisFieldRatio}"
+						size="3" />
 				</p:column>
 				<p:column>
-					<p:outputLabel styleClass="imgTextLeft" value="%"/>
+					<p:outputLabel styleClass="imgTextLeft" value="%" />
 				</p:column>
-				</p:row>
-				<p:row>
+			</p:row>
+			<p:row>
 				<p:column>
-					<p:outputLabel styleClass="imgTextLeft" value="Jumpgate cooldown"/>
-					</p:column>
+					<p:outputLabel styleClass="imgTextLeft" value="Jumpgate cooldown" />
+				</p:column>
 				<p:column>
 					<p:inputText styleClass="imgTextRight"
-						value="#{loginHandler.settingsHandler.settings.jumpgateCooldown}" size="3" />
+						value="#{loginHandler.settingsHandler.settings.jumpgateCooldown}"
+						size="3" />
 				</p:column>
 				<p:column>
-					<p:outputLabel styleClass="imgTextLeft" value="Tage"/>
+					<p:outputLabel styleClass="imgTextLeft" value="Tage" />
 				</p:column>
-				</p:row>
-				<p:row>
+			</p:row>
+			<p:row>
 				<p:column>
-					<p:outputLabel styleClass="imgTextLeft" value="Anfängerschutz"/>
-					</p:column>
+					<p:outputLabel styleClass="imgTextLeft" value="Anfängerschutz" />
+				</p:column>
 				<p:column>
 					<p:inputText styleClass="imgTextRight"
-						value="#{loginHandler.settingsHandler.settings.protection}" size="3" />
+						value="#{loginHandler.settingsHandler.settings.protection}"
+						size="3" />
 				</p:column>
 				<p:column>
-					<p:outputLabel styleClass="imgTextLeft" value="Tage"/>
+					<p:outputLabel styleClass="imgTextLeft" value="Tage" />
 				</p:column>
-				</p:row>
-				<p:row>
-					<p:column colspan="3">
-						<p:commandButton value="Speichern" update=":mainForm:settingsGrid" 
+			</p:row>
+			<p:row>
+				<p:column colspan="3">
+					<p:commandButton value="Speichern" update=":mainForm:settingsGrid :realmName"
 						action="#{loginHandler.settingsHandler.updateSettings()}"
-						style="display: block; margin: 0px auto;"/>
-					</p:column>
-				</p:row>
-			</p:panelGrid>
+						style="display: block; margin: 0px auto;" />
+				</p:column>
+			</p:row>
+		</p:panelGrid>
 	</h:panelGroup>
 </ui:composition>

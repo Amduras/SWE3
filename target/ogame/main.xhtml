@@ -20,19 +20,19 @@
 	<h:panelGroup layout="block" id="header">
 		<ui:include src="includes/mainHeader.xhtml" />
 		<p:commandLink action="#{loginHandler.logout()}"
-			style="float: right; color: white;"/>
+			style="float: right; color: white;" />
 	</h:panelGroup>
-	
+
 	<div id="content">
 		<div id="col_Left" class="col">
 			<ui:include src="includes/mainMenu.xhtml" />
 		</div>
 		<h:panelGroup id="col_center" class="col">
-		
+
 			<h:panelGroup id="center_head" layout="block"></h:panelGroup>
 			<h:panelGroup id="center_body">
-				<h:form id="mainForm">	
-			 		<ui:include src="includes/#{includeController.page}.xhtml" />
+				<h:form id="mainForm">
+					<ui:include src="includes/#{includeController.page}.xhtml" />
 				</h:form>
 			</h:panelGroup>
 			<h:panelGroup id="center_footer">
@@ -40,7 +40,7 @@
 				<h:panelGroup id="tech_queue" class="col2"></h:panelGroup>
 				<h:panelGroup id="ship_queue" class="col2"></h:panelGroup>
 			</h:panelGroup>
-			
+
 		</h:panelGroup>
 		<div id="col_right" class="col">
 			<h:panelGroup id="planets">
@@ -48,11 +48,11 @@
 			</h:panelGroup>
 		</div>
 	</div>
-	
+
 	<div id="footer">
 		<ui:insert name="footer">
 		</ui:insert>
 	</div>
-	
+
 </h:body>
 </html>

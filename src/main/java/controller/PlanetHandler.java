@@ -41,7 +41,7 @@ public class PlanetHandler {
 	private Planets_Research pr;
 	private Planets_Ships ps;
 	private GalaxyHandler galaxyHandler;
-	
+
 	public PlanetHandler() {
 
 	}
@@ -51,11 +51,51 @@ public class PlanetHandler {
 		this.utx = utx;
 		this.galaxyHandler = galaxyHandler;
 	}
+
 	/*** Get Lists of owned planets and init active ***/
 	public void init(List<Planets_General> planets) {
 		this.planets = planets;
 		this.setOwnedPlanets(planets.size());
 		updateDataset();	
+	}
+
+	public void colonizePlanet(int userid, int position, int galaxyid, int systemid) {
+		Planets_General pgt = new Planets_General(galaxyid, systemid, position, null, 0, 0, 0, 193, 0, 500, 200, 0, 0, 0, "Kolonie",userid);
+		try {
+			utx.begin();
+		} catch (NotSupportedException | SystemException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		em.persist(pgt);
+		try {
+			utx.commit();
+		} catch (SecurityException | IllegalStateException | RollbackException | HeuristicMixedException
+				| HeuristicRollbackException | SystemException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		Planets_Buildings pbt = new Planets_Buildings(pgt.getPlanetId(), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+		Planets_Def pdt = new Planets_Def(pgt.getPlanetId(), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+		Planets_Research prt = new Planets_Research(pgt.getPlanetId(), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+		Planets_Ships pst = new Planets_Ships(pgt.getPlanetId(), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+		try {
+			utx.begin();
+		} catch (NotSupportedException | SystemException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		em.persist(pbt);
+		em.persist(pdt);
+		em.persist(prt);
+		em.persist(pst);
+		try {
+			utx.commit();
+		} catch (SecurityException | IllegalStateException | RollbackException | HeuristicMixedException
+				| HeuristicRollbackException | SystemException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public void createNewPlanet(int userID) {
@@ -160,11 +200,10 @@ public class PlanetHandler {
 
 	public void changePlanet(int ind) {
 		/** save existing dataset ? **/
-
 		activePlanet = ind;
 		updateDataset();
 	}
-	
+
 
 	public void updateRes() {
 		int m = pg.getMetal();
@@ -220,6 +259,51 @@ public class PlanetHandler {
 	public void setOwnedPlanets(int ownedPlanets) {
 		this.ownedPlanets = ownedPlanets;
 	}
+
+	public int getActivePlanet() {
+		return activePlanet;
+	}
+
+	public void setActivePlanet(int activePlanet) {
+		this.activePlanet = activePlanet;
+	}
+
+	public int getPlanetsSize() {
+		return planets.size();
+	}
+
+	public List<Planets_General> getPlanetlist() {
+		createPlanetlist();
+		return planets;
+	}
+
+	@SuppressWarnings("unchecked")
+	public void createPlanetlist() {
+		int id = planets.get(0).getUserId();
+		Query query = em.createQuery("select k from Planets_General k where k.userid = :id");
+		query.setParameter("id", id);
+		planets = query.getResultList();
+	}
+
+	public void changePlanet(boolean left, BuildHandler buildHandler){
+		if(planets.size() > 1) {
+			if(left) {
+				if(activePlanet - 1 < 0) {
+					changePlanet(planets.size()-1);
+				} else {
+					changePlanet(--activePlanet);
+				}
+			} else {
+				if(activePlanet + 1 > planets.size()-1) {
+					changePlanet(0);
+				} else {
+					changePlanet(++activePlanet);
+				}
+			}
+			buildHandler.setNewPage("true", "default");
+		}
+	}
+
 	public void updateBuildings() {
 		Query query = em.createQuery("select k from Planets_Buildings k where k.planetId = :id");
 		query.setParameter("id", pg.getPlanetId());
