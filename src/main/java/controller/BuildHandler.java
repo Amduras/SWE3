@@ -51,7 +51,7 @@ public class BuildHandler {
 		this.planetHandler = p;
 		this.em = em;
 		this.utx = utx;
-		id = 0;
+		id = 1;
 		type = 0;
 		name = "alles";
 		lvl = 0;
