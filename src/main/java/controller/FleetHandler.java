@@ -39,7 +39,7 @@ public class FleetHandler {
 	public int[] getShips() {
 		return ships;
 	}
-
+	
 	public void setShips(int[] ships) {
 		this.ships = ships;
 	}
@@ -49,4 +49,5 @@ public class FleetHandler {
 	public void setLf(UIInput lf) {
 		this.lf = lf;
 	}
+	
 }

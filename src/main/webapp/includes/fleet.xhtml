@@ -50,7 +50,7 @@
 				</tr>
 				<tr>
 					<td class="td_buildings_top_descr" colspan="2"><p:outputLabel value="#{loginHandler.buildHandler.descr}"/></td>
-					<td class="td_buildings_top_rec" colspan="2"><p:outputLabel value="#{loginHandler.buildHandler.rec}"/></td>
+					<td class="td_buildings_top_rec" colspan="2"><p:outputLabel value="#{fn:replace(loginHandler.buildHandler.rec, ':', ' ')}" escape="false" style="float:right;"/></td>
 				</tr>
 			</table>
 		</ui:insert>
@@ -112,27 +112,39 @@
 				</tr>
 				<tr>
 					<td id="ships_cell">
-						<p:inputText styleClass="inp" id="lf" onkeypress="if(event.which &lt; 48 || event.which &gt; 57) return false;" binding="#{loginHandler.fleetHandler.lf}">
-							<f:ajax listener="#{loginHandler.fleetHandler.lfm}" />
+						<p:inputText styleClass="inp" value="#{loginHandler.fleetHandler.ships[0]}">
+							<p:ajax event="change" listener="#{loginHandler.fleetHandler.next()}"/>
+						</p:inputText>					
+					</td>
+					<td id="ships_cell">
+					<p:inputText styleClass="inp" value="#{loginHandler.fleetHandler.ships[1]}">
+							<p:ajax event="change" listener="#{loginHandler.fleetHandler.next()}"/>
 						</p:inputText>
 					</td>
 					<td id="ships_cell">
-						<p:inputText styleClass="inp" onkeypress="if(event.which &lt; 48 || event.which &gt; 57) return false;" value="#{loginHandler.fleetHandler.ships[1]}"/>
+						<p:inputText styleClass="inp" value="#{loginHandler.fleetHandler.ships[2]}">
+							<p:ajax event="change" listener="#{loginHandler.fleetHandler.next()}"/>
+						</p:inputText>
 					</td>
 					<td id="ships_cell">
-						<p:inputText styleClass="inp" onkeypress="if(event.which &lt; 48 || event.which &gt; 57) return false;" value="#{loginHandler.fleetHandler.ships[2]}"/>
+						<p:inputText styleClass="inp" value="#{loginHandler.fleetHandler.ships[3]}">
+							<p:ajax event="change" listener="#{loginHandler.fleetHandler.next()}"/>
+						</p:inputText>
 					</td>
 					<td id="ships_cell">
-						<p:inputText styleClass="inp" onkeypress="if(event.which &lt; 48 || event.which &gt; 57) return false;" value="#{loginHandler.fleetHandler.ships[3]}"/>
+						<p:inputText styleClass="inp" value="#{loginHandler.fleetHandler.ships[8]}">
+							<p:ajax event="change" listener="#{loginHandler.fleetHandler.next()}"/>
+						</p:inputText>
 					</td>
 					<td id="ships_cell">
-						<p:inputText styleClass="inp" onkeypress="if(event.which &lt; 48 || event.which &gt; 57) return false;" value="#{loginHandler.fleetHandler.ships[8]}"/>
+						<p:inputText styleClass="inp" value="#{loginHandler.fleetHandler.ships[9]}">
+							<p:ajax event="change" listener="#{loginHandler.fleetHandler.next()}"/>
+						</p:inputText>
 					</td>
 					<td id="ships_cell">
-						<p:inputText styleClass="inp" onkeypress="if(event.which &lt; 48 || event.which &gt; 57) return false;" value="#{loginHandler.fleetHandler.ships[9]}"/>
-					</td>
-					<td id="ships_cell">
-						<p:inputText styleClass="inp" onkeypress="if(event.which &lt; 48 || event.which &gt; 57) return false;" value="#{loginHandler.fleetHandler.ships[10]}"/>
+						<p:inputText styleClass="inp" value="#{loginHandler.fleetHandler.ships[10]}">
+							<p:ajax event="change" listener="#{loginHandler.fleetHandler.next()}"/>
+						</p:inputText>
 					</td>
 				</tr>
 				<tr>
@@ -181,24 +193,34 @@
 				</tr>
 				<tr>
 					<td id="ships_cell">
-						<p:inputText styleClass="inp" onkeypress="if(event.which &lt; 48 || event.which &gt; 57) return false;" value="#{loginHandler.fleetHandler.ships[4]}">
-							
+						<p:inputText styleClass="inp" value="#{loginHandler.fleetHandler.ships[4]}">
+							<p:ajax event="change" listener="#{loginHandler.fleetHandler.next()}"/>
 						</p:inputText>
 					</td>
 					<td id="ships_cell">
-						<p:inputText styleClass="inp" onkeypress="if(event.which &lt; 48 || event.which &gt; 57) return false;" value="#{loginHandler.fleetHandler.ships[5]}"/>
+						<p:inputText styleClass="inp" value="#{loginHandler.fleetHandler.ships[5]}">
+							<p:ajax event="change" listener="#{loginHandler.fleetHandler.next()}"/>
+						</p:inputText>
 					</td>
 					<td id="ships_cell">
-						<p:inputText styleClass="inp" onkeypress="if(event.which &lt; 48 || event.which &gt; 57) return false;" value="#{loginHandler.fleetHandler.ships[6]}"/>
+						<p:inputText styleClass="inp" value="#{loginHandler.fleetHandler.ships[6]}">
+							<p:ajax event="change" listener="#{loginHandler.fleetHandler.next()}"/>
+						</p:inputText>
 					</td>
 					<td id="ships_cell">
-						<p:inputText styleClass="inp" onkeypress="if(event.which &lt; 48 || event.which &gt; 57) return false;" value="#{loginHandler.fleetHandler.ships[7]}"/>
+						<p:inputText styleClass="inp" value="#{loginHandler.fleetHandler.ships[7]}">
+							<p:ajax event="change" listener="#{loginHandler.fleetHandler.next()}"/>
+						</p:inputText>
 					</td>
 					<td id="ships_cell">
-						<p:inputText styleClass="inp" onkeypress="if(event.which &lt; 48 || event.which &gt; 57) return false;" value="#{loginHandler.fleetHandler.ships[11]}"/>
+						<p:inputText styleClass="inp" value="#{loginHandler.fleetHandler.ships[11]}">
+							<p:ajax event="change" listener="#{loginHandler.fleetHandler.next()}"/>
+						</p:inputText>
 					</td>
 					<td id="ships_cell">
-						<p:inputText styleClass="inp" onkeypress="if(event.which &lt; 48 || event.which &gt; 57) return false;" value="#{loginHandler.fleetHandler.ships[12]}"/>
+						<p:inputText styleClass="inp" value="#{loginHandler.fleetHandler.ships[12]}">
+							<p:ajax event="change" listener="#{loginHandler.fleetHandler.next()}"/>
+						</p:inputText>
 					</td>
 					<td id="ships_cell">
 						<h:graphicImage class="button_next"
