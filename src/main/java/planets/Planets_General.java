@@ -34,10 +34,10 @@ public class Planets_General implements Serializable {
 	private int slots;
 	private int moonSlots;
 	private int temperature;
-	private int metal = 7896;
-	private int crystal = 97896;
-	private int deut = 17896;
-	private int energy = 47896; 
+	private int metal;
+	private int crystal;
+	private int deut;
+	private int energy; 
 	private String name = "DingDong des Todes";
 	private int userid;
 

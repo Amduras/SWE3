@@ -201,6 +201,20 @@ public class PlanetHandler {
 	public void changePlanet(int ind) {
 		/** save existing dataset ? **/
 		activePlanet = ind;
+		try {
+			utx.begin();
+		} catch (NotSupportedException | SystemException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		em.merge(pg);
+		try {
+			utx.commit();
+		} catch (SecurityException | IllegalStateException | RollbackException | HeuristicMixedException
+				| HeuristicRollbackException | SystemException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		updateDataset();
 	}
 
@@ -342,7 +356,7 @@ public class PlanetHandler {
 	}
 	private void updateDataset() {
 		pg = planets.get(activePlanet);
-
+		
 		updateBuildings();
 		updateDef();
 		updateResearch();

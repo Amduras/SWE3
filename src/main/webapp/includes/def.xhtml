@@ -10,6 +10,8 @@
 
 	<f:event listener="#{loginHandler.checkLoggedIn}" type="preRenderView" />
 	
+	<p:growl id="growl" />
+		
 	 <h:panelGroup id="center_body_top" styleClass="center_body_top" layout="block">
 		<h:panelGroup style="position:relative; width:100%; height:100%;"
 		styleClass="center_body_top #{loginHandler.buildHandler.newPage ? 'show' : 'hide'}" layout="block">
@@ -44,12 +46,12 @@
 					<td  class="td_buildings_top_button">
 						<h:graphicImage class="buildings_top_button"
 								url="resources/images/button_build.jpg" title="Bauen">
-							<p:ajax event="click" listener="#{loginHandler.buildHandler.build()}" update=":mainForm:center_body_top"/>
+							<p:ajax event="click" listener="#{loginHandler.buildHandler.build()}" update=":mainForm:center_body_top :mainForm:growl"/>
 						</h:graphicImage></td>
 				</tr>
 				<tr>
 					<td class="td_buildings_top_descr" colspan="2"><p:outputLabel value="#{loginHandler.buildHandler.descr}"/></td>
-					<td class="td_buildings_top_rec" colspan="2"><p:outputLabel value="#{loginHandler.buildHandler.rec}"/></td>
+					<td class="td_buildings_top_rec" colspan="2"><p:outputLabel value="#{fn:replace(loginHandler.buildHandler.rec, ':', ' ')}" escape="false" style="float:right;"/></td>
 				</tr>
 			</table>
 		</ui:insert> 
