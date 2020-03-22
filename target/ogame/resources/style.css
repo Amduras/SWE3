@@ -229,6 +229,105 @@ td {
     -moz-border-radius: 5px;
 	outline: 2px solid orange;
 }
+.coords{
+	width: 99%;
+	margin: auto;
+	border-collapse: collapse;
+}
+th.coords {
+	width: 33.33%;
+	font-size: 20px;
+	color: blue;
+	background-image: linear-gradient(#292424, #9d9090);
+}
+.fleetInp{
+	width: 27%;
+}
+#start{
+	border-radius: 5px;
+	background: -webkit-linear-gradient(top,#0d1014 0,#0d1014 48%,#192026 100%);
+    background-image: -webkit-linear-gradient(top, rgb(13, 16, 20) 0px, rgb(13, 16, 20) 48%, rgb(25, 32, 38) 100%);
+    background-position-x: initial;
+    background-position-y: initial;
+    background-size: initial;
+    background-repeat-x: initial;
+    background-repeat-y: initial;
+    background-attachment: initial;
+    background-origin: initial;
+    background-clip: initial;
+    background-color: initial;
+}
+#destination{
+	border-radius: 5px;
+	background: -webkit-linear-gradient(top,#0d1014 0,#0d1014 48%,#192026 100%);
+    background-image: -webkit-linear-gradient(top, rgb(13, 16, 20) 0px, rgb(13, 16, 20) 48%, rgb(25, 32, 38) 100%);
+    background-position-x: initial;
+    background-position-y: initial;
+    background-size: initial;
+    background-repeat-x: initial;
+    background-repeat-y: initial;
+    background-attachment: initial;
+    background-origin: initial;
+    background-clip: initial;
+    background-color: initial;
+}
+.briefing{
+	display: inline;
+}
+.hUl{
+	width: 49%;
+	vertical-align: top;
+  	display: inline-block;
+}
+.item{
+	width: 100%;
+	text-align: center;
+}
+.fleetPname{
+	width: 100%;
+	color: orange;
+}
+.fleetCoords{
+	color: grey;	
+}
+#mission_container{
+	display: inline-block;
+	position: absolute;
+}
+.fleet_button{
+	width: 54px;
+    height: 54px;
+    position: absolute;
+    background-size: initial;
+    background-repeat-x: no-repeat;
+    background-repeat-y: no-repeat;
+    background-attachment: initial;
+    background-origin: initial;
+    background-clip: initial;
+    background-color: initial;
+    background-position: -108px 0px;
+}
+.fleet_button_kolo{
+	-webkit-clip-path: inset(0px 434px 160px 108px);
+    clip-path: inset(0px 434px 160px 108px);
+	/*background-position: -108px 0px;*/
+}
+.fleet_button_tf{
+	-webkit-clip-path: inset(0px 434px 160px 108px);
+    clip-path: inset(0px 326px 160px 216px);
+}
+.fleet_button_trans{
+	background-position: -270px 0px;
+}
+.fleet_button_stat{
+	background-position: -162px 0px;
+}
+.fleet_button_spio{
+	background-position: -324px 0px;
+}
+.fleet_button_att{
+	background-position: -432px 0px;
+}
 .buildings_level_output{
 	color: orange;
 	font-size: 18px; 

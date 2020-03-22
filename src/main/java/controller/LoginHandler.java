@@ -25,6 +25,7 @@ import enums.AuthLvl;
 import enums.IsActive;
 import model.Buildable;
 import model.Messages;
+import model.Ship;
 import model.User;
 import planets.Planets_General;
 
@@ -150,8 +151,26 @@ public class LoginHandler implements Serializable{
 		em.persist(new Buildable("Kleine Schildkuppel", 2, 10000, 10000, 0, 0, 1, 0, "Die kleine Schildkuppel umhüllt den ganzen Planeten mit einem Feld, das ungeheure Energiemengen absorbieren kann.", "Schiffswerft:1<br/>Schildtechnik:2"));
 		em.persist(new Buildable("Große Schildkuppel", 2, 50000, 50000, 0, 0, 1, 0, "Die Weiterentwicklung der kleinen Schildkuppel kann wesentlich mehr Energie einsetzen, um Angriffe abzuwehren.", "Schiffswerft:6<br/>Schildtechnik:6"));
 		em.persist(new Buildable("Abfangrakete", 2, 8000, 2000, 0, 0, 1, 0, "Abfangraketen zerstören angreifende Interplanetarraketen.", "Schiffswerft:1<br/>Raketensilo:2"));
-		em.persist(new Buildable("Interplanetarrakete", 2, 12500, 2500, 10000, 0, 1, 0, "Interplanetarraketen zerstören die gegnerische Verteidigung.", "Schiffswerft:1<br/>Raketensilo:4<br/>Impulsantrieb:1"));		
+		em.persist(new Buildable("Interplanetarrakete", 2, 12500, 2500, 10000, 0, 1, 0, "Interplanetarraketen zerstören die gegnerische Verteidigung.", "Schiffswerft:1<br/>Raketensilo:4<br/>Impulsantrieb:1"));
+
+		em.persist(new Ship(31,400,	10,50,50,12500,20,21,new int[] {1,1,6,1,1,1,1,200,1,1,1,1,1,1}));
+		em.persist(new Ship(32,1000,25,150,100,10000,75,22,new int[] {1,1,1,1,4,1,1,100,1,1,1,1,1,1}));
+		em.persist(new Ship(33,2700,50,400,800,15000,300,22,new int[] {1,1,1,1,4,1,1,33,1,1,1,1,1,1}));
+		em.persist(new Ship(34,6000,200,1000,1500,10000,500,23, new int[] {1,1,1,7,1,1,1,30,1,1,1,1,1,1}));
+		em.persist(new Ship(35,7000,400,700,750,10000,250,23,new int[] {1,1,1,1,1,1,2,15,1,1,1,1,1,1}));
+		em.persist(new Ship(36,7500,500,1000,500,9000,1000,23,new int[] {1,1,1,1,1,1,1,25,1,1,1,1,1,1}));
+		em.persist(new Ship(37,11000,500,2000,2000,5000,1000,23,new int[] {1,1,1,1,1,1,1,5,1,1,1,1,1,1}));
+		em.persist(new Ship(38,900000,50000,200000,1000000,100,1,23,new int[] {1,1,1,1,1,1,1,1,1,1,1,1,1,1}));
+		em.persist(new Ship(39,400,10,5,5000,12500,20,22,new int[] {1,3,1,1,3,1,1,250,1,1,1,1,1,1}));
+		em.persist(new Ship(40,1200,250,5,25000,7500,50,21,new int[] {1,1,1,3,1,1,1,250,1,1,1,1,1,1}));
+		em.persist(new Ship(41,3000,100,50,7500,2500,1000,22,new int[] {1,1,1,1,1,1,1,250,1,1,1,1,1,1}));
+		em.persist(new Ship(42,1600,10,1,20000,2000,1000,21,new int[] {1,1,1,1,1,1,1,250,1,1,1,1,1,1}));
+		em.persist(new Ship(43,100,1,1,5,100000000,1,21,new int[] {5,5,5,5,5,5,5,1250,5,5,5,5,1,1}));
+		em.persist(new Ship(44,200,1,1,0,0,0,21,new int[] {5,5,5,5,5,5,5,1250,5,5,5,5,1,1}));
+		
+		//planetHandler.createNewPlanet(1);
 	}
+	
 
 	public String login() {
 		Query query = em.createQuery("select k from User k where k.username = :username and k.password = :password ");

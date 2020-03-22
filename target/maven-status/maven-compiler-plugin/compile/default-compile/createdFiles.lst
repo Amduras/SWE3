@@ -6,6 +6,7 @@ model\Buildable_.class
 model\Buildings_.class
 model\Buildable.class
 model\Buildings.class
+model\Ship_.class
 ships\Ships_Tech.class
 model\Messages_.class
 controller\SettingsHandler.class
