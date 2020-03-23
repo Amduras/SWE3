@@ -299,7 +299,7 @@ public class PlanetHandler {
 		planets = query.getResultList();
 	}
 
-	public void changePlanet(boolean left, BuildHandler buildHandler){
+	public void changePlanet(boolean left, BuildHandler buildHandler, FleetHandler fleetHandler){
 		if(planets.size() > 1) {
 			if(left) {
 				if(activePlanet - 1 < 0) {
@@ -315,6 +315,7 @@ public class PlanetHandler {
 				}
 			}
 			buildHandler.setNewPage("true", "default");
+			fleetHandler.setStage(0);
 		}
 	}
 

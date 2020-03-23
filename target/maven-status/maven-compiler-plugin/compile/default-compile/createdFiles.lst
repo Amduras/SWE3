@@ -41,3 +41,4 @@ model\Solarsystem_.class
 model\Research.class
 model\Messages.class
 ships\Ships_Tech_.class
+model\Ship.class

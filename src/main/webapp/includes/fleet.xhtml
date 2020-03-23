@@ -9,57 +9,86 @@
 	xmlns:p="http://primefaces.org/ui">
 
 	<f:event listener="#{loginHandler.checkLoggedIn}" type="preRenderView" />
-	
-	
-	<h:panelGroup id="center_body_top" styleClass="center_body_top" layout="block">
+
+	<p:growl id="growl" />
+	<h:panelGroup id="center_body_top" styleClass="center_body_top"
+		layout="block">
 		<h:panelGroup style="position:relative; width:100%; height:100%;"
-		styleClass="center_body_top #{loginHandler.buildHandler.newPage ? 'show' : 'hide'}" layout="block">
-		<h:graphicImage url="resources/images/overview/shipyard.jpg"
-			width="100%" height="100%" />
-		<div id="imgBoxTop">
-			<p:outputLabel styleClass="imgTextLeft"
-				value="Schiffswerft - #{loginHandler.planetHandler.pg.name}" />
-		</div>
+			styleClass="center_body_top #{loginHandler.buildHandler.newPage ? 'show' : 'hide'}"
+			layout="block">
+			<h:graphicImage url="resources/images/overview/shipyard.jpg"
+				width="100%" height="100%" />
+			<div id="imgBoxTop">
+				<p:outputLabel styleClass="imgTextLeft"
+					value="Schiffswerft - #{loginHandler.planetHandler.pg.name}" />
+			</div>
 		</h:panelGroup>
-		<h:panelGroup styleClass="#{loginHandler.buildHandler.newPage ? 'hide' : 'show'}">
-		<ui:insert name="content">
-			<table class="table_buildings_top">
-				<tr>
-					<td rowspan="2" class="td_buildings_top_img">
-						<h:graphicImage style="width: 100%; height: 100%;"
-								url="resources/images/buildable/#{loginHandler.buildHandler.id}.jpg"/>
-					</td>
-					<td class="td_buildings_top_head_left"></td>
-					<td class="td_buildings_top_head_middle"><p:outputLabel value="#{loginHandler.buildHandler.name}"/></td>
-					<td class="td_buildings_top_head_right">Anzahl: <p:outputLabel value="#{loginHandler.buildHandler.count}"/></td>
-					
-				</tr>
-				<tr>
-					<td colspan="2" class="td_buildings_top_body">
-					<p>Produktionsdauer: <p:outputLabel value="#{loginHandler.buildHandler.timeM}"/>m <p:outputLabel value="#{loginHandler.buildHandler.timeS}"/>s</p>
-					<p>Energieverbrauch: <p:outputLabel value="#{loginHandler.buildHandler.energy}"/></p>
-					<p>Metal: <p:outputLabel value="#{loginHandler.buildHandler.metal}"/></p>
-					<p>Kristall: <p:outputLabel value="#{loginHandler.buildHandler.crystal}"/></p>
-					<p>Deuterium: <p:outputLabel value="#{loginHandler.buildHandler.deut}"/></p>
-					</td>
-					<td  class="td_buildings_top_button">
-						<h:graphicImage class="buildings_top_button"
+		<h:panelGroup
+			styleClass="#{loginHandler.buildHandler.newPage ? 'hide' : 'show'}">
+			<ui:insert name="content">
+				<table class="table_buildings_top">
+					<tr>
+						<td rowspan="2" class="td_buildings_top_img"><h:graphicImage
+								style="width: 100%; height: 100%;"
+								url="resources/images/buildable/#{loginHandler.buildHandler.id}.jpg" />
+						</td>
+						<td class="td_buildings_top_head_left"></td>
+						<td class="td_buildings_top_head_middle"><p:outputLabel
+								value="#{loginHandler.buildHandler.name}" /></td>
+						<td class="td_buildings_top_head_right">Anzahl: <p:outputLabel
+								value="#{loginHandler.buildHandler.count}" /></td>
+
+					</tr>
+					<tr>
+						<td colspan="2" class="td_buildings_top_body">
+							<p>
+								Produktionsdauer:
+								<p:outputLabel value="#{loginHandler.buildHandler.timeM}" />
+								m
+								<p:outputLabel value="#{loginHandler.buildHandler.timeS}" />
+								s
+							</p>
+							<p>
+								Energieverbrauch:
+								<p:outputLabel value="#{loginHandler.buildHandler.energy}" />
+							</p>
+							<p>
+								Metal:
+								<p:outputLabel value="#{loginHandler.buildHandler.metal}" />
+							</p>
+							<p>
+								Kristall:
+								<p:outputLabel value="#{loginHandler.buildHandler.crystal}" />
+							</p>
+							<p>
+								Deuterium:
+								<p:outputLabel value="#{loginHandler.buildHandler.deut}" />
+							</p>
+						</td>
+						<td class="td_buildings_top_button"><h:graphicImage
+								class="buildings_top_button"
 								url="resources/images/button_build.jpg" title="Bauen">
-							<p:ajax event="click" listener="#{loginHandler.buildHandler.build()}" update=":mainForm:center_body_top"/>
-						</h:graphicImage></td>
-				</tr>
-				<tr>
-					<td class="td_buildings_top_descr" colspan="2"><p:outputLabel value="#{loginHandler.buildHandler.descr}"/></td>
-					<td class="td_buildings_top_rec" colspan="2"><p:outputLabel value="#{fn:replace(loginHandler.buildHandler.rec, ':', ' ')}" escape="false" style="float:right;"/></td>
-				</tr>
-			</table>
-		</ui:insert>
+								<p:ajax event="click"
+									listener="#{loginHandler.buildHandler.build()}"
+									update=":mainForm:center_body_top" />
+							</h:graphicImage></td>
+					</tr>
+					<tr>
+						<td class="td_buildings_top_descr" colspan="2"><p:outputLabel
+								value="#{loginHandler.buildHandler.descr}" /></td>
+						<td class="td_buildings_top_rec" colspan="2"><p:outputLabel
+								value="#{fn:replace(loginHandler.buildHandler.rec, ':', ' ')}"
+								escape="false" style="float:right;" /></td>
+					</tr>
+				</table>
+			</ui:insert>
 		</h:panelGroup>
 	</h:panelGroup>
 
-	
+
 	<div id="center_body_bottom">
-		<h:panelGroup id="fleetStageZero" styleClass="#{loginHandler.fleetHandler.stage == 0 ? 'show' : 'hide'}">
+		<h:panelGroup id="fleetStageZero"
+			styleClass="#{loginHandler.fleetHandler.stage == 0 ? 'show' : 'hide'}">
 			<ui:insert name="content">
 				<table id="buildings">
 					<tr>
@@ -67,173 +96,198 @@
 						<td id="buildings_head" colspan="3">Zivile Schiffe</td>
 					</tr>
 					<tr>
-						<td id="buidlings_cell">
-							<h:graphicImage style="width: 100%; height: 50%;"
-									url="resources/images/buildable/31.jpg">
-								<p:ajax event="click" listener="#{loginHandler.buildHandler.setActive(31)}" update=":mainForm:center_body_top"/>
-							</h:graphicImage>
-							<p:outputLabel  styleClass="buildings_level_output" value="#{loginHandler.planetHandler.ps.lightFighter}"/>
-						</td>
-						<td id="buidlings_cell"><h:graphicImage style="width: 100%; height: 50%;"
-									url="resources/images/buildable/32.jpg">
-								<p:ajax event="click" listener="#{loginHandler.buildHandler.setActive(32)}" update=":mainForm:center_body_top"/>
-							</h:graphicImage>
-							 <p:outputLabel  styleClass="buildings_level_output" value="#{loginHandler.planetHandler.ps.heavyFighter}"/>
-						</td>
-						<td id="buidlings_cell"><h:graphicImage style="width: 100%; height: 50%;"
-									url="resources/images/buildable/33.jpg">
-								<p:ajax event="click" listener="#{loginHandler.buildHandler.setActive(33)}" update=":mainForm:center_body_top"/>
-							</h:graphicImage>
-							<p:outputLabel  styleClass="buildings_level_output" value="#{loginHandler.planetHandler.ps.cruiser}"/>
-						</td>
-						<td id="buidlings_cell"><h:graphicImage style="width: 100%; height: 50%;"
-									url="resources/images/buildable/34.jpg">
-								<p:ajax event="click" listener="#{loginHandler.buildHandler.setActive(34)}" update=":mainForm:center_body_top"/>
-							</h:graphicImage>
-							<p:outputLabel  styleClass="buildings_level_output" value="#{loginHandler.planetHandler.ps.battleship}"/>
-						</td>
-						<td id="buidlings_cell"><h:graphicImage style="width: 100%; height: 50%;"
-									url="resources/images/buildable/39.jpg">
-								<p:ajax event="click" listener="#{loginHandler.buildHandler.setActive(39)}" update=":mainForm:center_body_top"/>
-							</h:graphicImage>
-							<p:outputLabel  styleClass="buildings_level_output" value="#{loginHandler.planetHandler.ps.smallCargoShip}"/>
-						</td>
-						<td id="buidlings_cell"><h:graphicImage style="width: 100%; height: 50%;"
-									url="resources/images/buildable/40.jpg">
-								<p:ajax event="click" listener="#{loginHandler.buildHandler.setActive(40)}" update=":mainForm:center_body_top"/>
-							</h:graphicImage>
-							<p:outputLabel  styleClass="buildings_level_output" value="#{loginHandler.planetHandler.ps.largeCargoShip}"/>
-						</td>
-						<td id="buidlings_cell"><h:graphicImage style="width: 100%; height: 50%;"
-									url="resources/images/buildable/41.jpg">
-								<p:ajax event="click" listener="#{loginHandler.buildHandler.setActive(41)}" update=":mainForm:center_body_top"/>
-							</h:graphicImage>
-							<p:outputLabel  styleClass="buildings_level_output" value="#{loginHandler.planetHandler.ps.colonyShip}"/>
-						</td>
+						<td id="buidlings_cell"><h:graphicImage
+								style="width: 100%; height: 50%;"
+								url="resources/images/buildable/31.jpg">
+								<p:ajax event="click"
+									listener="#{loginHandler.buildHandler.setActive(31)}"
+									update=":mainForm:center_body_top" />
+							</h:graphicImage> <p:outputLabel styleClass="buildings_level_output"
+								value="#{loginHandler.planetHandler.ps.lightFighter}" /></td>
+						<td id="buidlings_cell"><h:graphicImage
+								style="width: 100%; height: 50%;"
+								url="resources/images/buildable/32.jpg">
+								<p:ajax event="click"
+									listener="#{loginHandler.buildHandler.setActive(32)}"
+									update=":mainForm:center_body_top" />
+							</h:graphicImage> <p:outputLabel styleClass="buildings_level_output"
+								value="#{loginHandler.planetHandler.ps.heavyFighter}" /></td>
+						<td id="buidlings_cell"><h:graphicImage
+								style="width: 100%; height: 50%;"
+								url="resources/images/buildable/33.jpg">
+								<p:ajax event="click"
+									listener="#{loginHandler.buildHandler.setActive(33)}"
+									update=":mainForm:center_body_top" />
+							</h:graphicImage> <p:outputLabel styleClass="buildings_level_output"
+								value="#{loginHandler.planetHandler.ps.cruiser}" /></td>
+						<td id="buidlings_cell"><h:graphicImage
+								style="width: 100%; height: 50%;"
+								url="resources/images/buildable/34.jpg">
+								<p:ajax event="click"
+									listener="#{loginHandler.buildHandler.setActive(34)}"
+									update=":mainForm:center_body_top" />
+							</h:graphicImage> <p:outputLabel styleClass="buildings_level_output"
+								value="#{loginHandler.planetHandler.ps.battleship}" /></td>
+						<td id="buidlings_cell"><h:graphicImage
+								style="width: 100%; height: 50%;"
+								url="resources/images/buildable/39.jpg">
+								<p:ajax event="click"
+									listener="#{loginHandler.buildHandler.setActive(39)}"
+									update=":mainForm:center_body_top" />
+							</h:graphicImage> <p:outputLabel styleClass="buildings_level_output"
+								value="#{loginHandler.planetHandler.ps.smallCargoShip}" /></td>
+						<td id="buidlings_cell"><h:graphicImage
+								style="width: 100%; height: 50%;"
+								url="resources/images/buildable/40.jpg">
+								<p:ajax event="click"
+									listener="#{loginHandler.buildHandler.setActive(40)}"
+									update=":mainForm:center_body_top" />
+							</h:graphicImage> <p:outputLabel styleClass="buildings_level_output"
+								value="#{loginHandler.planetHandler.ps.largeCargoShip}" /></td>
+						<td id="buidlings_cell"><h:graphicImage
+								style="width: 100%; height: 50%;"
+								url="resources/images/buildable/41.jpg">
+								<p:ajax event="click"
+									listener="#{loginHandler.buildHandler.setActive(41)}"
+									update=":mainForm:center_body_top" />
+							</h:graphicImage> <p:outputLabel styleClass="buildings_level_output"
+								value="#{loginHandler.planetHandler.ps.colonyShip}" /></td>
 					</tr>
 					<tr>
-						<td id="ships_cell">
-							<p:inputText styleClass="inp" value="#{loginHandler.fleetHandler.ships[0]}">
-								<p:ajax event="change" listener="#{loginHandler.fleetHandler.next()}"/>
-							</p:inputText>					
-						</td>
-						<td id="ships_cell">
-						<p:inputText styleClass="inp" value="#{loginHandler.fleetHandler.ships[1]}">
-								<p:ajax event="change" listener="#{loginHandler.fleetHandler.next()}"/>
-							</p:inputText>
-						</td>
-						<td id="ships_cell">
-							<p:inputText styleClass="inp" value="#{loginHandler.fleetHandler.ships[2]}">
-								<p:ajax event="change" listener="#{loginHandler.fleetHandler.next()}"/>
-							</p:inputText>
-						</td>
-						<td id="ships_cell">
-							<p:inputText styleClass="inp" value="#{loginHandler.fleetHandler.ships[3]}">
-								<p:ajax event="change" listener="#{loginHandler.fleetHandler.next()}"/>
-							</p:inputText>
-						</td>
-						<td id="ships_cell">
-							<p:inputText styleClass="inp" value="#{loginHandler.fleetHandler.ships[8]}">
-								<p:ajax event="change" listener="#{loginHandler.fleetHandler.next()}"/>
-							</p:inputText>
-						</td>
-						<td id="ships_cell">
-							<p:inputText styleClass="inp" value="#{loginHandler.fleetHandler.ships[9]}">
-								<p:ajax event="change" listener="#{loginHandler.fleetHandler.next()}"/>
-							</p:inputText>
-						</td>
-						<td id="ships_cell">
-							<p:inputText styleClass="inp" value="#{loginHandler.fleetHandler.ships[10]}">
-								<p:ajax event="change" listener="#{loginHandler.fleetHandler.next()}"/>
-							</p:inputText>
-						</td>
+						<td id="ships_cell"><p:inputText styleClass="inp"
+								value="#{loginHandler.fleetHandler.ships[0]}">
+								<p:ajax event="change"
+									listener="#{loginHandler.fleetHandler.next()}" />
+							</p:inputText></td>
+						<td id="ships_cell"><p:inputText styleClass="inp"
+								value="#{loginHandler.fleetHandler.ships[1]}">
+								<p:ajax event="change"
+									listener="#{loginHandler.fleetHandler.next()}" />
+							</p:inputText></td>
+						<td id="ships_cell"><p:inputText styleClass="inp"
+								value="#{loginHandler.fleetHandler.ships[2]}">
+								<p:ajax event="change"
+									listener="#{loginHandler.fleetHandler.next()}" />
+							</p:inputText></td>
+						<td id="ships_cell"><p:inputText styleClass="inp"
+								value="#{loginHandler.fleetHandler.ships[3]}">
+								<p:ajax event="change"
+									listener="#{loginHandler.fleetHandler.next()}" />
+							</p:inputText></td>
+						<td id="ships_cell"><p:inputText styleClass="inp"
+								value="#{loginHandler.fleetHandler.ships[8]}">
+								<p:ajax event="change"
+									listener="#{loginHandler.fleetHandler.next()}" />
+							</p:inputText></td>
+						<td id="ships_cell"><p:inputText styleClass="inp"
+								value="#{loginHandler.fleetHandler.ships[9]}">
+								<p:ajax event="change"
+									listener="#{loginHandler.fleetHandler.next()}" />
+							</p:inputText></td>
+						<td id="ships_cell"><p:inputText styleClass="inp"
+								value="#{loginHandler.fleetHandler.ships[10]}">
+								<p:ajax event="change"
+									listener="#{loginHandler.fleetHandler.next()}" />
+							</p:inputText></td>
 					</tr>
 					<tr>
 						<td id="buildings_head" colspan="4">Kampfschiffe</td>
 						<td id="buildings_head" colspan="3">Zivile Schiffe</td>
 					</tr>
 					<tr>
-						<td id="buidlings_cell"><h:graphicImage style="width: 100%; height: 50%;"
-									url="resources/images/buildable/35.jpg">
-								<p:ajax event="click" listener="#{loginHandler.buildHandler.setActive(35)}" update=":mainForm:center_body_top"/>
-							</h:graphicImage>
-							 <p:outputLabel  styleClass="buildings_level_output" value="#{loginHandler.planetHandler.ps.battlecruiser}"/>
-						</td>
-						<td id="buidlings_cell"><h:graphicImage style="width: 100%; height: 50%;"
-									url="resources/images/buildable/36.jpg">
-								<p:ajax event="click" listener="#{loginHandler.buildHandler.setActive(36)}" update=":mainForm:center_body_top"/>
-							</h:graphicImage>
-							<p:outputLabel  styleClass="buildings_level_output" value="#{loginHandler.planetHandler.ps.bomber}"/>
-						</td>
-						<td id="buidlings_cell"><h:graphicImage style="width: 100%; height: 50%;"
-									url="resources/images/buildable/37.jpg">
-								<p:ajax event="click" listener="#{loginHandler.buildHandler.setActive(37)}" update=":mainForm:center_body_top"/>
-							</h:graphicImage>
-							<p:outputLabel  styleClass="buildings_level_output" value="#{loginHandler.planetHandler.ps.destroyer}"/>
-						</td>
-						<td id="buidlings_cell"><h:graphicImage style="width: 100%; height: 50%;"
-									url="resources/images/buildable/38.jpg">
-								<p:ajax event="click" listener="#{loginHandler.buildHandler.setActive(38)}" update=":mainForm:center_body_top"/>
-							</h:graphicImage>
-							<p:outputLabel  styleClass="buildings_level_output" value="#{loginHandler.planetHandler.ps.deathStar}"/>
-						</td>
-						<td id="buidlings_cell"><h:graphicImage style="width: 100%; height: 50%;"
-									url="resources/images/buildable/42.jpg">
-								<p:ajax event="click" listener="#{loginHandler.buildHandler.setActive(42)}" update=":mainForm:center_body_top"/>
-							</h:graphicImage>
-							<p:outputLabel  styleClass="buildings_level_output" value="#{loginHandler.planetHandler.ps.recycler}"/>
-						</td>
-						<td id="buidlings_cell"><h:graphicImage style="width: 100%; height: 50%;"
-									url="resources/images/buildable/43.jpg">
-								<p:ajax event="click" listener="#{loginHandler.buildHandler.setActive(43)}" update=":mainForm:center_body_top"/>
-							</h:graphicImage>
-							<p:outputLabel  styleClass="buildings_level_output" value="#{loginHandler.planetHandler.ps.espionageProbe}"/>
-						</td>
-						<td >
-						</td>
+						<td id="buidlings_cell"><h:graphicImage
+								style="width: 100%; height: 50%;"
+								url="resources/images/buildable/35.jpg">
+								<p:ajax event="click"
+									listener="#{loginHandler.buildHandler.setActive(35)}"
+									update=":mainForm:center_body_top" />
+							</h:graphicImage> <p:outputLabel styleClass="buildings_level_output"
+								value="#{loginHandler.planetHandler.ps.battlecruiser}" /></td>
+						<td id="buidlings_cell"><h:graphicImage
+								style="width: 100%; height: 50%;"
+								url="resources/images/buildable/36.jpg">
+								<p:ajax event="click"
+									listener="#{loginHandler.buildHandler.setActive(36)}"
+									update=":mainForm:center_body_top" />
+							</h:graphicImage> <p:outputLabel styleClass="buildings_level_output"
+								value="#{loginHandler.planetHandler.ps.bomber}" /></td>
+						<td id="buidlings_cell"><h:graphicImage
+								style="width: 100%; height: 50%;"
+								url="resources/images/buildable/37.jpg">
+								<p:ajax event="click"
+									listener="#{loginHandler.buildHandler.setActive(37)}"
+									update=":mainForm:center_body_top" />
+							</h:graphicImage> <p:outputLabel styleClass="buildings_level_output"
+								value="#{loginHandler.planetHandler.ps.destroyer}" /></td>
+						<td id="buidlings_cell"><h:graphicImage
+								style="width: 100%; height: 50%;"
+								url="resources/images/buildable/38.jpg">
+								<p:ajax event="click"
+									listener="#{loginHandler.buildHandler.setActive(38)}"
+									update=":mainForm:center_body_top" />
+							</h:graphicImage> <p:outputLabel styleClass="buildings_level_output"
+								value="#{loginHandler.planetHandler.ps.deathStar}" /></td>
+						<td id="buidlings_cell"><h:graphicImage
+								style="width: 100%; height: 50%;"
+								url="resources/images/buildable/42.jpg">
+								<p:ajax event="click"
+									listener="#{loginHandler.buildHandler.setActive(42)}"
+									update=":mainForm:center_body_top" />
+							</h:graphicImage> <p:outputLabel styleClass="buildings_level_output"
+								value="#{loginHandler.planetHandler.ps.recycler}" /></td>
+						<td id="buidlings_cell"><h:graphicImage
+								style="width: 100%; height: 50%;"
+								url="resources/images/buildable/43.jpg">
+								<p:ajax event="click"
+									listener="#{loginHandler.buildHandler.setActive(43)}"
+									update=":mainForm:center_body_top" />
+							</h:graphicImage> <p:outputLabel styleClass="buildings_level_output"
+								value="#{loginHandler.planetHandler.ps.espionageProbe}" /></td>
+						<td></td>
 					</tr>
 					<tr>
-						<td id="ships_cell">
-							<p:inputText styleClass="inp" value="#{loginHandler.fleetHandler.ships[4]}">
-								<p:ajax event="change" listener="#{loginHandler.fleetHandler.next()}"/>
-							</p:inputText>
-						</td>
-						<td id="ships_cell">
-							<p:inputText styleClass="inp" value="#{loginHandler.fleetHandler.ships[5]}">
-								<p:ajax event="change" listener="#{loginHandler.fleetHandler.next()}"/>
-							</p:inputText>
-						</td>
-						<td id="ships_cell">
-							<p:inputText styleClass="inp" value="#{loginHandler.fleetHandler.ships[6]}">
-								<p:ajax event="change" listener="#{loginHandler.fleetHandler.next()}"/>
-							</p:inputText>
-						</td>
-						<td id="ships_cell">
-							<p:inputText styleClass="inp" value="#{loginHandler.fleetHandler.ships[7]}">
-								<p:ajax event="change" listener="#{loginHandler.fleetHandler.next()}"/>
-							</p:inputText>
-						</td>
-						<td id="ships_cell">
-							<p:inputText styleClass="inp" value="#{loginHandler.fleetHandler.ships[11]}">
-								<p:ajax event="change" listener="#{loginHandler.fleetHandler.next()}"/>
-							</p:inputText>
-						</td>
-						<td id="ships_cell">
-							<p:inputText styleClass="inp" value="#{loginHandler.fleetHandler.ships[12]}">
-								<p:ajax event="change" listener="#{loginHandler.fleetHandler.next()}"/>
-							</p:inputText>
-						</td>
-						<td id="ships_cell">
-							<h:graphicImage class="button_next"
-									url="resources/images/button_next_green.jpg" title="Weiter">
-								<p:ajax event="click" listener="#{loginHandler.fleetHandler.setStage(1)}" update=":mainForm"/>
-							</h:graphicImage>
-						</td>
+						<td id="ships_cell"><p:inputText styleClass="inp"
+								value="#{loginHandler.fleetHandler.ships[4]}">
+								<p:ajax event="change"
+									listener="#{loginHandler.fleetHandler.next()}" />
+							</p:inputText></td>
+						<td id="ships_cell"><p:inputText styleClass="inp"
+								value="#{loginHandler.fleetHandler.ships[5]}">
+								<p:ajax event="change"
+									listener="#{loginHandler.fleetHandler.next()}" />
+							</p:inputText></td>
+						<td id="ships_cell"><p:inputText styleClass="inp"
+								value="#{loginHandler.fleetHandler.ships[6]}">
+								<p:ajax event="change"
+									listener="#{loginHandler.fleetHandler.next()}" />
+							</p:inputText></td>
+						<td id="ships_cell"><p:inputText styleClass="inp"
+								value="#{loginHandler.fleetHandler.ships[7]}">
+								<p:ajax event="change"
+									listener="#{loginHandler.fleetHandler.next()}" />
+							</p:inputText></td>
+						<td id="ships_cell"><p:inputText styleClass="inp"
+								value="#{loginHandler.fleetHandler.ships[11]}">
+								<p:ajax event="change"
+									listener="#{loginHandler.fleetHandler.next()}" />
+							</p:inputText></td>
+						<td id="ships_cell"><p:inputText styleClass="inp"
+								value="#{loginHandler.fleetHandler.ships[12]}">
+								<p:ajax event="change"
+									listener="#{loginHandler.fleetHandler.next()}" />
+							</p:inputText></td>
+						<td id="ships_cell"><h:graphicImage class="button_next"
+								url="resources/images/button_next_green.jpg" title="Weiter">
+								<p:ajax event="click"
+									listener="#{loginHandler.fleetHandler.setStage(1)}"
+									update=":mainForm" />
+							</h:graphicImage></td>
 					</tr>
 				</table>
 			</ui:insert>
 		</h:panelGroup>
-		<h:panelGroup id="fleetStageOne" styleClass="#{loginHandler.fleetHandler.stage == 1 ? 'show' : 'hide'}">
+		<h:panelGroup id="fleetStageOne"
+			styleClass="#{loginHandler.fleetHandler.stage == 1 ? 'show' : 'hide'}">
 			<ui:insert name="content">
 				<table class="coords">
 					<tr>
@@ -243,34 +297,62 @@
 					</tr>
 					<tr>
 						<td id="start">
-							<p class="item"><p:outputLabel styleClass="fleetPname" value="#{loginHandler.planetHandler.pg.name}"></p:outputLabel></p>
-							<p class="item"><h:graphicImage class="button_next" url="resources/images/fleetPlanet.jpg" title="Planet"/></p>
-							<p>Koordinaten: <p:outputLabel styleClass="fleetCoords" value="#{loginHandler.planetHandler.pg.galaxy}"/>:
-											<p:outputLabel styleClass="fleetCoords" value="#{loginHandler.planetHandler.pg.solarsystem}"/>:
-											<p:outputLabel styleClass="fleetCoords" value="#{loginHandler.planetHandler.pg.position}"/>
+							<p class="item">
+								<p:outputLabel styleClass="fleetPname"
+									value="#{loginHandler.planetHandler.pg.name}"></p:outputLabel>
+							</p>
+							<p class="item">
+								<h:graphicImage class="button_next"
+									url="resources/images/fleetPlanet.jpg" title="Planet" />
+							</p>
+							<p style="color:white;">
+								Koordinaten:
+								<p:outputLabel styleClass="fleetCoords"
+									value="#{loginHandler.planetHandler.pg.galaxy}" />
+								:
+								<p:outputLabel styleClass="fleetCoords"
+									value="#{loginHandler.planetHandler.pg.solarsystem}" />
+								:
+								<p:outputLabel styleClass="fleetCoords"
+									value="#{loginHandler.planetHandler.pg.position+1}" />
 							</p>
 						</td>
-						<td id="distance">
-							<h:panelGroup id="distance">
-								<p class="item"><p:outputLabel styleClass="fleetCoords" value="#{loginHandler.fleetHandler.distance}"/></p>
+						<td id="distance"><h:panelGroup id="distance">
+								<p class="item">
+									<p:outputLabel styleClass="fleetCoords"
+										value="#{loginHandler.fleetHandler.distance}" />
+								</p>
 							</h:panelGroup>
-							<p class="item">Entfernung</p>
-						</td>
+							<p class="item" style="color:white;">Entfernung</p></td>
 						<td id="destination">
-							<p class="item"><p:outputLabel styleClass="fleetPname" value="#{loginHandler.fleetHandler.name}"></p:outputLabel></p>
-							<p class="item"><h:graphicImage class="button_next" url="resources/images/fleetPlanet.jpg" title="Planet"/></p>
-							<h:panelGroup layout="block" style="width: 90%; margin: auto;">
-								<p class="item">Koordinaten:</p>
-								<p:inputText styleClass="fleetInp" value="#{loginHandler.fleetHandler.galaxy}">
-								<p:ajax event="change" listener="#{loginHandler.fleetHandler.changeCoords()}"/>
+							<p class="item">
+								<p:outputLabel styleClass="fleetPname"
+									value="#{loginHandler.fleetHandler.name}"></p:outputLabel>
+							</p>
+							<p class="item">
+								<h:graphicImage class="button_next"
+									url="resources/images/fleetPlanet.jpg" title="Planet" />
+							</p> <h:panelGroup layout="block" style="width: 90%; margin: auto;">
+								<p class="item" style="color:white;">Koordinaten:</p>
+								<p:inputText styleClass="fleetInp"
+									value="#{loginHandler.fleetHandler.galaxy}">
+									<p:ajax event="change"
+										listener="#{loginHandler.fleetHandler.changeCoords()}"
+										update=":mainForm:growl" />
 								</p:inputText>
-								<p:inputText styleClass="fleetInp" value="#{loginHandler.fleetHandler.solarSystem}">
-									<p:ajax event="change" listener="#{loginHandler.fleetHandler.changeCoords()}"/>
+								<p:inputText styleClass="fleetInp"
+									value="#{loginHandler.fleetHandler.solarSystem}">
+									<p:ajax event="change"
+										listener="#{loginHandler.fleetHandler.changeCoords()}"
+										update=":mainForm:growl" />
 								</p:inputText>
-								<p:inputText styleClass="fleetInp" value="#{loginHandler.fleetHandler.position}">
-									<p:ajax event="change" listener="#{loginHandler.fleetHandler.changeCoords()}"/>
+								<p:inputText styleClass="fleetInp"
+									value="#{loginHandler.fleetHandler.position}">
+									<p:ajax event="change"
+										listener="#{loginHandler.fleetHandler.changeCoords()}"
+										update=":mainForm:growl" />
 								</p:inputText>
-							</h:panelGroup>														
+							</h:panelGroup>
 						</td>
 					</tr>
 				</table>
@@ -278,110 +360,143 @@
 					<h2 align="center">Briefing</h2>
 					<div class="hUl">
 						<ul class="briefingList">
-						<li class="briefingList">
-							Flugdauer (eine Strecke):
-							<p:outputLabel id="duration" styleClass="duration" value="#{loginHandler.fleetHandler.duration}">
-								<f:convertDateTime pattern="HH:mm:ss" type="date" timeZone="UTC" />
-							</p:outputLabel>
-						</li>
-						<li class="briefingList">
-							Treibstoffverbrauch:
-							<p:outputLabel styleClass="duration" value="#{loginHandler.fleetHandler.consumption}"></p:outputLabel>
-						</li>
-						<li class="briefingList">
-							Geschwindigkeit:
-							<p:outputLabel styleClass="duration" value="#{loginHandler.fleetHandler.speed}"></p:outputLabel>
-						</li>
-					</ul>
-					<h:graphicImage class="button_next" style="margin-left: 20%;"
-									url="resources/images/button_next_green.jpg" title="Zurück">
-						<p:ajax event="click" listener="#{loginHandler.fleetHandler.setStage(0)}" update=":mainForm"/>
-					</h:graphicImage>
+							<li class="briefingList">Flugdauer (eine Strecke): <p:outputLabel
+									id="duration" styleClass="duration"
+									value="#{loginHandler.fleetHandler.duration}">
+									<f:convertDateTime pattern="HH:mm:ss" type="date"
+										timeZone="UTC" />
+								</p:outputLabel>
+							</li>
+							<li class="briefingList">Treibstoffverbrauch: <p:outputLabel
+									styleClass="duration"
+									value="#{loginHandler.fleetHandler.consumption}"></p:outputLabel>
+							</li>
+							<li class="briefingList">Geschwindigkeit: <p:outputLabel
+									styleClass="duration"
+									value="#{loginHandler.fleetHandler.speed}"></p:outputLabel>
+							</li>
+						</ul>
+						<h:graphicImage class="button_next" style="margin-left: 20%;"
+							url="resources/images/button_next_green.jpg" title="Zurück">
+							<p:ajax event="click"
+								listener="#{loginHandler.fleetHandler.setStage(0)}"
+								update=":mainForm" />
+						</h:graphicImage>
 					</div>
 					<div class="hUl">
-					<ul class="briefingList">
-						<li class="briefingList">
-							Ankunft:
-							<p:outputLabel id="arrival" styleClass="duration" value="#{loginHandler.fleetHandler.arrival}">
-								<f:convertDateTime pattern="HH:mm:ss" type="date" timeZone="GMT+1" />
-							</p:outputLabel>
-						</li>
-						<li class="briefingList">
-							Rückkehr:
-							<p:outputLabel id="rturn" styleClass="duration" value="#{loginHandler.fleetHandler.rturn}">
-								<f:convertDateTime pattern="HH:mm:ss" type="date" timeZone="GMT+1" />
-							</p:outputLabel>
-						</li>
-						<li class="briefingList">
-							Laderaum:
-							<p:outputLabel styleClass="duration" value="#{loginHandler.fleetHandler.cargoSpace}"></p:outputLabel>
-						</li>
-					</ul>
-					<p:poll interval="1" listener="#{loginHandler.fleetHandler.updateTime()}" update="arrival rturn distance duration"/>
-					<h:graphicImage class="button_next" style="margin-left: 60%;"
-									url="resources/images/button_next_green.jpg" title="Weiter">
-						<p:ajax event="click" listener="#{loginHandler.fleetHandler.setStage(2)}" update=":mainForm"/>
-					</h:graphicImage>
-					</div>			
+						<ul class="briefingList">
+							<li class="briefingList">Ankunft: <p:outputLabel
+									id="arrival" styleClass="duration"
+									value="#{loginHandler.fleetHandler.arrival}">
+									<f:convertDateTime pattern="HH:mm:ss" type="date"
+										timeZone="GMT+1" />
+								</p:outputLabel>
+							</li>
+							<li class="briefingList">Rückkehr: <p:outputLabel id="rturn"
+									styleClass="duration"
+									value="#{loginHandler.fleetHandler.rturn}">
+									<f:convertDateTime pattern="HH:mm:ss" type="date"
+										timeZone="GMT+1" />
+								</p:outputLabel>
+							</li>
+							<li class="briefingList">Laderaum: <p:outputLabel
+									styleClass="duration"
+									value="#{loginHandler.fleetHandler.cargoSpace}"></p:outputLabel>
+							</li>
+						</ul>
+						<p:poll interval="1"
+							listener="#{loginHandler.fleetHandler.updateTime()}"
+							update="arrival rturn distance duration" />
+						<h:graphicImage class="button_next" style="margin-left: 60%;"
+							url="resources/images/button_next_green.jpg" title="Weiter">
+							<p:ajax event="click"
+								listener="#{loginHandler.fleetHandler.setStage(2)}"
+								update=":mainForm" />
+						</h:graphicImage>
+					</div>
 				</div>
 			</ui:insert>
 		</h:panelGroup>
-		<h:panelGroup id="fleetStageTwo" styleClass="#{loginHandler.fleetHandler.stage == 2 ? 'show' : 'hide'}">
-			  <ui:insert name="content">
+		<h:panelGroup id="fleetStageTwo"
+			styleClass="#{loginHandler.fleetHandler.stage == 2 ? 'show' : 'hide'}">
+			<ui:insert name="content">
 				<table>
 					<tr>
-					<td rowspan="3">Mission für das Ziel wählen:</td>
+						<td rowspan="3" style="color: white;">Mission für das Ziel
+							wählen:</td>
 					</tr>
 					<tr>
-					<td rowspan="3">
-						<div id="mission_container">
-							<h:graphicImage class="fleet_button" url="resources/images/fleet_buttons.jpg" title="Kolonisieren">
-								<p:ajax event="click" listener="#{loginHandler.fleetHandler.setMission(0)}" update=":mainForm"/>
-							</h:graphicImage>	
-						</div>
-						<div id="mission_container">
-							<h:graphicImage class="fleet_button_tf" url="resources/images/fleet_buttons.jpg" title="Trümmerfeld abbauen">
-								<p:ajax event="click" listener="#{loginHandler.fleetHandler.setMission(1)}" update=":mainForm"/>
-							</h:graphicImage>
-						</div>
-						 
-						<!-- <h:graphicImage sytleClass="fleet_buttonfleet_button_trans" url="resources/images/fleet_buttons.jpg" title="Transport">
-							<p:ajax event="click" listener="#{loginHandler.fleetHandler.setMission(2)}" update=":mainForm"/>
-						</h:graphicImage>
-						<h:graphicImage sytleClass="fleet_button fleet_button_stat" url="resources/images/fleet_buttons.jpg" title="Stationieren">
-							<p:ajax event="click" listener="#{loginHandler.fleetHandler.setMission(3)}" update=":mainForm"/>
-						</h:graphicImage>
-						<h:graphicImage sytleClass="fleet_button fleet_button_spio" url="resources/images/fleet_buttons.jpg" title="Spionage">
-							<p:ajax event="click" listener="#{loginHandler.fleetHandler.setMission(4)}" update=":mainForm"/>
-						</h:graphicImage>
-						<h:graphicImage sytleClass="fleet_button fleet_button_att" url="resources/images/fleet_buttons.jpg" title="Angreifen">
-							<p:ajax event="click" listener="#{loginHandler.fleetHandler.setMission(5)}" update=":mainForm"/>
-						</h:graphicImage>-->
-					</td>
+						<td rowspan="3">
+							<div id="mission_container">
+								<h:graphicImage class="fleet_button fleet_button_kolo"
+									title="Kolonisieren">
+									<p:ajax event="click"
+										listener="#{loginHandler.fleetHandler.setMission(0)}"
+										update=":mainForm :mainForm:growl" />
+								</h:graphicImage>
+								<h:graphicImage class="fleet_button fleet_button_tf"
+									title="Trümmerfeld abbauen">
+									<p:ajax event="click"
+										listener="#{loginHandler.fleetHandler.setMission(1)}"
+										update=":mainForm" />
+								</h:graphicImage>
+								<h:graphicImage class="fleet_button fleet_button_trans"
+									title="Transport">
+									<p:ajax event="click"
+										listener="#{loginHandler.fleetHandler.setMission(2)}"
+										update=":mainForm" />
+								</h:graphicImage>
+								<h:graphicImage class="fleet_button fleet_button_stat"
+									title="Stationieren">
+									<p:ajax event="click"
+										listener="#{loginHandler.fleetHandler.setMission(3)}"
+										update=":mainForm" />
+								</h:graphicImage>
+								<h:graphicImage class="fleet_button fleet_button_spio"
+									title="Spionage">
+									<p:ajax event="click"
+										listener="#{loginHandler.fleetHandler.setMission(4)}"
+										update=":mainForm" />
+								</h:graphicImage>
+								<h:graphicImage class="fleet_button fleet_button_att"
+									title="Angreifen">
+									<p:ajax event="click"
+										listener="#{loginHandler.fleetHandler.setMission(5)}"
+										update=":mainForm" />
+								</h:graphicImage>
+							</div>
+						</td>
 					</tr>
 					<tr>
 						<td rowspan="3"></td>
 					</tr>
 					<tr>
-						<td>Briefing</td>
-						<td rowspan="2">Rohstoffe einladen</td>
+					</tr>
+					<tr>
+						<td style="color: white;" rowspan="2">Briefing</td>
+						<td rowspan="2" style="color: white;">Rohstoffe einladen</td>
 					</tr>
 					<tr>
 						<td colspan="3"></td>
 						<td></td>
-						<td colspan="3">
-							<h:panelGroup layout="block" style="width: 90%; margin: auto;">
-								<p:inputText styleClass="fleetInp" value="#{loginHandler.fleetHandler.metal}">
-								<p:ajax event="change" listener="#{loginHandler.fleetHandler.changeRes()}"/>
+						<td colspan="3"><h:panelGroup layout="block"
+								style="width: 90%; margin: auto;">
+								<p:inputText styleClass="fleetInp"
+									value="#{loginHandler.fleetHandler.metal}">
+									<p:ajax event="change"
+										listener="#{loginHandler.fleetHandler.changeRes()}" />
 								</p:inputText>
-								<p:inputText styleClass="fleetInp" value="#{loginHandler.fleetHandler.crystal}">
-									<p:ajax event="change" listener="#{loginHandler.fleetHandler.changeRes()}"/>
+								<p:inputText styleClass="fleetInp"
+									value="#{loginHandler.fleetHandler.crystal}">
+									<p:ajax event="change"
+										listener="#{loginHandler.fleetHandler.changeRes()}" />
 								</p:inputText>
-								<p:inputText styleClass="fleetInp" value="#{loginHandler.fleetHandler.deut}">
-									<p:ajax event="change" listener="#{loginHandler.fleetHandler.changeRess()}"/>
+								<p:inputText styleClass="fleetInp"
+									value="#{loginHandler.fleetHandler.deut}">
+									<p:ajax event="change"
+										listener="#{loginHandler.fleetHandler.changeRes()}" />
 								</p:inputText>
-							</h:panelGroup>
-						</td>
+							</h:panelGroup></td>
 					</tr>
 					<tr>
 						<td></td>
@@ -390,13 +505,18 @@
 						<td></td>
 					</tr>
 				</table>
-				<h:graphicImage class="button_next" 
-									url="resources/images/button_next_green.jpg" title="Zurück">
-					<p:ajax event="click" listener="#{loginHandler.fleetHandler.setStage(1)}" update=":mainForm"/>
+				<h:graphicImage class="button_next"
+					url="resources/images/button_next_green.jpg" title="Zurück">
+					<p:ajax event="click"
+						listener="#{loginHandler.fleetHandler.setStage(1)}"
+						update=":mainForm" />
 				</h:graphicImage>
-				<h:graphicImage class="button_next" 
-									url="resources/images/button_next_green.jpg" title="Flotte versenden">
-					<p:ajax event="click" listener="#{loginHandler.fleetHandler.setStage(3)}" update=":mainForm"/>
+				<h:graphicImage class="button_next"
+					url="resources/images/button_next_green.jpg"
+					title="Flotte versenden">
+					<p:ajax event="click"
+						listener="#{loginHandler.fleetHandler.setStage(3)}"
+						update=":mainForm" />
 				</h:graphicImage>
 			</ui:insert>
 		</h:panelGroup>
