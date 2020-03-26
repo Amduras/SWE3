@@ -23,10 +23,8 @@ public class IncludeController implements Serializable{
 	public String getPage() {
 		return page;
 	}
-
+	
 	public void setPage(String page) {
-		FacesContext.getCurrentInstance().getViewRoot().getViewMap().remove("roles");
 		this.page = page;
 	}
-	
 }

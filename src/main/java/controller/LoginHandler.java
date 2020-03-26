@@ -85,6 +85,7 @@ public class LoginHandler implements Serializable{
 			}
 			settingsHandler = new SettingsHandler(em, utx, "Electra", 1, 1, 193, 0.1, 0.1 , 5, 10);
 			planetHandler.createNewPlanet(user.getUserID());
+			planetHandler.setSettingsHandler(settingsHandler);
 		}
 	}
 	

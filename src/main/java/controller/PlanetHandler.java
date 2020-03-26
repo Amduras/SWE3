@@ -41,6 +41,7 @@ public class PlanetHandler {
 	private Planets_Research pr;
 	private Planets_Ships ps;
 	private GalaxyHandler galaxyHandler;
+	private SettingsHandler settingsHandler;
 
 	public PlanetHandler() {
 
@@ -221,11 +222,16 @@ public class PlanetHandler {
 
 	public void updateRes() {
 		int m = pg.getMetal();
-		int c = pg.getCrystal();
-		int d = pg.getDeut();
-		pg.setMetal(m+1000);
-		pg.setCrystal(c+663);
-		pg.setDeut(d+22);
+		int c = pg.getCrystal(); 
+		int d = pg.getDeut(); 
+		pg.setMetal(m+(int)((30 * pb.getMetalMine() * Math.pow(1.1, pb.getMetalMine()) + 30) * 
+				((100 + 1 * pr.getPlasma())/100) * settingsHandler.getSettings().getGameSpeed()));
+		
+		pg.setCrystal(c+(int)((20 * pb.getCrystalMine() * Math.pow(1.1, pb.getCrystalMine()) 
+				* ((100 + 0.66 * pr.getPlasma())/100)) * settingsHandler.getSettings().getGameSpeed()));
+		
+		pg.setDeut(d+(int)(10 * pb.getDeutSyn() * Math.pow(1.1, pb.getDeutSyn()) * (1.44-0.004*pg.getTemperature())) 
+				* settingsHandler.getSettings().getGameSpeed());
 	}
 
 	public Planets_Buildings getPb() {
@@ -362,5 +368,13 @@ public class PlanetHandler {
 		updateDef();
 		updateResearch();
 		updateShips();	
+	}
+
+	public SettingsHandler getSettingsHandler() {
+		return settingsHandler;
+	}
+
+	public void setSettingsHandler(SettingsHandler settingsHandler) {
+		this.settingsHandler = settingsHandler;
 	}
 }
