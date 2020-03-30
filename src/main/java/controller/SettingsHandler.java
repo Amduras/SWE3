@@ -5,6 +5,7 @@ import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.transaction.HeuristicMixedException;
 import javax.transaction.HeuristicRollbackException;
@@ -15,12 +16,16 @@ import javax.transaction.UserTransaction;
 
 import model.WorldSettings;
 
-@SuppressWarnings("serial")
+
 @ManagedBean(name="settingsHandler")
 @SessionScoped
 public class SettingsHandler implements Serializable{
 	
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private EntityManager em;
 	private UserTransaction utx;
 	private WorldSettings settings;
@@ -31,16 +36,11 @@ public class SettingsHandler implements Serializable{
 	}
 
 	
-	public SettingsHandler(EntityManager em, UserTransaction utx, String name, int gameSpeed, int fleetSpeed, int startingPlanetSize, 
-			double fleetToDebrisFieldRatio, double defToDebrisFieldRatio, double jumpgateCooldown, int protection) {
+	public SettingsHandler(EntityManager em, UserTransaction utx) {
 		this.em = em;
 		this.utx = utx;
-		startSettings(name, gameSpeed, fleetSpeed, startingPlanetSize, fleetToDebrisFieldRatio, defToDebrisFieldRatio, jumpgateCooldown,
-				protection);
+		loadSettings();
 	}
-
-
-
 
 	private void startSettings(String name, int gameSpeed, int fleetSpeed, int startingPlanetSize,
 			double fleetToDebrisFieldRatio, double defToDebrisFieldRatio, double jumpgateCooldown, int protection) {
@@ -62,7 +62,16 @@ public class SettingsHandler implements Serializable{
 		}
 		
 	}
-
+	
+	private void loadSettings() {
+		Query query = em.createQuery("select k from WorldSettings k");
+		try {
+			settings = (WorldSettings) query.getSingleResult();
+		} catch(NoResultException e) {
+			startSettings("Electra", 1, 1, 193, 0.1, 0.1 , 5, 10);
+		}
+	}
+	
 	public void changeSettings(boolean left) {
 		if(left) {
 			int min = getMinSettings();

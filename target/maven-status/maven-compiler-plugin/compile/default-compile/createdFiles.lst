@@ -34,7 +34,6 @@ controller\ListenerView.class
 planets\Planets_Def_.class
 planets\Planets_Research_.class
 planets\Planets_General.class
-controller\QueryController.class
 planets\Planets_Buildings_.class
 controller\RoleHandler.class
 model\Solarsystem_.class

@@ -34,14 +34,14 @@
 				<h:graphicImage url="resources/images/galaxies/arrow_left.png">
 					<p:ajax event="click"
 						listener="#{loginHandler.planetHandler.changePlanet(true, loginHandler.buildHandler, loginHandler.fleetHandler)}"
-						update=":userPlanets :mainForm" />
+						update=":userPlanets :mainForm :resForm:res_table_metal :resForm:res_table_crystal :resForm:res_table_deut" />
 				</h:graphicImage>
 				<p:outputLabel style="font-size: 20px;"
 					value="Planeten #{loginHandler.planetHandler.activePlanet+1} / #{loginHandler.planetHandler.getPlanetsSize()}" />
 				<h:graphicImage	url="resources/images/galaxies/arrow_right.png">
 					<p:ajax event="click"
 						listener="#{loginHandler.planetHandler.changePlanet(false, loginHandler.buildHandler, loginHandler.fleetHandler)}"
-						update=":userPlanets :mainForm" />
+						update=":userPlanets :mainForm :resForm:res_table_metal :resForm:res_table_crystal :resForm:res_table_deut" />
 				</h:graphicImage>
 				<hr style="width: 70%;" />
 				<h:graphicImage style="width: 90px; height: 100%;"

@@ -34,12 +34,13 @@ public class Planets_General implements Serializable {
 	private int slots;
 	private int moonSlots;
 	private int temperature;
-	private int metal;
-	private int crystal;
-	private int deut;
-	private int energy; 
+	private double metal;
+	private double crystal;
+	private double deut;
+	private double energy; 
 	private String name = "DingDong des Todes";
 	private int userid;
+	private long lastActive;
 
 	
 	public Planets_General() {
@@ -155,35 +156,35 @@ public class Planets_General implements Serializable {
 		this.temperature = temperature;
 	}
 
-	public int getMetal() {
+	public double getMetal() {
 		return metal;
 	}
 
-	public void setMetal(int metal) {
+	public void setMetal(double metal) {
 		this.metal = metal;
 	}
 
-	public int getCrystal() {
+	public double getCrystal() {
 		return crystal;
 	}
 
-	public void setCrystal(int cris) {
+	public void setCrystal(double cris) {
 		this.crystal = cris;
 	}
 
-	public int getDeut() {
+	public double getDeut() {
 		return deut;
 	}
 
-	public void setDeut(int deut) {
+	public void setDeut(double deut) {
 		this.deut = deut;
 	}
 
-	public int getEnergy() {
+	public double getEnergy() {
 		return energy;
 	}
 
-	public void setEnergy(int energy) {
+	public void setEnergy(double energy) {
 		this.energy = energy;
 	}
 
@@ -203,6 +204,14 @@ public class Planets_General implements Serializable {
 		this.userid = userid;
 	}
 	
+	public long getLastActive() {
+		return lastActive;
+	}
+
+	public void setLastActive(long lastActive) {
+		this.lastActive = lastActive;
+	}
+
 	public int getMetalAsInt() {
 		return (int) metal;
 	}

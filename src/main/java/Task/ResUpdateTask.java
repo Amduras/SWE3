@@ -25,7 +25,7 @@ public class ResUpdateTask implements Job {
 		try {
 			
 			ph = (PlanetHandler) context.getScheduler().getContext().get("o");
-			ph.updateRes();
+			ph.updateRes(1);
 		} catch (SchedulerException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

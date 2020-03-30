@@ -13,6 +13,11 @@ import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
+import javax.transaction.HeuristicMixedException;
+import javax.transaction.HeuristicRollbackException;
+import javax.transaction.NotSupportedException;
+import javax.transaction.RollbackException;
+import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 
 import org.primefaces.context.RequestContext;
@@ -46,6 +51,7 @@ public class BuildHandler {
 	private String descr;
 	private String rec;
 	private boolean newPage;
+	private SettingsHandler settingsHandler;
 
 	public BuildHandler(PlanetHandler p, EntityManager em, UserTransaction utx) {
 		this.planetHandler = p;
@@ -87,21 +93,23 @@ public class BuildHandler {
 			if(type == 2) {
 				count = idToCount(id);
 			}
-			System.out.println(b.getBaseCostCrystal()+" "+ b.getResFactor() + " "+ lvl);
+//			System.out.println(b.getBaseCostCrystal()+" "+ b.getResFactor() + " "+ lvl);
 			metal = (long)(b.getBaseCostMetal() * Math.pow(b.getResFactor(), lvl));
 			crystal = (long)(b.getBaseCostCrystal() * Math.pow(b.getResFactor(), lvl));
 			deut = (long)(b.getBaseCostDeut() * Math.pow(b.getResFactor(), lvl));
-			if(id == 3) {
-				energy = (long) -Math.ceil((b.getBaseCostEnergy() * lvl * Math.pow(b.getEnergyFactor(), lvl)));
+			if(id == 4) {
+//				energy = (long) -Math.ceil((b.getBaseCostEnergy() * lvl * Math.pow(b.getEnergyFactor(), lvl)));
+				energy = (long) -(20 * (planetHandler.getPb().getSolarPlant()+1) * Math.pow(1.1, (planetHandler.getPb().getSolarPlant()+1)));
 			}
-			else if(id == 4) {
-				energy = (long) -Math.ceil((b.getBaseCostEnergy() * lvl * Math.pow(b.getEnergyFactor(), lvl)));
+			else if(id == 5) {
+//				energy = (long) -Math.ceil((b.getBaseCostEnergy() * lvl * Math.pow(b.getEnergyFactor(), lvl)));
+				energy = (long) -(30 * (planetHandler.getPb().getFusionReactor()+1) * Math.pow((1.05 + planetHandler.getPr().getEnergy() * 0.01), (planetHandler.getPb().getFusionReactor()+1)));
 			}
 			else {
 				energy = (long) Math.ceil((b.getBaseCostEnergy() * lvl * Math.pow(b.getEnergyFactor(), lvl)));
 			}
 			if(type == 0) {
-				time = (long)Math.ceil((metal+crystal) * 36 / (25 * (1 + planetHandler.getPb().getRoboticFactory()) * Math.pow(2, planetHandler.getPb().getNaniteFactory()) * 4));
+				time = (long)Math.ceil(((metal+crystal) * 36 / (25 * (1 + planetHandler.getPb().getRoboticFactory()) * Math.pow(2, planetHandler.getPb().getNaniteFactory()) * 4))/settingsHandler.getSettings().getGameSpeed());
 				if(time > 100)
 					time -= 90;
 				timeM = time/60;
@@ -162,21 +170,45 @@ public class BuildHandler {
 	}
 
 	public void build() {
+		
 		if(planetHandler.getPb().getTask() == null) {
 			System.out.println("ayooo");
 			if(checkRes() && checkRec()) {
 				System.out.println("qwerty");
 				Date d = new Date(System.currentTimeMillis()+(time*1000));
 				System.out.println("TIME Calc: " + new Timestamp(d.getTime()));
-				new BuildTask(type,d,id,planetHandler.getPg().getPlanetId(),em,utx);
+				new BuildTask(type,d,id,planetHandler.getPg().getPlanetId(),planetHandler,this,em,utx);
+				if(type==1) {
+					setBuildMessage("Forschung gestartet");
+				} else {
+					setBuildMessage("Bau gestartet");
+				}
+				planetHandler.getPg().setMetal(planetHandler.getPg().getMetal()-metal);
+				planetHandler.getPg().setCrystal(planetHandler.getPg().getCrystal()-crystal);
+				planetHandler.getPg().setDeut(planetHandler.getPg().getDeut()-deut);
+				try {
+					utx.begin();
+				} catch (NotSupportedException | SystemException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				em.merge(planetHandler.getPg());
+				try {
+					utx.commit();
+				} catch (SecurityException | IllegalStateException | RollbackException | HeuristicMixedException
+						| HeuristicRollbackException | SystemException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add(":resForm");
 			}
 		}
 		else {
 			System.out.println("Es wird bereits gebaut.");
 		}
 	}
-
-	private void setBuildMessage(String msg) {
+	
+	public void setBuildMessage(String msg) {
 		FacesContext context = FacesContext.getCurrentInstance();
 		context.addMessage(null, new FacesMessage(msg));
 	}
@@ -191,6 +223,7 @@ public class BuildHandler {
 			setBuildMessage("Nicht genug Kristall");
 			ressourcen = false;
 		}
+		
 		if(planetHandler.getPg().getDeut() < deut) {
 			setBuildMessage("Nicht genug Deuterium");
 			ressourcen = false;
@@ -202,6 +235,7 @@ public class BuildHandler {
 		return ressourcen;
 	}
 
+	
 	private boolean checkRec() {
 		boolean buildable = true;
 		String[] recs = rec.split("<br/>");
@@ -212,7 +246,10 @@ public class BuildHandler {
 			while(buildable && i < recs.length) {
 				String[] recs2 = recs[i].split(":");
 				if(getMethode(recs2[0])!=99999999) {
-					if(recs2[1].equals(getMethode(recs2[0].toString()))){
+					System.out.println("Rec:"+recs2[0]);
+					System.out.println("Aktuell:"+recs2[1]);
+					System.out.println("Ergebniss: "+getMethode(recs2[0].toString()));
+					if(Integer.valueOf(recs2[1]) == getMethode(recs2[0])) {
 						++i;
 					} else {
 						buildable = false;
@@ -573,5 +610,14 @@ public class BuildHandler {
 
 	public int getCount() {
 		return count;
-	}	
+	}
+
+	public SettingsHandler getSettingsHandler() {
+		return settingsHandler;
+	}
+
+	public void setSettingsHandler(SettingsHandler settingsHandler) {
+		this.settingsHandler = settingsHandler;
+	}
+	
 }
