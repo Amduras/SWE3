@@ -86,10 +86,7 @@ public class LoginHandler implements Serializable{
 			}
 			planetHandler.createNewPlanet(user.getUserID());
 		}
-		
 		settingsHandler = new SettingsHandler(em, utx);
-		buildHandler.setSettingsHandler(settingsHandler);
-		planetHandler.setSettingsHandler(settingsHandler);
 	}
 	
 	private void genTestMsg(User user) {
@@ -201,7 +198,6 @@ public class LoginHandler implements Serializable{
 			gHandler.setSystemForTable(id);
 			gHandler.setUser(user);
 			messageHandler.setUser(user);
-			planetHandler.calcStorage();
 			return"/main.xhtml?faces-redirect=true";
 		}catch (NoResultException e) {
 			return "/login.xhtml?faces-redirect=true";
@@ -273,7 +269,6 @@ public class LoginHandler implements Serializable{
 		User user = handler.getUser();
 		user.setLastlogin(System.currentTimeMillis());
 		Planets_General pg = planetHandler.getPg();
-		pg.setLastActive(System.currentTimeMillis());
 		try {
 			utx.begin();
 		} catch (NotSupportedException | SystemException e) {

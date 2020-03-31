@@ -27,14 +27,19 @@
 				<p:outputLabel value="#{messages.fromUser}" />
 			</p:column>
 			<p:column headerText="Datum">
-				<p:outputLabel value="#{messages.dateSend}" />
+				<p:outputLabel value="#{messages.dateSend}"> 
+					<f:convertDateTime pattern="HH:mm:ss" type="time" timeZone="Europe/Berlin" />
+				</p:outputLabel>
+				<br/>
+				<p:outputLabel value="#{messages.dateSend}"> 
+					<f:convertDateTime pattern="dd:MM:yy" type="date" timeZone="Europe/Berlin" />
+				</p:outputLabel>
 			</p:column>
 			<p:column headerText="Aktion">
 				<h:panelGroup>
 					<p:commandLink action="#{loginHandler.messageHandler.remove(rowid)}" update=":mainForm:messagesTable">
-						<i class="fa fa-remove" style="color: white;" />
+						<i class="fa fa-remove" style="color: white;">Löschen</i>
 					</p:commandLink>
-					<p:outputLabel value="antworten button kommt noch"/>
 				</h:panelGroup>
 			</p:column>
 		</p:dataTable>

@@ -19,7 +19,7 @@
 			<h:form style="display:block;">
 				<p:outputLabel id="planets_time" value="#{currentDate}"
 					style="font-size: 15px; margin-top: 4px;">
-					<f:convertDateTime pattern="HH:mm:ss" type="date" timeZone="GMT+1" />
+					<f:convertDateTime pattern="HH:mm:ss" type="date" timeZone="Europe/Berlin" />
 				</p:outputLabel>
 				<p:poll interval="1" update="planets_time" />
 			</h:form>
