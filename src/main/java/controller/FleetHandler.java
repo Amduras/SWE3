@@ -1,9 +1,12 @@
 package controller;
 
 import java.sql.Date;
+import java.util.Arrays;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
@@ -21,7 +24,7 @@ public class FleetHandler {
 	private PlanetHandler planetHandler;
 	private EntityManager em;
 	private UserTransaction utx;
-	
+
 	private int[] ships = new int[13];
 	private int stage = 0;
 	private int galaxy = 0;//planetHandler.getPg().getGalaxy();
@@ -42,7 +45,7 @@ public class FleetHandler {
 	private int crystal;
 	private int deut;
 	private int mission;
-	
+
 	public FleetHandler(PlanetHandler planetHandler, EntityManager em, UserTransaction utx) {
 		super();
 		this.planetHandler = planetHandler;
@@ -57,6 +60,7 @@ public class FleetHandler {
 			isValidTarget = false;
 			name = planetHandler.getPg().getName();
 			System.out.println("Start kann nicht ziel sein idk xd.");
+			setMessage("Start kann nicht Ziel sein");
 		}
 		else {
 			Query query = em.createQuery("select k from Planets_General k where k.galaxy = :galaxy and k.solarsystem = :solarsystem and k.position = :position");
@@ -67,17 +71,17 @@ public class FleetHandler {
 				Object res = query.getSingleResult();
 
 				target = (Planets_General)res;
-				
+
 				name = target.getName();
 				calcDistance();
 				calcTravelTime();
 				isValidTarget = true;
 			} catch(NoResultException e){
-				//isValidTarget = false;
-				isValidTarget = true;
+				isValidTarget = false;
 				calcDistance();
 				calcTravelTime();
 				System.out.println("Kein Planet an "+galaxy+":"+solarSystem+":"+position);
+				setMessage("Kein Planet an "+galaxy+":"+solarSystem+":"+(position+1));
 			}
 		}	
 	}
@@ -93,7 +97,7 @@ public class FleetHandler {
 		distance += solarDiff == 0 ? 0 : solarDiff*95+2700;
 		distance += posDiff*5 + 1000;
 	}
-	
+
 	public void next() {
 		for(int i : ships)
 			System.out.print(i+" ");
@@ -103,8 +107,8 @@ public class FleetHandler {
 		arrival = new Date(System.currentTimeMillis()+travelTime*1000);
 		rturn = new Date(System.currentTimeMillis()+2*travelTime*1000);
 	}
-	
-	
+
+
 	public void setCoords(int galaxy, int solarSystem, int position) {
 		this.setSolarSystem(solarSystem);
 		this.setGalaxy(galaxy);
@@ -114,6 +118,10 @@ public class FleetHandler {
 		return stage;
 	}
 	public void setStage(int stage) {
+		if(stage == 0) {
+			this.stage = stage;
+			Arrays.fill(ships, 0);
+		}
 		if(stage == 1) {
 			if(checkShips()) {
 				galaxy = planetHandler.getPg().getGalaxy();
@@ -127,6 +135,7 @@ public class FleetHandler {
 			}
 			else {
 				System.out.println("Keine Schiffe zum versenden Ausgewählt");
+				setMessage("Kein Schiff zum versenden Ausgewählt");
 			}
 		}
 		else if(stage == 2)		{
@@ -135,6 +144,7 @@ public class FleetHandler {
 			}
 			else {
 				System.out.println("gebe gültige Koordinaten ein.");
+				setMessage("gebe gültige Koordinaten ein");
 			}
 		}
 		else if(stage == 3)		{
@@ -144,21 +154,33 @@ public class FleetHandler {
 				}
 				else {
 					System.out.println("Cargospace ist zu klein");
+					setMessage("Cargospace zu klein");
 				}			
 			}
 			else {
 				System.out.println("gebe gültige Mission ein.");
+				setMessage("gebe eine Gültige Mission ein.");
 			}
 		}
-		
+	}
+
+
+
+	private void setMessage(String msg) {
+		FacesContext context = FacesContext.getCurrentInstance();
+		context.addMessage(null, new FacesMessage(msg));
 	}
 
 	private boolean checkShips() {
 		int sum = 0;
 		for(int i=0;i<ships.length;++i) {
-			sum += ships[i];
 			int actualShips = idToLvl(31+i);
-			ships[i] = ships[i] > actualShips ? actualShips : ships[i];
+			System.out.println("Shiff: "+i+" Anzahl: "+actualShips);
+			sum += ships[i] > actualShips ? actualShips : ships[i];
+		}
+		System.out.println("Summe: "+sum);
+		if(sum == 0) {
+			Arrays.fill(ships, 0);
 		}
 		return sum != 0 ? true : false;
 	}
@@ -213,12 +235,13 @@ public class FleetHandler {
 					System.out.println(i+" "+tspeed+" "+minSpeed+" "+speed);
 				} catch(NoResultException e){	
 					System.out.println("Kein Schiff mit id"+(31+i)+" in der db.");
+					setMessage("Kein Schiff vorhanden");
 				}
 			}			
 		}
 		speed = minSpeed;
 	}
-	
+
 	private int idToLvl(int id) {
 		int res = 0;
 		switch(id) {
@@ -273,7 +296,7 @@ public class FleetHandler {
 		}
 		return res;
 	}
-	
+
 	private void calcCargoSpace() {
 		for(int i=0;i<ships.length;++i) {
 			if(ships[i] != 0) {
@@ -284,19 +307,20 @@ public class FleetHandler {
 
 					Ship s = (Ship)res;
 					cargoSpace += s.getCargoSpace()*ships[i];
-					
+
 				} catch(NoResultException e){	
 					System.out.println("Kein Schiff mit id"+(31+i)+" in der db.");
+					setMessage("Kein Cargo Schiff vorhanden");
 				}
 			}			
 		}
 	}
-	
+
 	private void calcTravelTime() {
 		travelTime = (long) ((3500 / 2) * Math.pow((distance * 10 / speed),0.5)+10);
 		duration.setTime(travelTime*1000);
 	}
-	
+
 	public int getMetal() {
 		return metal;
 	}
@@ -316,6 +340,7 @@ public class FleetHandler {
 		this.deut = deut;
 	}
 	public void setMission(int mission) {
+		setMessage("Mission gesettet!");
 		this.mission = mission;
 	}
 	public int getMission() {
@@ -324,7 +349,7 @@ public class FleetHandler {
 	public int[] getShips() {
 		return ships;
 	}
-	
+
 	public void setShips(int[] ships) {
 		this.ships = ships;
 	}
@@ -341,10 +366,14 @@ public class FleetHandler {
 		this.galaxy = galaxy;
 	}
 	public int getPosition() {
-		return position;
+		return position+1;
 	}
-	public void setPosition(int posistion) {
-		this.position = posistion;
+	public void setPosition(int position) {
+		if(position == 0 ) {
+			this.position = 0;
+		} else {
+			this.position = position-1;
+		}
 	}
 	public Date getDuration() {
 		return duration;
@@ -362,6 +391,7 @@ public class FleetHandler {
 		return speed;
 	}
 	public void setSpeed(long speed) {
+		System.out.println("Speed auf: "+speed+" gesetzt.");
 		this.speed = speed;
 	}
 	public Date getArrival() {

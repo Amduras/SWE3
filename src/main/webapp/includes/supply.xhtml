@@ -12,7 +12,6 @@
 	<f:event listener="#{loginHandler.planetHandler.updateBuildings()}" type="preRenderView" />
 	
 	<p:growl id="growl"/>
-	
 	<h:panelGroup id="center_body_top" styleClass="center_body_top" layout="block">
 		<h:panelGroup style="position:relative; width:100%; height:100%;"
 		styleClass="center_body_top #{loginHandler.buildHandler.newPage ? 'show' : 'hide'}" layout="block">
@@ -86,7 +85,7 @@
 								url="resources/images/buildable/3.jpg">
 							<p:ajax event="click" listener="#{loginHandler.buildHandler.setActive(3)}" update=":mainForm:center_body_top"/>
 						</h:graphicImage>
-						 <p:outputLabel  styleClass="buildings_level_output" value="#{loginHandler.planetHandler.pb.crystalMine}"/>
+						 <p:outputLabel  styleClass="buildings_level_output" value="#{loginHandler.planetHandler.pb.deutSyn}"/>
 					</td>
 					<td id="buidlings_cell"><h:graphicImage style="width: 100%; height: 50%;"
 								url="resources/images/buildable/4.jpg">

@@ -257,7 +257,6 @@ public class GalaxyHandler {
 	}
 
 	public void colonize(PlanetHandler planetHandler, int userid, int rowid) {
-		System.out.println("KOLONISIEREN");
 		planetHandler.colonizePlanet(userid, rowid, getGalaxyForTable(), getSystemForTable());
 		Query query = em.createQuery("select k from Solarsystem k where k.systemId = :id");
 		query.setParameter("id", getSystemForTable());
@@ -286,12 +285,6 @@ public class GalaxyHandler {
 
 	public void spy(int position) {
 
-	}
-
-	public void message(IncludeController includeController, MessageHandler msgHandler, int i) {
-		msgHandler.setNewMessageUser(getOwner(i));
-		includeController.setPage("messageView");
-		
 	}
 
 	public void attack(int position) {

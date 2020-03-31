@@ -273,11 +273,13 @@ th.coords {
 }
 .briefing{
 	display: inline;
+	color:white;
 }
 .hUl{
 	width: 49%;
 	vertical-align: top;
   	display: inline-block;
+  	color:white;
 }
 .item{
 	width: 100%;
@@ -292,12 +294,12 @@ th.coords {
 }
 #mission_container{
 	display: inline-block;
-	position: absolute;
+	width: 325px;
 }
 .fleet_button{
+	background: url("images/fleet_buttons.jpg");
 	width: 54px;
     height: 54px;
-    position: absolute;
     background-size: initial;
     background-repeat-x: no-repeat;
     background-repeat-y: no-repeat;
@@ -305,16 +307,16 @@ th.coords {
     background-origin: initial;
     background-clip: initial;
     background-color: initial;
-    background-position: -108px 0px;
 }
 .fleet_button_kolo{
-	-webkit-clip-path: inset(0px 434px 160px 108px);
-    clip-path: inset(0px 434px 160px 108px);
-	/*background-position: -108px 0px;*/
+	/*-webkit-clip-path: inset(0px 434px 160px 108px);
+    clip-path: inset(0px 434px 160px 108px);*/
+	background-position: -108px 0px;
 }
 .fleet_button_tf{
-	-webkit-clip-path: inset(0px 434px 160px 108px);
-    clip-path: inset(0px 326px 160px 216px);
+	/*-webkit-clip-path: inset(0px 434px 160px 108px);
+    clip-path: inset(0px 326px 160px 216px);*/
+    background-position: -216px 0px;
 }
 .fleet_button_trans{
 	background-position: -270px 0px;

@@ -2,8 +2,8 @@ package Task;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
+import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
@@ -14,6 +14,7 @@ import javax.transaction.RollbackException;
 import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 
+import controller.BuildHandler;
 import controller.PlanetHandler;
 import controller.QHandler;
 import planets.Planets_Buildings;
@@ -32,12 +33,16 @@ public class BuildTask implements Task, Serializable{
 	private Date time;
 	private int upgradeId;
 	private int planet;
+	private PlanetHandler planetHandler;
+	private BuildHandler buildHandler;
 	
-	public BuildTask(int type, Date time, int upgradeId, int planet, EntityManager em, UserTransaction utx) {
+	public BuildTask(int type, Date time, int upgradeId, int planet, PlanetHandler planetHandler, BuildHandler buildHandler, EntityManager em, UserTransaction utx) {
 		this.type = type;
 		this.time = time;
 		this.upgradeId = upgradeId;
 		this.planet = planet;
+		this.planetHandler = planetHandler;
+		this.buildHandler = buildHandler;
 		this.em = em;
 		this.utx = utx;
 		/** Add to queue for schedule **/
@@ -152,7 +157,6 @@ public class BuildTask implements Task, Serializable{
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-
 				em.merge(b);
 				try {
 					utx.commit();
@@ -165,7 +169,7 @@ public class BuildTask implements Task, Serializable{
 				System.out.println("Keine Werte in DB");
 			}
 		}
-					
+		planetHandler.updateDataset();
 	}
 	
 	private void idToFieldB(Planets_Buildings b, int id) {

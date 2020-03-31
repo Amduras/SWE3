@@ -44,6 +44,7 @@ public class LoginHandler implements Serializable{
 	private SettingsHandler settingsHandler;
 	private MessageHandler messageHandler;
 	private FleetHandler fleetHandler;
+	private boolean test = true;
 
 
 	@PersistenceContext
@@ -83,9 +84,12 @@ public class LoginHandler implements Serializable{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			settingsHandler = new SettingsHandler(em, utx, "Electra", 1, 1, 193, 0.1, 0.1 , 5, 10);
 			planetHandler.createNewPlanet(user.getUserID());
 		}
+		
+		settingsHandler = new SettingsHandler(em, utx);
+		buildHandler.setSettingsHandler(settingsHandler);
+		planetHandler.setSettingsHandler(settingsHandler);
 	}
 	
 	private void genTestMsg(User user) {
@@ -197,6 +201,7 @@ public class LoginHandler implements Serializable{
 			gHandler.setSystemForTable(id);
 			gHandler.setUser(user);
 			messageHandler.setUser(user);
+			planetHandler.calcStorage();
 			return"/main.xhtml?faces-redirect=true";
 		}catch (NoResultException e) {
 			return "/login.xhtml?faces-redirect=true";
@@ -267,12 +272,15 @@ public class LoginHandler implements Serializable{
 	public String logout () {
 		User user = handler.getUser();
 		user.setLastlogin(System.currentTimeMillis());
+		Planets_General pg = planetHandler.getPg();
+		pg.setLastActive(System.currentTimeMillis());
 		try {
 			utx.begin();
 		} catch (NotSupportedException | SystemException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		em.merge(pg);
 		em.merge(user);
 		try {
 			utx.commit();

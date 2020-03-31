@@ -11,7 +11,7 @@
 	<f:event listener="#{loginHandler.checkLoggedIn}" type="preRenderView" />
 
 	<ui:insert name="res_table">
-		<h:form>
+		<h:form id="resForm">
 			<table id="res_table">
 				<thead>
 					<tr class="res_table">
@@ -27,16 +27,18 @@
 				</thead>
 				<tbody>
 					<tr class="res_table">
-						<td id="metal"><p:outputLabel id="res_table_metal" value="#{loginHandler.planetHandler.pg.metal}"/></td>
-						<td id="crystal"><p:outputLabel id="res_table_crystal" value="#{loginHandler.planetHandler.pg.crystal}"/></td>
-						<td id="deut"><p:outputLabel  id="res_table_deut" value="#{loginHandler.planetHandler.pg.deut}"/></td>
-						<td id="energy"><p:outputLabel id="res_table_energy" value="#{loginHandler.planetHandler.pg.energy}"/></td>
-						<p:poll interval="5" listener="#{loginHandler.planetHandler.updateRes}" update="res_table_metal res_table_crystal res_table_deut"/>
+						<td id="metal"><p:outputLabel id="res_table_metal" value="#{loginHandler.planetHandler.pg.getMetalAsInt()}"/></td>
+						<td id="crystal"><p:outputLabel id="res_table_crystal" value="#{loginHandler.planetHandler.pg.getCrystalAsInt()}"/></td>
+						<td id="deut"><p:outputLabel  id="res_table_deut" value="#{loginHandler.planetHandler.pg.getDeutAsInt()}"/></td>
+						<td id="energy"><p:outputLabel id="res_table_energy" value="#{loginHandler.planetHandler.pg.getEnergyAsInt()}"/></td>
+						<p:poll interval="1" listener="#{loginHandler.planetHandler.updateRes(1)}" 
+						update="res_table_metal res_table_crystal res_table_deut res_table_energy metal_storage crystal_storage deut_storage maxEnergy"/>
 					</tr>
 					<tr class="res_table">
-						<td id="metal_storage">/<p:outputLabel value="#{planet.getMetalStorage()}"/></td>
-						<td id="crystal_storage">/<p:outputLabel value="#{planet.getCrytalStorage()}"/></td>
-						<td id="deut_storage">/<p:outputLabel value="#{planet.getDeutStorage()}"/></td>
+						<td id="metal_storage">/<p:outputLabel id="metal_storage" value="#{loginHandler.planetHandler.getStorageMAsInt()}"/></td>
+						<td id="crystal_storage">/<p:outputLabel id="crystal_storage" value="#{loginHandler.planetHandler.getStorageCAsInt()}"/></td>
+						<td id="deut_storage">/<p:outputLabel id="deut_storage" value="#{loginHandler.planetHandler.getStorageDAsInt()}"/></td>
+						<td id="maxEnergy">/<p:outputLabel id="maxEnergy" value="#{loginHandler.planetHandler.getMaxEnergyAsInt()}"/></td>
 						<td></td>
 					</tr>
 				</tbody>
