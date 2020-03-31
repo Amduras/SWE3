@@ -1,11 +1,13 @@
 package controller;
 
+import java.util.Date;
 import java.util.List;
 import java.util.ListIterator;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.transaction.HeuristicMixedException;
 import javax.transaction.HeuristicRollbackException;
@@ -14,8 +16,10 @@ import javax.transaction.RollbackException;
 import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 
+import model.Buildable;
 import model.Galaxy;
 import model.Solarsystem;
+import model.WorldSettings;
 import planets.Planets_Buildings;
 import planets.Planets_Def;
 import planets.Planets_General;
@@ -56,7 +60,8 @@ public class PlanetHandler {
 	public void init(List<Planets_General> planets) {
 		this.planets = planets;
 		this.setOwnedPlanets(planets.size());
-		updateDataset();	
+		updateDataset();
+		resDiff();
 	}
 
 	public void colonizePlanet(int userid, int position, int galaxyid, int systemid) {
@@ -219,13 +224,49 @@ public class PlanetHandler {
 	}
 
 
-	public void updateRes() {
-		int m = pg.getMetal();
-		int c = pg.getCrystal();
-		int d = pg.getDeut();
-		pg.setMetal(m+1000);
-		pg.setCrystal(c+663);
-		pg.setDeut(d+22);
+	public void updateRes(long seconds) {
+		Query query = em.createQuery("select k from WorldSettings k where k.id = :id");
+		query.setParameter("id", 1);
+		int geologist = 1;
+		float workload = 1f;
+		int item = 1;
+		try {
+			Object res = query.getSingleResult();
+			WorldSettings ws = (WorldSettings)res;
+		
+			long m =  pg.getMetal();
+			long c = pg.getCrystal();
+			long d = pg.getDeut();
+			m += seconds * (Math.round(30 * pb.getMetalMine() * Math.pow(1.1, pb.getMetalMine()) * geologist * workload * item + 120) * ((100 + 1 * pr.getPlasma()) / 100) * ws.getGameSpeed());
+			c += seconds * (Math.round(20 * pb.getCrystalMine() * Math.pow(1.1, pb.getCrystalMine()) * geologist * workload * item + 60) * ((100 + 0.66 * pr.getPlasma()) / 100) * ws.getGameSpeed());
+			d += seconds * (Math.round(10 * pb.getDeutSyn() * Math.pow(1.1, pb.getDeutSyn()) * (1.44 - 0.004 * pg.getTemperature()) * geologist * workload) * ((100 + 0.33 * pr.getPlasma()) / 100) * ws.getGameSpeed());
+			pg.setMetal(Math.min(m,Math.round(2.5 * Math.pow(Math.E,(20 * pb.getMetalStorage() / 33)) * 5000)));
+			pg.setCrystal(Math.min(c,Math.round(2.5 * Math.pow(Math.E,(20 * pb.getCrystalStorage() / 33)) * 5000)));
+			pg.setDeut(Math.min(d,Math.round(2.5 * Math.pow(Math.E,(20 * pb.getDeutTank() / 33)) * 5000)));
+		} catch(NoResultException e){	
+			System.out.println("Keine WS in DB");
+		}		
+	}
+	
+	private void resDiff() {
+		long diff = (System.currentTimeMillis() - pg.getLastUpdate().getTime()) / 1000;
+		updateRes(diff);
+		pg.setLastUpdate(new Date(System.currentTimeMillis()));
+		
+		try {
+			utx.begin();
+		} catch (NotSupportedException | SystemException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		em.merge(pg);
+		try {
+			utx.commit();
+		} catch (SecurityException | IllegalStateException | RollbackException | HeuristicMixedException
+				| HeuristicRollbackException | SystemException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public Planets_Buildings getPb() {
@@ -317,7 +358,18 @@ public class PlanetHandler {
 			buildHandler.setNewPage("true", "default");
 		}
 	}
-
+	public void updateGeneral() {
+		Query query = em.createQuery("select k from Planets_General k where k.planetId = :id");
+		query.setParameter("id", pg.getPlanetId());
+		Object res = query.getSingleResult();
+		if(res == null)
+			System.err.println("Planets_General with id="+pg.getPlanetId()+"was not found.");
+		else {
+			pg = (Planets_General)res;
+			resDiff();
+		}			
+	}
+	
 	public void updateBuildings() {
 		Query query = em.createQuery("select k from Planets_Buildings k where k.planetId = :id");
 		query.setParameter("id", pg.getPlanetId());
@@ -354,12 +406,34 @@ public class PlanetHandler {
 		else
 			ps = (Planets_Ships)res;
 	}
-	private void updateDataset() {
+	public void updateDataset() {
 		pg = planets.get(activePlanet);
 		
+		updateGeneral();
 		updateBuildings();
 		updateDef();
 		updateResearch();
 		updateShips();	
+	}
+	
+	public void save() {
+		try {
+			utx.begin();
+		} catch (NotSupportedException | SystemException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		em.merge(pg);
+		em.merge(pb);
+		em.merge(pr);
+		em.merge(ps);
+		em.merge(pd);
+		try {
+			utx.commit();
+		} catch (SecurityException | IllegalStateException | RollbackException | HeuristicMixedException
+				| HeuristicRollbackException | SystemException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

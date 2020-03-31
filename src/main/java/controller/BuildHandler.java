@@ -3,8 +3,9 @@ package controller;
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
-import java.sql.Date;
+import java.util.Date;
 import java.sql.Timestamp;
+import java.util.List;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -19,6 +20,7 @@ import org.primefaces.context.RequestContext;
 
 import Task.BuildTask;
 import model.Buildable;
+import model.WorldSettings;
 import planets.Planets_Buildings;
 
 @ManagedBean(name="buildHandler")
@@ -81,34 +83,54 @@ public class BuildHandler {
 			Object res = query.getSingleResult();
 
 			Buildable b = (Buildable)res;
-			name = b.getName();
-			lvl = idToLvl(id)+1;
-			type = b.getType();
-			if(type == 2) {
-				count = idToCount(id);
+			
+			query = em.createQuery("select k from WorldSettings k where k.id = :id");
+			query.setParameter("id", 1);
+			try {
+				Object res2 = query.getSingleResult();
+				WorldSettings ws = (WorldSettings)res2;
+				
+				name = b.getName();
+				lvl = idToLvl(id)+1;
+				type = b.getType();
+				if(type == 2) {
+					count = idToCount(id);
+				}
+				//System.out.println(b.getBaseCostCrystal()+" "+ b.getResFactor() + " "+ lvl);
+				metal = (long)(b.getBaseCostMetal() * Math.pow(b.getResFactor(), lvl));
+				crystal = (long)(b.getBaseCostCrystal() * Math.pow(b.getResFactor(), lvl));
+				deut = (long)(b.getBaseCostDeut() * Math.pow(b.getResFactor(), lvl));
+				if(id == 3) {
+					energy = (long) -Math.ceil((b.getBaseCostEnergy() * lvl * Math.pow(b.getEnergyFactor(), lvl)));
+				}
+				else if(id == 4) {
+					energy = (long) -Math.ceil((b.getBaseCostEnergy() * lvl * Math.pow(b.getEnergyFactor(), lvl)));
+				}
+				else {
+					energy = (long) Math.ceil((b.getBaseCostEnergy() * lvl * Math.pow(b.getEnergyFactor(), lvl)));
+				}
+				if(type == 0) {
+					time = (long)Math.ceil((metal+crystal) * 36 / (25 * (1 + planetHandler.getPb().getRoboticFactory()) * Math.pow(2, planetHandler.getPb().getNaniteFactory()) * ws.getGameSpeed()));
+					if(time > 100)
+						time -= 90;
+					timeM = time/60;
+					timeS = (int)Math.abs(time-timeM*60);
+				}
+				else if(type == 1) {
+					time = (long)Math.ceil(((metal+crystal) / (1000 * (1 + planetHandler.getPb().getResearchlab())) * 3600 - 1) / ws.getGameSpeed());
+					timeM = time/60;
+					timeS = (int)Math.abs(time-timeM*60);
+				}
+				else if(type == 2) {
+					time = (long)Math.ceil(((metal+crystal) / (2500 * (1 + planetHandler.getPb().getShipyard())) * Math.pow(2, planetHandler.getPb().getNaniteFactory())) * ws.getGameSpeed() * 60);
+					timeM = time/60;
+					timeS = (int)Math.abs(time-timeM*60);
+				}
+				descr = b.getDescr();
+				rec = b.getRec();
+			} catch(NoResultException e){	
+				System.out.println("Keine WS in DB");
 			}
-			System.out.println(b.getBaseCostCrystal()+" "+ b.getResFactor() + " "+ lvl);
-			metal = (long)(b.getBaseCostMetal() * Math.pow(b.getResFactor(), lvl));
-			crystal = (long)(b.getBaseCostCrystal() * Math.pow(b.getResFactor(), lvl));
-			deut = (long)(b.getBaseCostDeut() * Math.pow(b.getResFactor(), lvl));
-			if(id == 3) {
-				energy = (long) -Math.ceil((b.getBaseCostEnergy() * lvl * Math.pow(b.getEnergyFactor(), lvl)));
-			}
-			else if(id == 4) {
-				energy = (long) -Math.ceil((b.getBaseCostEnergy() * lvl * Math.pow(b.getEnergyFactor(), lvl)));
-			}
-			else {
-				energy = (long) Math.ceil((b.getBaseCostEnergy() * lvl * Math.pow(b.getEnergyFactor(), lvl)));
-			}
-			if(type == 0) {
-				time = (long)Math.ceil((metal+crystal) * 36 / (25 * (1 + planetHandler.getPb().getRoboticFactory()) * Math.pow(2, planetHandler.getPb().getNaniteFactory()) * 4));
-				if(time > 100)
-					time -= 90;
-				timeM = time/60;
-				timeS = (int)Math.abs(time-timeM*60);
-			}
-			descr = b.getDescr();
-			rec = b.getRec();
 		} catch(NoResultException e){	
 			System.out.println("Keine Werte in DB");
 		}
@@ -162,17 +184,67 @@ public class BuildHandler {
 	}
 
 	public void build() {
-		if(planetHandler.getPb().getTask() == null) {
-			System.out.println("ayooo");
-			if(checkRes() && checkRec()) {
-				System.out.println("qwerty");
-				Date d = new Date(System.currentTimeMillis()+(time*1000));
-				System.out.println("TIME Calc: " + new Timestamp(d.getTime()));
-				new BuildTask(type,d,id,planetHandler.getPg().getPlanetId(),em,utx);
+		planetHandler.updateDataset();
+		//TODO
+		//could have used type?
+		if(id < 16) {//building
+			if(planetHandler.getPb().getTask() == null) {
+				if(checkRes() && checkRec()) {
+					Date d = new Date(System.currentTimeMillis()+(time*1000));
+					//System.out.println("TIME Calc: " + new Timestamp(d.getTime()));
+					applyCost();
+					planetHandler.getPb().setTask(new BuildTask(type,d,id,planetHandler.getPg().getPlanetId(),em,utx));
+					planetHandler.save();
+				}
+				else {
+					System.out.println("Res oder rec fehlen");
+				}
+			}
+			else {
+				System.out.println("Es wird bereits gebaut.");
 			}
 		}
-		else {
-			System.out.println("Es wird bereits gebaut.");
+		else if(id < 31) { //research
+			if(planetHandler.getPr().getTask() == null) {
+				if(checkRes() && checkRec()) {
+					Date d = new Date(System.currentTimeMillis()+(time*1000));
+					applyCost();
+					planetHandler.getPr().setTask(new BuildTask(type,d,id,planetHandler.getPg().getPlanetId(),em,utx));
+					planetHandler.save();
+				}
+				else {
+					System.out.println("Res oder rec fehlen");
+				}
+			}
+			else {
+				System.out.println("Es wird bereits geforscht.");
+			}
+		}
+		else if(id < 45) { //ship
+			if(checkRes() && checkRec()) {
+				Date qTime = planetHandler.getPs().getqTime();
+				qTime = qTime.getTime() < System.currentTimeMillis() ? new Date(System.currentTimeMillis()+(time*1000)) : new Date((time*1000)+qTime.getTime());
+				applyCost();
+				planetHandler.getPs().addTask(new BuildTask(type,qTime,id,planetHandler.getPg().getPlanetId(),em,utx));
+				planetHandler.getPs().setqTime(qTime);
+				planetHandler.save();
+			}
+			else {
+				System.out.println("Res oder rec fehlen");
+			}
+		}
+		else { // def
+			if(checkRes() && checkRec()) {
+				Date qTime = planetHandler.getPd().getqTime();
+				qTime = qTime.getTime() < System.currentTimeMillis() ? new Date(System.currentTimeMillis()+(time*1000)) : new Date((time*1000)+qTime.getTime());			
+				applyCost();
+				planetHandler.getPd().addTask(new BuildTask(type,qTime,id,planetHandler.getPg().getPlanetId(),em,utx));
+				planetHandler.getPd().setqTime(qTime);
+				planetHandler.save();
+			}
+			else {
+				System.out.println("Res oder rec fehlen");
+			}
 		}
 	}
 
@@ -181,6 +253,14 @@ public class BuildHandler {
 		context.addMessage(null, new FacesMessage(msg));
 	}
 
+	private void applyCost() {
+		long m = planetHandler.getPg().getMetal();
+		long c = planetHandler.getPg().getCrystal();
+		long d = planetHandler.getPg().getDeut();
+		planetHandler.getPg().setMetal(m - metal);
+		planetHandler.getPg().setCrystal(c - crystal);
+		planetHandler.getPg().setDeut(d - deut);
+	}
 	private boolean checkRes() {
 		boolean ressourcen = true;
 		if(planetHandler.getPg().getMetal() < metal) {

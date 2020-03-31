@@ -1,6 +1,7 @@
 package planets;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -34,12 +35,13 @@ public class Planets_General implements Serializable {
 	private int slots;
 	private int moonSlots;
 	private int temperature;
-	private int metal;
-	private int crystal;
-	private int deut;
+	private long metal;
+	private long crystal;
+	private long deut;
 	private int energy; 
 	private String name = "DingDong des Todes";
 	private int userid;
+	private Date lastUpdate;
 
 	
 	public Planets_General() {
@@ -47,8 +49,8 @@ public class Planets_General implements Serializable {
 	}
 	
 	public Planets_General( int galaxy, int solarsystem, int position, Moon moon, long debrisFieldMetal,
-			long debrisFieldCris, long debrisFieldDeut, int slots, int moonSlots, int temperature, int metal,
-			int crystal, int deut, int energy, String name, int userID) {
+			long debrisFieldCris, long debrisFieldDeut, int slots, int moonSlots, int temperature, long metal,
+			long crystal, long deut, int energy, String name, int userID) {
 		this.galaxy = galaxy;
 		this.solarsystem = solarsystem;
 		this.position = position;
@@ -65,6 +67,7 @@ public class Planets_General implements Serializable {
 		this.energy = energy;
 		this.name = name;
 		this.userid = userID;
+		this.setLastUpdate(new Date(System.currentTimeMillis()));
 	}
 	
 	public int getPlanetId() {
@@ -155,27 +158,27 @@ public class Planets_General implements Serializable {
 		this.temperature = temperature;
 	}
 
-	public int getMetal() {
+	public long getMetal() {
 		return metal;
 	}
 
-	public void setMetal(int metal) {
+	public void setMetal(long metal) {
 		this.metal = metal;
 	}
 
-	public int getCrystal() {
+	public long getCrystal() {
 		return crystal;
 	}
 
-	public void setCrystal(int cris) {
+	public void setCrystal(long cris) {
 		this.crystal = cris;
 	}
 
-	public int getDeut() {
+	public long getDeut() {
 		return deut;
 	}
 
-	public void setDeut(int deut) {
+	public void setDeut(long deut) {
 		this.deut = deut;
 	}
 
@@ -217,6 +220,14 @@ public class Planets_General implements Serializable {
 	
 	public int getEnergyAsInt() {
 		return (int) energy;
+	}
+
+	public Date getLastUpdate() {
+		return lastUpdate;
+	}
+
+	public void setLastUpdate(Date lastUpdate) {
+		this.lastUpdate = lastUpdate;
 	}
 	
 }

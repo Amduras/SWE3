@@ -2,6 +2,9 @@ package planets;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -38,7 +41,8 @@ public class Planets_Ships implements Serializable {
 	private int espionageProbe;
 	private int solarSattlelite;
 	
-//	private List<BuildTask> task = new ArrayList<BuildTask>();
+	private Date qTime = new Date(0);
+	private List<BuildTask> task = Collections.synchronizedList(new ArrayList<BuildTask>());
 	
 	public Planets_Ships() {
 		
@@ -184,13 +188,36 @@ public class Planets_Ships implements Serializable {
 		this.solarSattlelite = solarSattlelite;
 	}
 
-//	public List<BuildTask> getTask() {
-//		return task;
-//	}
-//
-//	public void setTask(List<BuildTask> task) {
-//		this.task = task;
-//	}
+	public List<BuildTask> getTask() {
+		return task;
+	}
+	public void addTask(BuildTask t) {
+		task.add(t);
+	}
+	public synchronized void removeTask(Date time) {
+		synchronized(task) {
+			Iterator<BuildTask> it = task.iterator();
+			
+			while(it.hasNext()) {
+				BuildTask b = it.next();
+				if(b.getTime() == time) {
+					it.remove();
+					return;
+				}				
+			}
+		}		
+	}
+	public void setTask(List<BuildTask> task) {
+		this.task = task;
+	}
+
+	public Date getqTime() {
+		return qTime;
+	}
+
+	public void setqTime(Date qTime) {
+		this.qTime = qTime;
+	}
 	
 	
 }
