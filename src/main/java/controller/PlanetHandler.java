@@ -226,7 +226,7 @@ public class PlanetHandler {
 
 	public void updateRes(long seconds) {
 		Query query = em.createQuery("select k from WorldSettings k where k.id = :id");
-		query.setParameter("id", 1);
+		query.setParameter("id", 63);
 		int geologist = 1;
 		float workload = 1f;
 		int item = 1;

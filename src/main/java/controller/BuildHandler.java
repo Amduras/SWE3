@@ -85,7 +85,7 @@ public class BuildHandler {
 			Buildable b = (Buildable)res;
 			
 			query = em.createQuery("select k from WorldSettings k where k.id = :id");
-			query.setParameter("id", 1);
+			query.setParameter("id", 63);
 			try {
 				Object res2 = query.getSingleResult();
 				WorldSettings ws = (WorldSettings)res2;
