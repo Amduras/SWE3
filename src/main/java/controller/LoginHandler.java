@@ -98,7 +98,7 @@ public class LoginHandler implements Serializable{
 	
 	private void install() {
 		// name		type	baseCostMetal baseCostCrystal baseCostDeut baseCostEnergy	resFactor	energyFactor	Descr	rec
-		//type 0= building 1=tech 2=ship
+		//type 0= building 1=tech 2=ship/def
 		em.persist(new Buildable("Metallmine", 0, 40, 10, 0, 10, 1.5, 1.1, "Hauptrohstoff für den Bau tragender Strukturen von Bauwerken und Schiffen.", ""));
 		em.persist(new Buildable("Kristallmine", 0, 30, 15, 0, 10, 1.6, 1.1, "Hier wird Kristall abgebaut - der Hauptrohstoff für elektronische Bauteile und Legierungen.", ""));
 		em.persist(new Buildable("Deuterium-Synthetisierer", 0, 150, 50, 0, 20, 1.5, 1.1, "Deuterium-Synthetisierer entziehen dem Wasser eines Planeten den geringen Deuteriumanteil.", ""));

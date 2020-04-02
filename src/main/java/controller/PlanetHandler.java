@@ -65,7 +65,7 @@ public class PlanetHandler {
 	}
 
 	public void colonizePlanet(int userid, int position, int galaxyid, int systemid) {
-		Planets_General pgt = new Planets_General(galaxyid, systemid, position, null, 0, 0, 0, 193, 0, 500, 200, 0, 0, 0, "Kolonie",userid);
+		Planets_General pgt = new Planets_General(galaxyid, systemid, position, null, 0, 0, 0, 193, 0, 500, 200, 0, 0, 0, 0, "Kolonie",userid);
 		try {
 			utx.begin();
 		} catch (NotSupportedException | SystemException e1) {
@@ -165,7 +165,7 @@ public class PlanetHandler {
 			system = galaxyHandler.getFreeSystem(galaxy.getGalaxyId());
 			position = galaxyHandler.getFreePosition(galaxy.getGalaxyId(), system.getSystemId(), true);
 		}
-		Planets_General pgt = new Planets_General( galaxy.getGalaxyId(), system.getSystemId(), position, null, 0, 0, 0, 193, 0, 500, 200, 200, 0, 0, "Heimatplanet",userID);
+		Planets_General pgt = new Planets_General( galaxy.getGalaxyId(), system.getSystemId(), position, null, 0, 0, 0, 193, 0, 500, 200, 200, 0, 0, 0, "Heimatplanet",userID);
 		try {
 			utx.begin();
 		} catch (NotSupportedException | SystemException e1) {
@@ -228,6 +228,7 @@ public class PlanetHandler {
 		Query query = em.createQuery("select k from WorldSettings k where k.id = :id");
 		query.setParameter("id", 63);
 		int geologist = 1;
+		int engineer = 1;
 		float workload = 1f;
 		int item = 1;
 		try {
@@ -237,13 +238,19 @@ public class PlanetHandler {
 			double m =  pg.getMetal();
 			double c = pg.getCrystal();
 			System.out.println("c: "+c);
-			double d = pg.getDeut();
+			double d = pg.getDeut();			 
 			m += seconds * ((30 * pb.getMetalMine() * Math.pow(1.1, pb.getMetalMine()) * geologist * workload * item + 120) * ((100 + 1 * pr.getPlasma()) / 100) * ws.getGameSpeed())/3600;
 			c += seconds * ((20 * pb.getCrystalMine() * Math.pow(1.1, pb.getCrystalMine()) * geologist * workload * item + 60) * ((100 + 0.66 * pr.getPlasma()) / 100) * ws.getGameSpeed())/3600;
-			d += seconds * ((10 * pb.getDeutSyn() * Math.pow(1.1, pb.getDeutSyn()) * (1.44 - 0.004 * pg.getTemperature()) * geologist * workload) * ((100 + 0.33 * pr.getPlasma()) / 100) * ws.getGameSpeed())/3600;
+			d += seconds * ((10 * pb.getDeutSyn() * Math.pow(1.1, pb.getDeutSyn()) * (1.44 - 0.004 * pg.getTemperature()) * geologist * workload) * ((100 + 0.33 * pr.getPlasma()) / 100) * ws.getGameSpeed() - Math.ceil(10 * pb.getFusionReactor() * Math.pow(1.1, pb.getFusionReactor()) * ws.getGameSpeed()))/3600;
 			pg.setMetal(Math.min(m,Math.round(2.5 * Math.pow(Math.E,(20 * pb.getMetalStorage() / 33)) * 5000)));
 			pg.setCrystal(Math.min(c,Math.round(2.5 * Math.pow(Math.E,(20 * pb.getCrystalStorage() / 33)) * 5000)));
 			pg.setDeut(Math.min(d,Math.round(2.5 * Math.pow(Math.E,(20 * pb.getDeutTank() / 33)) * 5000)));
+			
+			int mE = (int) Math.round(Math.ceil(20 * pb.getSolarPlant() * Math.pow(1.1, pb.getSolarPlant()) * engineer) +
+									 Math.ceil(30 * pb.getFusionReactor() * Math.pow((1.05 + pr.getEnergy() * 0.01), pb.getFusionReactor()) * engineer) +
+									 Math.ceil((pg.getTemperature() + 140) / 6) * ps.getSolarSattlelite() * engineer);
+			
+			pg.setMaxEnergy(mE);
 		} catch(NoResultException e){	
 			System.out.println("Keine WS in DB");
 		}		
@@ -276,7 +283,7 @@ public class PlanetHandler {
 		query.setParameter("id", id);
 		planets = query.getResultList();
 	}
-
+	//TODO MISSING ARG??
 	public void changePlanet(boolean left, BuildHandler buildHandler){
 		if(planets.size() > 1) {
 			if(left) {

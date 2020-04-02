@@ -197,7 +197,7 @@ public class BuildHandler {
 					Date d = new Date(System.currentTimeMillis()+(time*1000));
 					//System.out.println("TIME Calc: " + new Timestamp(d.getTime()));
 					applyCost();
-					planetHandler.getPb().setTask(new BuildTask(type,d,id,planetHandler.getPg().getPlanetId(),em,utx));
+					planetHandler.getPb().setTask(new BuildTask(type,d,id,planetHandler.getPg().getPlanetId(),em,utx,planetHandler));
 					planetHandler.save();
 				}
 				else {
@@ -213,7 +213,7 @@ public class BuildHandler {
 				if(checkRes() && checkRec()) {
 					Date d = new Date(System.currentTimeMillis()+(time*1000));
 					applyCost();
-					planetHandler.getPr().setTask(new BuildTask(type,d,id,planetHandler.getPg().getPlanetId(),em,utx));
+					planetHandler.getPr().setTask(new BuildTask(type,d,id,planetHandler.getPg().getPlanetId(),em,utx,planetHandler));
 					planetHandler.save();
 				}
 				else {
@@ -261,6 +261,8 @@ public class BuildHandler {
 		double m = planetHandler.getPg().getMetal();
 		double c = planetHandler.getPg().getCrystal();
 		double d = planetHandler.getPg().getDeut();
+		int uE = planetHandler.getPg().getUsedEnergy();
+		planetHandler.getPg().setUsedEnergy((int)(uE+energy));
 		planetHandler.getPg().setMetal(m - metal);
 		planetHandler.getPg().setCrystal(c - crystal);
 		planetHandler.getPg().setDeut(d - deut);
@@ -279,7 +281,7 @@ public class BuildHandler {
 			setBuildMessage("Nicht genug Deuterium");
 			ressourcen = false;
 		}
-		if(planetHandler.getPg().getEnergy() < energy) {
+		if(planetHandler.getPg().getMaxEnergy()-planetHandler.getPg().getUsedEnergy() < energy) {
 			setBuildMessage("Nicht genug Energie");
 			ressourcen = false;
 		}

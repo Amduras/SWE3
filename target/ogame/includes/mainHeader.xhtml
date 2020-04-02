@@ -30,7 +30,7 @@
 						<td id="metal"><p:outputLabel id="res_table_metal" value="#{loginHandler.planetHandler.pg.getMetalAsInt()}"/></td>
 						<td id="crystal"><p:outputLabel id="res_table_crystal" value="#{loginHandler.planetHandler.pg.getCrystalAsInt()}"/></td>
 						<td id="deut"><p:outputLabel  id="res_table_deut" value="#{loginHandler.planetHandler.pg.getDeutAsInt()}"/></td>
-						<td id="energy"><p:outputLabel id="res_table_energy" value="#{loginHandler.planetHandler.pg.getEnergyAsInt()}"/></td>
+						<td id="energy"><p:outputLabel id="res_table_energy" value="#{loginHandler.planetHandler.pg.getUsedEnergy()}"/></td>
 						<p:poll interval="1" listener="#{loginHandler.planetHandler.updateRes(1)}" 
 						update="res_table_metal res_table_crystal res_table_deut res_table_energy metal_storage crystal_storage deut_storage maxEnergy"/>
 					</tr>
@@ -38,7 +38,7 @@
 						<td id="metal_storage">/<p:outputLabel id="metal_storage" value="#{loginHandler.planetHandler.getStorageMAsInt()}"/></td>
 						<td id="crystal_storage">/<p:outputLabel id="crystal_storage" value="#{loginHandler.planetHandler.getStorageCAsInt()}"/></td>
 						<td id="deut_storage">/<p:outputLabel id="deut_storage" value="#{loginHandler.planetHandler.getStorageDAsInt()}"/></td>
-						<td id="maxEnergy">/<p:outputLabel id="maxEnergy" value="#{loginHandler.planetHandler.getMaxEnergyAsInt()}"/></td>
+						<td id="maxEnergy">/<p:outputLabel id="maxEnergy" value="#{loginHandler.planetHandler.pg.getMaxEnergy()}"/></td>
 						<td></td>
 					</tr>
 				</tbody>

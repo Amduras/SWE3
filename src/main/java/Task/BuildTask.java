@@ -36,13 +36,14 @@ public class BuildTask implements Task, Serializable{
 	private PlanetHandler planetHandler;
 	private BuildHandler buildHandler;
 	
-	public BuildTask(int type, Date time, int upgradeId, int planet, EntityManager em, UserTransaction utx) {
+	public BuildTask(int type, Date time, int upgradeId, int planet, EntityManager em, UserTransaction utx, PlanetHandler p) {
 		this.type = type;
 		this.time = time;
 		this.upgradeId = upgradeId;
 		this.planet = planet;
 		this.em = em;
 		this.utx = utx;
+		this.planetHandler = p;
 		/** Add to queue for schedule **/
 		QHandler.queued.add(this);
 	}
