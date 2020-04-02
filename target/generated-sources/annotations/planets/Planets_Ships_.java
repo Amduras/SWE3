@@ -1,5 +1,6 @@
 package planets;
 
+import java.util.Date;
 import javax.annotation.Generated;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
@@ -23,6 +24,7 @@ public abstract class Planets_Ships_ {
 	public static volatile SingularAttribute<Planets_Ships, Integer> espionageProbe;
 	public static volatile SingularAttribute<Planets_Ships, Integer> colonyShip;
 	public static volatile SingularAttribute<Planets_Ships, Integer> recycler;
+	public static volatile SingularAttribute<Planets_Ships, Date> qTime;
 
 }
 

@@ -38,7 +38,7 @@ public class Planets_Def implements Serializable {
 	private int interplanetaryMissle;
 	
 	private Date qTime = new Date(0);
-	private List<BuildTask> task = Collections.synchronizedList(new ArrayList<BuildTask>());
+//	private List<BuildTask> task = Collections.synchronizedList(new ArrayList<BuildTask>());
 	
 	public Planets_Def() {
 		
@@ -148,28 +148,28 @@ public class Planets_Def implements Serializable {
 		this.interplanetaryMissle = interplanetaryMissle;
 	}
 
-	public List<BuildTask> getTask() {
-		return task;
-	}
-	public void addTask(BuildTask t) {
-		task.add(t);
-	}
-	public synchronized void removeTask(Date time) {
-		synchronized(task) {
-			Iterator<BuildTask> it = task.iterator();
-			
-			while(it.hasNext()) {
-				BuildTask b = it.next();
-				if(b.getTime() == time) {
-					it.remove();
-					return;
-				}				
-			}
-		}		
-	}
-	public void setTask(List<BuildTask> task) {
-		this.task = task;
-	}
+//	public List<BuildTask> getTask() {
+//		return task;
+//	}
+//	public void addTask(BuildTask t) {
+//		task.add(t);
+//	}
+//	public synchronized void removeTask(Date time) {
+//		synchronized(task) {
+//			Iterator<BuildTask> it = task.iterator();
+//			
+//			while(it.hasNext()) {
+//				BuildTask b = it.next();
+//				if(b.getTime() == time) {
+//					it.remove();
+//					return;
+//				}				
+//			}
+//		}		
+//	}
+//	public void setTask(List<BuildTask> task) {
+//		this.task = task;
+//	}
 
 	public Date getqTime() {
 		return qTime;

@@ -165,7 +165,7 @@ public class PlanetHandler {
 			system = galaxyHandler.getFreeSystem(galaxy.getGalaxyId());
 			position = galaxyHandler.getFreePosition(galaxy.getGalaxyId(), system.getSystemId(), true);
 		}
-		Planets_General pgt = new Planets_General( galaxy.getGalaxyId(), system.getSystemId(), position, null, 0, 0, 0, 193, 0, 500, 200, 0, 0, 0, "Heimatplanet",userID);
+		Planets_General pgt = new Planets_General( galaxy.getGalaxyId(), system.getSystemId(), position, null, 0, 0, 0, 193, 0, 500, 200, 200, 0, 0, "Heimatplanet",userID);
 		try {
 			utx.begin();
 		} catch (NotSupportedException | SystemException e1) {
@@ -234,12 +234,13 @@ public class PlanetHandler {
 			Object res = query.getSingleResult();
 			WorldSettings ws = (WorldSettings)res;
 		
-			long m =  pg.getMetal();
-			long c = pg.getCrystal();
-			long d = pg.getDeut();
-			m += seconds * (Math.round(30 * pb.getMetalMine() * Math.pow(1.1, pb.getMetalMine()) * geologist * workload * item + 120) * ((100 + 1 * pr.getPlasma()) / 100) * ws.getGameSpeed());
-			c += seconds * (Math.round(20 * pb.getCrystalMine() * Math.pow(1.1, pb.getCrystalMine()) * geologist * workload * item + 60) * ((100 + 0.66 * pr.getPlasma()) / 100) * ws.getGameSpeed());
-			d += seconds * (Math.round(10 * pb.getDeutSyn() * Math.pow(1.1, pb.getDeutSyn()) * (1.44 - 0.004 * pg.getTemperature()) * geologist * workload) * ((100 + 0.33 * pr.getPlasma()) / 100) * ws.getGameSpeed());
+			double m =  pg.getMetal();
+			double c = pg.getCrystal();
+			System.out.println("c: "+c);
+			double d = pg.getDeut();
+			m += seconds * ((30 * pb.getMetalMine() * Math.pow(1.1, pb.getMetalMine()) * geologist * workload * item + 120) * ((100 + 1 * pr.getPlasma()) / 100) * ws.getGameSpeed())/3600;
+			c += seconds * ((20 * pb.getCrystalMine() * Math.pow(1.1, pb.getCrystalMine()) * geologist * workload * item + 60) * ((100 + 0.66 * pr.getPlasma()) / 100) * ws.getGameSpeed())/3600;
+			d += seconds * ((10 * pb.getDeutSyn() * Math.pow(1.1, pb.getDeutSyn()) * (1.44 - 0.004 * pg.getTemperature()) * geologist * workload) * ((100 + 0.33 * pr.getPlasma()) / 100) * ws.getGameSpeed())/3600;
 			pg.setMetal(Math.min(m,Math.round(2.5 * Math.pow(Math.E,(20 * pb.getMetalStorage() / 33)) * 5000)));
 			pg.setCrystal(Math.min(c,Math.round(2.5 * Math.pow(Math.E,(20 * pb.getCrystalStorage() / 33)) * 5000)));
 			pg.setDeut(Math.min(d,Math.round(2.5 * Math.pow(Math.E,(20 * pb.getDeutTank() / 33)) * 5000)));
@@ -268,7 +269,112 @@ public class PlanetHandler {
 			e.printStackTrace();
 		}
 	}
+	@SuppressWarnings("unchecked")
+	public void createPlanetlist() {
+		int id = planets.get(0).getUserId();
+		Query query = em.createQuery("select k from Planets_General k where k.userid = :id");
+		query.setParameter("id", id);
+		planets = query.getResultList();
+	}
 
+	public void changePlanet(boolean left, BuildHandler buildHandler){
+		if(planets.size() > 1) {
+			if(left) {
+				if(activePlanet - 1 < 0) {
+					changePlanet(planets.size()-1);
+				} else {
+					changePlanet(--activePlanet);
+				}
+			} else {
+				if(activePlanet + 1 > planets.size()-1) {
+					changePlanet(0);
+				} else {
+					changePlanet(++activePlanet);
+				}
+			}
+			buildHandler.setNewPage("true", "default");
+		}
+	}
+	public void updateGeneral() {
+		Query query = em.createQuery("select k from Planets_General k where k.planetId = :id");
+		query.setParameter("id", pg.getPlanetId());
+		try {
+			pg = (Planets_General)query.getSingleResult();
+			resDiff();
+		} catch(NoResultException e) {
+			System.err.println("Planets_General with id="+pg.getPlanetId()+"was not found.");
+		}		
+	}
+	
+	public void updateBuildings() {
+		Query query = em.createQuery("select k from Planets_Buildings k where k.planetId = :id");
+		query.setParameter("id", pg.getPlanetId());
+		try {
+			pb = (Planets_Buildings)query.getSingleResult();
+		} catch(NoResultException e) {
+			System.err.println("Planets_Buildings with id="+pg.getPlanetId()+"was not found.");
+		}
+	}
+	
+	public void updateDef() {
+		Query query = em.createQuery("select k from Planets_Def k where k.planetId = :id");
+		query.setParameter("id", pg.getPlanetId());
+		try {
+			pd = (Planets_Def)query.getSingleResult();
+		} catch(NoResultException e) {
+			System.err.println("Planets_Buildings with id="+pg.getPlanetId()+"was not found.");
+		}
+	}
+	
+	public void updateResearch() {
+		Query query = em.createQuery("select k from Planets_Research k where k.planetId = :id");
+		query.setParameter("id", pg.getPlanetId());
+		try {
+			pr = (Planets_Research)query.getSingleResult();
+		} catch(NoResultException e) {
+			System.err.println("Planets_Buildings with id="+pg.getPlanetId()+"was not found.");
+		}
+	}
+	
+	public void updateShips() {
+		Query query = em.createQuery("select k from Planets_Ships k where k.planetId = :id");
+		query.setParameter("id", pg.getPlanetId());
+		try {
+			ps = (Planets_Ships)query.getSingleResult();
+		} catch(NoResultException e) {
+			System.err.println("Planets_Buildings with id="+pg.getPlanetId()+"was not found.");
+		}
+	}
+	public void updateDataset() {
+		pg = planets.get(activePlanet);
+		updateBuildings();
+		updateDef();
+		updateResearch();
+		updateShips();	
+		updateGeneral();
+	}
+	
+	public void save() {
+		try {
+			utx.begin();
+		} catch (NotSupportedException | SystemException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		em.merge(pg);
+		em.merge(pb);
+		em.merge(pr);
+		em.merge(ps);
+		em.merge(pd);
+		try {
+			utx.commit();
+		} catch (SecurityException | IllegalStateException | RollbackException | HeuristicMixedException
+				| HeuristicRollbackException | SystemException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	public Planets_Buildings getPb() {
 		return pb;
 	}
@@ -331,109 +437,20 @@ public class PlanetHandler {
 		createPlanetlist();
 		return planets;
 	}
-
-	@SuppressWarnings("unchecked")
-	public void createPlanetlist() {
-		int id = planets.get(0).getUserId();
-		Query query = em.createQuery("select k from Planets_General k where k.userid = :id");
-		query.setParameter("id", id);
-		planets = query.getResultList();
-	}
-
-	public void changePlanet(boolean left, BuildHandler buildHandler){
-		if(planets.size() > 1) {
-			if(left) {
-				if(activePlanet - 1 < 0) {
-					changePlanet(planets.size()-1);
-				} else {
-					changePlanet(--activePlanet);
-				}
-			} else {
-				if(activePlanet + 1 > planets.size()-1) {
-					changePlanet(0);
-				} else {
-					changePlanet(++activePlanet);
-				}
-			}
-			buildHandler.setNewPage("true", "default");
-		}
-	}
-	public void updateGeneral() {
-		Query query = em.createQuery("select k from Planets_General k where k.planetId = :id");
-		query.setParameter("id", pg.getPlanetId());
-		Object res = query.getSingleResult();
-		if(res == null)
-			System.err.println("Planets_General with id="+pg.getPlanetId()+"was not found.");
-		else {
-			pg = (Planets_General)res;
-			resDiff();
-		}			
+	
+	public int getStorageMAsInt() {
+		return (int) Math.round(2.5 * Math.pow(Math.E,(20 * pb.getMetalStorage() / 33)) * 5000);
 	}
 	
-	public void updateBuildings() {
-		Query query = em.createQuery("select k from Planets_Buildings k where k.planetId = :id");
-		query.setParameter("id", pg.getPlanetId());
-		Object res = query.getSingleResult();
-		if(res == null)
-			System.err.println("Planets_Buildings with id="+pg.getPlanetId()+"was not found.");
-		else
-			pb = (Planets_Buildings)res;
-	}
-	public void updateDef() {
-		Query query = em.createQuery("select k from Planets_Def k where k.planetId = :id");
-		query.setParameter("id", pg.getPlanetId());
-		Object res = query.getSingleResult();
-		if(res == null)
-			System.err.println("Planets_Buildings with id="+pg.getPlanetId()+"was not found.");
-		else
-			pd = (Planets_Def)res;
-	}
-	public void updateResearch() {
-		Query query = em.createQuery("select k from Planets_Research k where k.planetId = :id");
-		query.setParameter("id", pg.getPlanetId());
-		Object res = query.getSingleResult();
-		if(res == null)
-			System.err.println("Planets_Buildings with id="+pg.getPlanetId()+"was not found.");
-		else
-			pr = (Planets_Research)res;
-	}
-	public void updateShips() {
-		Query query = em.createQuery("select k from Planets_Ships k where k.planetId = :id");
-		query.setParameter("id", pg.getPlanetId());
-		Object res = query.getSingleResult();
-		if(res == null)
-			System.err.println("Planets_Buildings with id="+pg.getPlanetId()+"was not found.");
-		else
-			ps = (Planets_Ships)res;
-	}
-	public void updateDataset() {
-		pg = planets.get(activePlanet);
-		
-		updateGeneral();
-		updateBuildings();
-		updateDef();
-		updateResearch();
-		updateShips();	
+	public int getStorageCAsInt() {
+		return (int) Math.round(2.5 * Math.pow(Math.E,(20 * pb.getCrystalStorage() / 33)) * 5000);
 	}
 	
-	public void save() {
-		try {
-			utx.begin();
-		} catch (NotSupportedException | SystemException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		em.merge(pg);
-		em.merge(pb);
-		em.merge(pr);
-		em.merge(ps);
-		em.merge(pd);
-		try {
-			utx.commit();
-		} catch (SecurityException | IllegalStateException | RollbackException | HeuristicMixedException
-				| HeuristicRollbackException | SystemException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public int getStorageDAsInt() {
+		return (int) Math.round(2.5 * Math.pow(Math.E,(20 * pb.getDeutTank() / 33)) * 5000);
+	}
+	
+	public int getMaxEnergyAsInt() {
+		return 0;
 	}
 }

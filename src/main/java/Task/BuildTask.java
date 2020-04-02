@@ -36,13 +36,11 @@ public class BuildTask implements Task, Serializable{
 	private PlanetHandler planetHandler;
 	private BuildHandler buildHandler;
 	
-	public BuildTask(int type, Date time, int upgradeId, int planet, PlanetHandler planetHandler, BuildHandler buildHandler, EntityManager em, UserTransaction utx) {
+	public BuildTask(int type, Date time, int upgradeId, int planet, EntityManager em, UserTransaction utx) {
 		this.type = type;
 		this.time = time;
 		this.upgradeId = upgradeId;
 		this.planet = planet;
-		this.planetHandler = planetHandler;
-		this.buildHandler = buildHandler;
 		this.em = em;
 		this.utx = utx;
 		/** Add to queue for schedule **/
@@ -123,7 +121,7 @@ public class BuildTask implements Task, Serializable{
 				Object res = query.getSingleResult();
 				Planets_Ships b = (Planets_Ships)res;
 				idToFieldS(b,upgradeId);
-				b.removeTask(time);
+//				b.removeTask(time);
 				try {
 					utx.begin();
 				} catch (NotSupportedException | SystemException e) {
@@ -150,7 +148,7 @@ public class BuildTask implements Task, Serializable{
 				Object res = query.getSingleResult();
 				Planets_Def b = (Planets_Def)res;
 				idToFieldD(b,upgradeId);
-				b.removeTask(time);
+//				b.removeTask(time);
 				try {
 					utx.begin();
 				} catch (NotSupportedException | SystemException e) {

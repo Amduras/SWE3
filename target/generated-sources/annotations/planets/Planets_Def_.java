@@ -1,5 +1,6 @@
 package planets;
 
+import java.util.Date;
 import javax.annotation.Generated;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
@@ -18,6 +19,7 @@ public abstract class Planets_Def_ {
 	public static volatile SingularAttribute<Planets_Def, Integer> antiBallisticMissle;
 	public static volatile SingularAttribute<Planets_Def, Integer> planetId;
 	public static volatile SingularAttribute<Planets_Def, Integer> plasmaTurret;
+	public static volatile SingularAttribute<Planets_Def, Date> qTime;
 	public static volatile SingularAttribute<Planets_Def, Integer> smallShieldDome;
 
 }

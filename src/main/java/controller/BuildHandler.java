@@ -48,7 +48,11 @@ public class BuildHandler {
 	private String descr;
 	private String rec;
 	private boolean newPage;
-
+	
+	public BuildHandler() {
+		
+	}
+	
 	public BuildHandler(PlanetHandler p, EntityManager em, UserTransaction utx) {
 		this.planetHandler = p;
 		this.em = em;
@@ -225,7 +229,7 @@ public class BuildHandler {
 				Date qTime = planetHandler.getPs().getqTime();
 				qTime = qTime.getTime() < System.currentTimeMillis() ? new Date(System.currentTimeMillis()+(time*1000)) : new Date((time*1000)+qTime.getTime());
 				applyCost();
-				planetHandler.getPs().addTask(new BuildTask(type,qTime,id,planetHandler.getPg().getPlanetId(),em,utx));
+//				planetHandler.getPs().addTask(new BuildTask(type,qTime,id,planetHandler.getPg().getPlanetId(),em,utx));
 				planetHandler.getPs().setqTime(qTime);
 				planetHandler.save();
 			}
@@ -238,7 +242,7 @@ public class BuildHandler {
 				Date qTime = planetHandler.getPd().getqTime();
 				qTime = qTime.getTime() < System.currentTimeMillis() ? new Date(System.currentTimeMillis()+(time*1000)) : new Date((time*1000)+qTime.getTime());			
 				applyCost();
-				planetHandler.getPd().addTask(new BuildTask(type,qTime,id,planetHandler.getPg().getPlanetId(),em,utx));
+//				planetHandler.getPd().addTask(new BuildTask(type,qTime,id,planetHandler.getPg().getPlanetId(),em,utx));
 				planetHandler.getPd().setqTime(qTime);
 				planetHandler.save();
 			}
@@ -254,9 +258,9 @@ public class BuildHandler {
 	}
 
 	private void applyCost() {
-		long m = planetHandler.getPg().getMetal();
-		long c = planetHandler.getPg().getCrystal();
-		long d = planetHandler.getPg().getDeut();
+		double m = planetHandler.getPg().getMetal();
+		double c = planetHandler.getPg().getCrystal();
+		double d = planetHandler.getPg().getDeut();
 		planetHandler.getPg().setMetal(m - metal);
 		planetHandler.getPg().setCrystal(c - crystal);
 		planetHandler.getPg().setDeut(d - deut);
@@ -292,7 +296,7 @@ public class BuildHandler {
 			while(buildable && i < recs.length) {
 				String[] recs2 = recs[i].split(":");
 				if(getMethode(recs2[0])!=99999999) {
-					if(recs2[1].equals(getMethode(recs2[0].toString()))){
+					if(Integer.valueOf(recs2[1]) == getMethode(recs2[0].toString())){
 						++i;
 					} else {
 						buildable = false;
