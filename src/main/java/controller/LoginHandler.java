@@ -27,7 +27,11 @@ import model.Buildable;
 import model.Messages;
 import model.Ship;
 import model.User;
+import planets.Planets_Buildings;
+import planets.Planets_Def;
 import planets.Planets_General;
+import planets.Planets_Research;
+import planets.Planets_Ships;
 
 @ManagedBean(name="loginHandler")
 @SessionScoped
@@ -67,7 +71,6 @@ public class LoginHandler implements Serializable{
 		@SuppressWarnings("unchecked")
 		List<User> qusers = query.getResultList();
 		if(qusers.size() == 0) {
-			User user = new User("admin","admin@admin.de","admin", IsActive.TRUE, AuthLvl.SGA);
 			try {
 				utx.begin();
 			} catch (NotSupportedException | SystemException e) {
@@ -75,16 +78,13 @@ public class LoginHandler implements Serializable{
 				e.printStackTrace();
 			}
 			install();
-			genTestMsg(user);
-			em.persist(user);
 			try {
 				utx.commit();
 			} catch (SecurityException | IllegalStateException | RollbackException | HeuristicMixedException
 					| HeuristicRollbackException | SystemException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
-			planetHandler.createNewPlanet(user.getUserID());
+			}			
 		}
 		settingsHandler = new SettingsHandler(em, utx);
 	}
@@ -168,6 +168,95 @@ public class LoginHandler implements Serializable{
 		em.persist(new Ship(42,1600,10,1,20000,2000,1000,21,new int[] {1,1,1,1,1,1,1,250,1,1,1,1,1,1}));
 		em.persist(new Ship(43,100,1,1,5,100000000,1,21,new int[] {5,5,5,5,5,5,5,1250,5,5,5,5,1,1}));
 		em.persist(new Ship(44,200,1,1,0,0,0,21,new int[] {5,5,5,5,5,5,5,1250,5,5,5,5,1,1}));
+		
+		User noober = new User("noober","admin@admin.de","noober", IsActive.TRUE, AuthLvl.USER);
+		User casual = new User("casual","admin@admin.de","casual", IsActive.TRUE, AuthLvl.USER);
+		User pro = new User("pro","admin@admin.de","pro", IsActive.TRUE, AuthLvl.USER);
+		User toxic = new User("toxic","admin@admin.de","toxic", IsActive.TRUE, AuthLvl.RESTRICTED);
+		User badGuy = new User("bad","admin@admin.de","admin", IsActive.TRUE, AuthLvl.BANNED);
+		User admin = new User("admin","admin@admin.de","admin", IsActive.TRUE, AuthLvl.SGA);
+		
+		em.persist(noober);
+		em.persist(casual);
+		em.persist(pro);
+		em.persist(toxic);
+		em.persist(badGuy);
+		em.persist(admin);
+				
+		Planets_General noober_pg = new Planets_General(1,1,4, null, 0, 0, 0, 193, 0, 50, 1000, 500, 0, 0, 0, "Hey what a great game",noober.getUserID());
+		Planets_General casual_pg = new Planets_General(1,1,5, null, 0, 0, 0, 193, 0, 50, 6000000, 4000000, 2500000, 0, 0, "Endor",casual.getUserID());
+		Planets_General pro_pg = new Planets_General(1,1,9, null, 0, 0, 0, 193, 0, 50, 10000000, 5000000, 5000000, 0, 0, "Draktar",pro.getUserID());
+		Planets_General toxic_pg = new Planets_General(1,1,10, null, 0, 0, 0, 193, 0, 50, 1000, 500, 0, 0, 0, "get on my level",toxic.getUserID());
+		Planets_General badGuy_pg = new Planets_General(1,1,12, null, 0, 0, 0, 193, 0, 50, 1000, 500, 0, 0, 0, "exploits are a feature",badGuy.getUserID());
+		Planets_General admin_pg = new Planets_General( 1, 1, 7, null, 0, 0, 0, 193, 0, 500, 200, 200, 0, 0, 0, "Heimatplanet", admin.getUserID());
+
+		em.persist(noober_pg);
+		em.persist(casual_pg);
+		em.persist(pro_pg);
+		em.persist(toxic_pg);
+		em.persist(badGuy_pg);
+		
+		Planets_Buildings noober_pb = new Planets_Buildings(noober_pg.getPlanetId(), 8, 6, 5, 12, 0, 10, 10, 10, 0, 0, 0, 5, 5, 3, 0, 0, 0, 0, 0, 0, 0, 0);
+		Planets_Def noober_pd = new Planets_Def(noober_pg.getPlanetId(), 20, 10, 0, 0, 0, 0, 0, 0, 0, 0);
+		Planets_Research noober_pr = new Planets_Research(noober_pg.getPlanetId(), 5, 5, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 2, 2, 2);
+		Planets_Ships noober_ps = new Planets_Ships(noober_pg.getPlanetId(), 50, 20, 10, 0, 0, 0, 0, 0, 10, 0, 0, 0, 10, 0);
+		
+		em.persist(noober_pb);
+		em.persist(noober_pd);
+		em.persist(noober_pr);
+		em.persist(noober_ps);
+		
+		Planets_Buildings casual_pb = new Planets_Buildings(casual_pg.getPlanetId(), 23, 20, 18, 24, 0, 20, 20, 20, 0, 0, 0, 10, 12, 12, 0, 0, 0, 0, 0, 0, 0, 0);
+		Planets_Def casual_pd = new Planets_Def(casual_pg.getPlanetId(), 500, 250, 100, 50, 0, 0, 1, 1, 0, 0);
+		Planets_Research casual_pr = new Planets_Research(casual_pg.getPlanetId(), 10, 12, 10, 10, 10, 10, 10, 10, 12, 10, 10, 0, 12, 12, 12);
+		Planets_Ships casual_ps = new Planets_Ships(casual_pg.getPlanetId(), 500, 500, 300, 200, 50, 0, 50, 0, 50, 100, 0, 0, 200, 0);
+		
+		em.persist(casual_pb);
+		em.persist(casual_pd);
+		em.persist(casual_pr);
+		em.persist(casual_ps);
+		
+		Planets_Buildings pro_pb = new Planets_Buildings(pro_pg.getPlanetId(), 50, 36, 50, 90, 0, 40, 40, 40, 0, 0, 0, 20, 20, 20, 0, 0, 10, 0, 0, 0, 0, 0);
+		Planets_Def pro_pd = new Planets_Def(pro_pg.getPlanetId(), 10000, 10000, 5000, 500, 0, 500, 1, 1, 0, 0);
+		Planets_Research pro_pr = new Planets_Research(pro_pg.getPlanetId(), 10, 12, 10, 10, 10, 10, 10, 10, 12, 10, 10, 0, 24, 24, 24);
+		Planets_Ships pro_ps = new Planets_Ships(pro_pg.getPlanetId(), 5000, 5000, 3000, 2000, 500, 1000, 500, 10, 500, 1000, 0, 0, 1000, 0);
+		
+		em.persist(pro_pb);
+		em.persist(pro_pd);
+		em.persist(pro_pr);
+		em.persist(pro_ps);
+		
+		Planets_Buildings toxic_pb = new Planets_Buildings(toxic_pg.getPlanetId(), 8, 6, 5, 12, 0, 10, 10, 10, 0, 0, 0, 5, 5, 3, 0, 0, 0, 0, 0, 0, 0, 0);
+		Planets_Def toxic_pd = new Planets_Def(toxic_pg.getPlanetId(), 20, 10, 0, 0, 0, 0, 0, 0, 0, 0);
+		Planets_Research toxic_pr = new Planets_Research(toxic_pg.getPlanetId(), 5, 5, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 2, 2, 2);
+		Planets_Ships toxic_ps = new Planets_Ships(toxic_pg.getPlanetId(), 50, 20, 10, 0, 0, 0, 0, 0, 10, 0, 0, 0, 10, 0);
+		
+		em.persist(toxic_pb);
+		em.persist(toxic_pd);
+		em.persist(toxic_pr);
+		em.persist(toxic_ps);
+		
+		Planets_Buildings badGuy_pb = new Planets_Buildings(badGuy_pg.getPlanetId(), 8, 6, 5, 12, 0, 10, 10, 10, 0, 0, 0, 5, 5, 3, 0, 0, 0, 0, 0, 0, 0, 0);
+		Planets_Def badGuy_pd = new Planets_Def(badGuy_pg.getPlanetId(), 20, 10, 0, 0, 0, 0, 0, 0, 0, 0);
+		Planets_Research badGuy_pr = new Planets_Research(badGuy_pg.getPlanetId(), 5, 5, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 2, 2, 2);
+		Planets_Ships badGuy_ps = new Planets_Ships(badGuy_pg.getPlanetId(), 50, 20, 10, 0, 0, 0, 0, 0, 10, 0, 0, 0, 10, 0);
+		
+		em.persist(badGuy_pb);
+		em.persist(badGuy_pd);
+		em.persist(badGuy_pr);
+		em.persist(badGuy_ps);
+
+		Planets_Buildings admin_pb = new Planets_Buildings(admin_pg.getPlanetId(), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+		Planets_Def admin_pd = new Planets_Def(admin_pg.getPlanetId(), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+		Planets_Research admin_pr = new Planets_Research(admin_pg.getPlanetId(), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+		Planets_Ships admin_ps = new Planets_Ships(admin_pg.getPlanetId(), 50, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+
+		em.persist(admin_pb);
+		em.persist(admin_pd);
+		em.persist(admin_pr);
+		em.persist(admin_ps);
+		
+		genTestMsg(admin);
 		
 		//planetHandler.createNewPlanet(1);
 	}
