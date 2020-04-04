@@ -2,7 +2,7 @@ package controller;
 
 import java.util.Date;
 import java.util.List;
-import java.util.ListIterator;
+import java.util.Random;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -16,7 +16,6 @@ import javax.transaction.RollbackException;
 import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 
-import model.Buildable;
 import model.Galaxy;
 import model.Solarsystem;
 import model.WorldSettings;
@@ -105,7 +104,8 @@ public class PlanetHandler {
 	}
 	
 	private int genTemp(int min, int max) {
-		return min+(int)Math.random() * ((max - min)+1);
+		Random rand = new Random();
+		return rand.nextInt(max - min + 1) + min;
 	}
 	
 	private int genTemp(int position) {
@@ -147,68 +147,10 @@ public class PlanetHandler {
 	}
 	
 	public void createNewPlanet(int userID) {
-		Query query = em.createQuery("select k from Galaxy k");
-		Galaxy galaxy = null;
-		@SuppressWarnings("unchecked")
-		List<Galaxy> galaxies = query.getResultList();
-		if(galaxies.size() == 0) {
-			galaxy = new Galaxy();
-			try {
-				utx.begin();
-			} catch (NotSupportedException | SystemException e3) {
-				// TODO Auto-generated catch block
-				e3.printStackTrace();
-			}
-			em.persist(galaxy);
-			try {
-				utx.commit();
-			} catch (SecurityException | IllegalStateException | RollbackException | HeuristicMixedException
-					| HeuristicRollbackException | SystemException e2) {
-				// TODO Auto-generated catch block
-				e2.printStackTrace();
-			}
-		} else {
-			ListIterator<Galaxy> iter = galaxies.listIterator();
-			boolean found = false;
-			while(iter.hasNext() && !found) {
-				Galaxy next = iter.next();
-				if(next.getMaxSystems() > 0) {
-					galaxy = next;
-					found = true;
-				}
-			}
-		}
-		Solarsystem system;
-		int position = 6;
-		query = em.createQuery("select k from Solarsystem k");
-		@SuppressWarnings("unchecked")
-		List<Solarsystem> systems = query.getResultList();
-		if(systems.size() == 0) {
-			system = new Solarsystem(galaxy.getGalaxyId());
-			query = em.createQuery("select k from Galaxy k where k.galaxyId = :galaxyId");
-			query.setParameter("galaxyId", galaxy.getGalaxyId());
-			galaxy.setMaxSystems(galaxy.getMaxSystems()-1);
-			system.setPlanets(system.getPlanets()-1);
-			try {
-				utx.begin();
-			} catch (NotSupportedException | SystemException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			em.merge(galaxy);
-			em.persist(system);
-			try {
-				utx.commit();
-			} catch (SecurityException | IllegalStateException | RollbackException | HeuristicMixedException
-					| HeuristicRollbackException | SystemException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		} else {
-			system = galaxyHandler.getFreeSystem(galaxy.getGalaxyId());
-			position = galaxyHandler.getFreePosition(galaxy.getGalaxyId(), system.getSystemId(), true);
-		}
-		Planets_General pgt = new Planets_General( galaxy.getGalaxyId(), system.getSystemId(), position, null, 0, 0, 0, 193, 0, 500, 200, 200, 0, 0, 0, "Heimatplanet",userID);
+		Galaxy galaxy = galaxyHandler.getGalaxy();
+		Solarsystem system = galaxyHandler.getFreeSystem(galaxy);
+		int position = galaxyHandler.getPosition(galaxy.getGalaxyId(), system.getSystemId());
+		Planets_General pgt = new Planets_General( galaxy.getGalaxyId(), system.getSystemId(), position, null, 0, 0, 0, 193, 0, genTemp(position), 200, 200, 0, 0, 0, "Heimatplanet",userID);
 		try {
 			utx.begin();
 		} catch (NotSupportedException | SystemException e1) {

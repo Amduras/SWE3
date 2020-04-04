@@ -19,10 +19,10 @@
 	<div id="content">
 		<ui:insert name="content" style="margin-top: 500">
 			<div align="center">
-				<p:growl id="growl" showDetail="true" /> 
 				<p:tabView class="logintab">
 					<p:tab title="Anmelden">
-						<h:form>
+						<h:form id = "loginForm">
+							<p:growl id="growl" /> 
 							<h:outputLabel class="loginOutput" value="Name:"/>
 							<br />
 							<h:inputText value="#{loginHandler.username}" required="true" requiredMessage="Nutzernamen eingeben"/>
@@ -34,13 +34,12 @@
 							<br />
 							<br />
 							<br />
-							<h:commandButton action="#{loginHandler.login()}"
-								value="Einloggen" />
+							<p:commandButton action="#{loginHandler.login()}"
+								value="Einloggen" update=":j_idt10:loginForm:growl" />
 						</h:form>
 					</p:tab>
 					<p:tab title="Registrieren">
 						<h:form>
-							
 							<br />
 							<br />
 							<h:outputLabel style="float:left; color:white" value="Name:" />

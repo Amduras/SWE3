@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -88,14 +89,14 @@ public class LoginHandler implements Serializable{
 		}
 		settingsHandler = new SettingsHandler(em, utx);
 	}
-	
+
 	private void genTestMsg() {
 		em.persist(new Messages("1","admin", "Das issen Test du lappen", "Test"));
 		em.persist(new Messages("1","admin", "Das issen Test2 du lappen", "Test2"));
 		em.persist(new Messages("1","admin", "Das issen Test3 du lappen", "Test3"));
 		em.persist(new Messages("1","admin", "Das issen Test4 du lappen", "Test4"));
 	}
-	
+
 	private void install() {
 		// name		type	baseCostMetal baseCostCrystal baseCostDeut baseCostEnergy	resFactor	energyFactor	Descr	rec
 		//type 0= building 1=tech 2=ship/def
@@ -168,21 +169,21 @@ public class LoginHandler implements Serializable{
 		em.persist(new Ship(42,1600,10,1,20000,2000,1000,21,new int[] {1,1,1,1,1,1,1,250,1,1,1,1,1,1}));
 		em.persist(new Ship(43,100,1,1,5,100000000,1,21,new int[] {5,5,5,5,5,5,5,1250,5,5,5,5,1,1}));
 		em.persist(new Ship(44,200,1,1,0,0,0,21,new int[] {5,5,5,5,5,5,5,1250,5,5,5,5,1,1}));
-		
+
 		User noober = new User("noober","admin@admin.de","noober", IsActive.TRUE, AuthLvl.USER);
 		User casual = new User("casual","admin@admin.de","casual", IsActive.TRUE, AuthLvl.USER);
 		User pro = new User("pro","admin@admin.de","pro", IsActive.TRUE, AuthLvl.USER);
 		User toxic = new User("toxic","admin@admin.de","toxic", IsActive.TRUE, AuthLvl.RESTRICTED);
 		User badGuy = new User("bad","admin@admin.de","admin", IsActive.TRUE, AuthLvl.BANNED);
 		User admin = new User("admin","admin@admin.de","admin", IsActive.TRUE, AuthLvl.SGA);
-		
+
 		em.persist(noober);
 		em.persist(casual);
 		em.persist(pro);
 		em.persist(toxic);
 		em.persist(badGuy);
 		em.persist(admin);
-		
+
 		Galaxy galaxy = new Galaxy();
 		Solarsystem system = new Solarsystem();
 		galaxy.setGalaxyId(1);
@@ -193,7 +194,7 @@ public class LoginHandler implements Serializable{
 		system.setPlanets(9);
 		em.persist(galaxy);
 		em.persist(system);
-		
+
 		Planets_General noober_pg = new Planets_General(galaxy.getGalaxyId(), system.getSystemId(),4, null, 0, 0, 0, 193, 0, 50, 10000, 500, 0, 0, 0, "Hey what a great game",noober.getUserID());
 		Planets_General casual_pg = new Planets_General(galaxy.getGalaxyId(), system.getSystemId(),5, null, 0, 0, 0, 193, 0, 50, 6000000, 4000000, 2500000, 0, 0, "Endor",casual.getUserID());
 		Planets_General pro_pg = new Planets_General(galaxy.getGalaxyId(), system.getSystemId(),9, null, 0, 0, 0, 193, 0, 50, 10000000, 5000000, 5000000, 0, 0, "Draktar",pro.getUserID());
@@ -207,52 +208,52 @@ public class LoginHandler implements Serializable{
 		em.persist(toxic_pg);
 		em.persist(badGuy_pg);
 		em.persist(admin_pg);
-		
+
 		Planets_Buildings noober_pb = new Planets_Buildings(noober_pg.getPlanetId(), 8, 6, 5, 12, 0, 10, 10, 10, 0, 0, 0, 5, 5, 3, 0, 0, 0, 0, 0, 0, 0, 0);
 		Planets_Def noober_pd = new Planets_Def(noober_pg.getPlanetId(), 20, 10, 0, 0, 0, 0, 0, 0, 0, 0);
 		Planets_Research noober_pr = new Planets_Research(noober_pg.getPlanetId(), 5, 5, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 2, 2, 2);
 		Planets_Ships noober_ps = new Planets_Ships(noober_pg.getPlanetId(), 50, 20, 10, 0, 0, 0, 0, 0, 10, 0, 0, 0, 10, 0);
-		
+
 		em.persist(noober_pb);
 		em.persist(noober_pd);
 		em.persist(noober_pr);
 		em.persist(noober_ps);
-		
+
 		Planets_Buildings casual_pb = new Planets_Buildings(casual_pg.getPlanetId(), 23, 20, 18, 24, 0, 20, 20, 20, 0, 0, 0, 10, 12, 12, 0, 0, 0, 0, 0, 0, 0, 0);
 		Planets_Def casual_pd = new Planets_Def(casual_pg.getPlanetId(), 500, 250, 100, 50, 0, 0, 1, 1, 0, 0);
 		Planets_Research casual_pr = new Planets_Research(casual_pg.getPlanetId(), 10, 12, 10, 10, 10, 10, 10, 10, 12, 10, 10, 0, 12, 12, 12);
 		Planets_Ships casual_ps = new Planets_Ships(casual_pg.getPlanetId(), 500, 500, 300, 200, 50, 0, 50, 0, 50, 100, 0, 0, 200, 0);
-		
+
 		em.persist(casual_pb);
 		em.persist(casual_pd);
 		em.persist(casual_pr);
 		em.persist(casual_ps);
-		
+
 		Planets_Buildings pro_pb = new Planets_Buildings(pro_pg.getPlanetId(), 50, 36, 50, 90, 0, 40, 40, 40, 0, 0, 0, 20, 20, 20, 0, 0, 10, 0, 0, 0, 0, 0);
 		Planets_Def pro_pd = new Planets_Def(pro_pg.getPlanetId(), 10000, 10000, 5000, 500, 0, 500, 1, 1, 0, 0);
 		Planets_Research pro_pr = new Planets_Research(pro_pg.getPlanetId(), 10, 12, 10, 10, 10, 10, 10, 10, 12, 10, 10, 0, 24, 24, 24);
 		Planets_Ships pro_ps = new Planets_Ships(pro_pg.getPlanetId(), 5000, 5000, 3000, 2000, 500, 1000, 500, 10, 500, 1000, 0, 0, 1000, 0);
-		
+
 		em.persist(pro_pb);
 		em.persist(pro_pd);
 		em.persist(pro_pr);
 		em.persist(pro_ps);
-		
+
 		Planets_Buildings toxic_pb = new Planets_Buildings(toxic_pg.getPlanetId(), 8, 6, 5, 12, 0, 10, 10, 10, 0, 0, 0, 5, 5, 3, 0, 0, 0, 0, 0, 0, 0, 0);
 		Planets_Def toxic_pd = new Planets_Def(toxic_pg.getPlanetId(), 20, 10, 0, 0, 0, 0, 0, 0, 0, 0);
 		Planets_Research toxic_pr = new Planets_Research(toxic_pg.getPlanetId(), 5, 5, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 2, 2, 2);
 		Planets_Ships toxic_ps = new Planets_Ships(toxic_pg.getPlanetId(), 50, 20, 10, 0, 0, 0, 0, 0, 10, 0, 0, 0, 10, 0);
-		
+
 		em.persist(toxic_pb);
 		em.persist(toxic_pd);
 		em.persist(toxic_pr);
 		em.persist(toxic_ps);
-		
+
 		Planets_Buildings badGuy_pb = new Planets_Buildings(badGuy_pg.getPlanetId(), 8, 6, 5, 12, 0, 10, 10, 10, 0, 0, 0, 5, 5, 3, 0, 0, 0, 0, 0, 0, 0, 0);
 		Planets_Def badGuy_pd = new Planets_Def(badGuy_pg.getPlanetId(), 20, 10, 0, 0, 0, 0, 0, 0, 0, 0);
 		Planets_Research badGuy_pr = new Planets_Research(badGuy_pg.getPlanetId(), 5, 5, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 2, 2, 2);
 		Planets_Ships badGuy_ps = new Planets_Ships(badGuy_pg.getPlanetId(), 50, 20, 10, 0, 0, 0, 0, 0, 10, 0, 0, 0, 10, 0);
-		
+
 		em.persist(badGuy_pb);
 		em.persist(badGuy_pd);
 		em.persist(badGuy_pr);
@@ -267,43 +268,56 @@ public class LoginHandler implements Serializable{
 		em.persist(admin_pd);
 		em.persist(admin_pr);
 		em.persist(admin_ps);
-		
-		genTestMsg();
-		
-		//planetHandler.createNewPlanet(1);
+
+//		genTestMsg();
 	}
-	
+
 
 	public String login() {
-		Query query = em.createQuery("select k from User k where k.username = :username and k.password = :password ");
+		Query query = em.createQuery("select k from User k where k.username = :username");
 		query.setParameter("username", username);
-		query.setParameter("password", password);
-		try {
-			User  user = (User) query.getSingleResult();
-			handler.setUser(user);
-			query = em.createQuery("select k from Planets_General k where k.userid = :userid");
-			query.setParameter("userid", handler.getUser().getUserID());
-			@SuppressWarnings("unchecked")
-			List<Planets_General> planets = query.getResultList();
-			planetHandler.init(planets);
-			query = em.createQuery("select galaxy from Planets_General k where k.userid = :userid and name = :name");
-			query.setParameter("userid", handler.getUser().getUserID());
-			query.setParameter("name", "Heimatplanet");
-			int id = (int) query.getSingleResult();
-			gHandler.setGalaxyForTable(id);
-			query = em.createQuery("select solarsystem from Planets_General k where k.userid = :userid and name = :name");
-			query.setParameter("userid", handler.getUser().getUserID());
-			query.setParameter("name", "Heimatplanet");
-			id = (int) query.getSingleResult();
-			gHandler.setSystemForTable(id);
-			gHandler.setUser(user);
-			messageHandler.setUser(user);
-			return"/main.xhtml?faces-redirect=true";
-		}catch (NoResultException e) {
-			return "/login.xhtml?faces-redirect=true";
+		@SuppressWarnings("unchecked")
+		List<User> users = query.getResultList();
+		if(users.size() != 0) {
+			query = em.createQuery("select k from User k where k.username = :username and k.password = :password ");
+			query.setParameter("username", username);
+			query.setParameter("password", password);
+			try {
+				User user = (User) query.getSingleResult();
+				handler.setUser(user);
+				query = em.createQuery("select k from Planets_General k where k.userid = :userid");
+				query.setParameter("userid", handler.getUser().getUserID());
+				@SuppressWarnings("unchecked")
+				List<Planets_General> planets = query.getResultList();
+				planetHandler.init(planets);
+				query = em.createQuery("select galaxy from Planets_General k where k.userid = :userid and name = :name");
+				query.setParameter("userid", handler.getUser().getUserID());
+				query.setParameter("name", "Heimatplanet");
+				int id = (int) query.getSingleResult();
+				gHandler.setGalaxyForTable(id);
+				query = em.createQuery("select solarsystem from Planets_General k where k.userid = :userid and name = :name");
+				query.setParameter("userid", handler.getUser().getUserID());
+				query.setParameter("name", "Heimatplanet");
+				id = (int) query.getSingleResult();
+				gHandler.setSystemForTable(id);
+				gHandler.setUser(user);
+				messageHandler.setUser(user);
+				return"/main.xhtml?faces-redirect=true";
+			}catch (NoResultException e) {
+				setLoginMessage("Ungültige Kombination aus Name und Passwort");
+				return "";
+			}
+		}else{
+			setLoginMessage("User '"+username+ "' nicht vorhanden.");
+			return "";
 		}
 	}
-	
+
+	private void setLoginMessage(String msg) {
+		FacesContext context = FacesContext.getCurrentInstance();
+		context.addMessage(null, new FacesMessage(msg));
+	}
+
 	public String neuerUser() {
 		Query query = em.createQuery("select k from User k where k.username = :username");
 		query.setParameter("username", username);
@@ -350,14 +364,14 @@ public class LoginHandler implements Serializable{
 			return false;
 		}
 	}
-	
+
 	public void isBanned() {
 		FacesContext context = FacesContext.getCurrentInstance();
 		if(handler.getUser().getAuthLvl() == AuthLvl.BANNED) {
 			context.getApplication().getNavigationHandler().handleNavigation(context, null, "/login.xhtml?faces-redirect=true");
 		}
 	}
-	
+
 	public void checkLoggedIn(ComponentSystemEvent cse) {
 		FacesContext context = FacesContext.getCurrentInstance();
 		if (handler.getUser() == null) {
@@ -387,7 +401,7 @@ public class LoginHandler implements Serializable{
 		FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
 		return"/login.xhtml?faces-redirect=true";
 	}
-	
+
 	public String getUsername() {
 		return username;
 	}
