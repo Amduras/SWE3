@@ -42,7 +42,7 @@ public class GalaxyHandler {
 		this.em = em;
 		this.utx = utx;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public Solarsystem getFreeSystem(int galaxyId) {
 		Query query = em.createQuery("select k from Solarsystem k where k.galaxyId = :galaxyId");
@@ -95,6 +95,56 @@ public class GalaxyHandler {
 		return system;
 	}
 
+//	public Galaxy getGalaxy
+//	
+//	public void genGalaxy() {
+//		Galaxy galaxy = new Galaxy();
+//		Query query = em.createQuery("select max(galaxyId) from Galaxy k");
+//		int id = (int) query.getSingleResult();
+//		galaxy.setGalaxyId(id+1);
+//		try {
+//			utx.begin();
+//		} catch (NotSupportedException | SystemException e3) {
+//			// TODO Auto-generated catch block
+//			e3.printStackTrace();
+//		}
+//		em.persist(galaxy);
+//		try {
+//			utx.commit();
+//		} catch (SecurityException | IllegalStateException | RollbackException | HeuristicMixedException
+//				| HeuristicRollbackException | SystemException e2) {
+//			// TODO Auto-generated catch block
+//			e2.printStackTrace();
+//		}
+//		galaxyForTable = galaxy.getGalaxyId();
+//	}
+//	
+//	public void genSystem() {
+//		Solarsystem system = new Solarsystem();
+//		Query query = em.createQuery("select max(systemId) from Solarsystem k");
+//		int id  = (int)query.getSingleResult();
+//		system.setSystemId(id+1);
+//		query = em.createQuery("select k from Galaxy k where k.galaxyId = :galaxyId");
+//		query.setParameter("galaxyId", galaxyForTable);
+//		
+//		galaxy.setMaxSystems(galaxy.getMaxSystems()-1);
+//		system.setPlanets(system.getPlanets()-1);
+//		try {
+//			utx.begin();
+//		} catch (NotSupportedException | SystemException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		em.merge(galaxy);
+//		em.persist(system);
+//		try {
+//			utx.commit();
+//		} catch (SecurityException | IllegalStateException | RollbackException | HeuristicMixedException
+//				| HeuristicRollbackException | SystemException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	}
 
 	public int getFreePosition(int galaxyId, int systemId, boolean start) {
 		if(start) {
@@ -190,22 +240,6 @@ public class GalaxyHandler {
 		return max;
 	}
 
-	public int getGalaxyForTable() {
-		return galaxyForTable;
-	}
-
-	public void setGalaxyForTable(int galaxyForTable) {
-		this.galaxyForTable = galaxyForTable;
-	}
-
-	public int getSystemForTable() {
-		return systemForTable;
-	}
-
-	public void setSystemForTable(int systemForTable) {
-		this.systemForTable = systemForTable;
-	}
-
 	public boolean existPlanet(int i) {
 		if(planets.get(i) != null) {
 			return true;
@@ -225,7 +259,7 @@ public class GalaxyHandler {
 			return true;
 		}
 	}
-	
+
 	public String getOwner(int i) {
 		if(existPlanet(i)) {
 			int userid = planets.get(i).getUserId();
@@ -237,7 +271,7 @@ public class GalaxyHandler {
 			return "";
 		}
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public void createPlanetList() {
 		Query query = em.createQuery("select k from Planets_General k where k.solarsystem = :system and k.galaxy = :galaxy");
@@ -255,13 +289,13 @@ public class GalaxyHandler {
 			planets=tmpList;
 		}
 	}
-	
+
 	public void message(IncludeController includeController, MessageHandler messageHandler, int id) {
 		messageHandler.setNewMessageUser(getOwner(id));
 		messageHandler.setMessage(2, true);
 		includeController.setPage("messageView");
 	}
-	
+
 	public void colonize(PlanetHandler planetHandler, int userid, int rowid) {
 		planetHandler.colonizePlanet(userid, rowid, getGalaxyForTable(), getSystemForTable());
 		Query query = em.createQuery("select k from Solarsystem k where k.systemId = :id");
@@ -271,7 +305,7 @@ public class GalaxyHandler {
 		if(rowid >=3 || rowid <= 12) {
 			system.setFreeStartpositions(system.getFreeStartpositions()-1);
 		}
-		
+
 		try {
 			utx.begin();
 		} catch (NotSupportedException | SystemException e) {
@@ -294,7 +328,7 @@ public class GalaxyHandler {
 	}
 
 	public void attack(int position) {
-		
+
 	}
 
 	public List<Planets_General> getPlanets() {
@@ -312,6 +346,22 @@ public class GalaxyHandler {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+	
+	public int getGalaxyForTable() {
+		return galaxyForTable;
+	}
+
+	public void setGalaxyForTable(int galaxyForTable) {
+		this.galaxyForTable = galaxyForTable;
+	}
+
+	public int getSystemForTable() {
+		return systemForTable;
+	}
+
+	public void setSystemForTable(int systemForTable) {
+		this.systemForTable = systemForTable;
 	}
 }
 

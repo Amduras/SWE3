@@ -16,14 +16,13 @@ public class Galaxy implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int galaxyId;
 	private int maxSystems = 100;
 	
 	public Galaxy() {
-		
-	}
 
+	}
+	
 	public int getGalaxyId() {
 		return galaxyId;
 	}

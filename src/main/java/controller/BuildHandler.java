@@ -37,7 +37,6 @@ public class BuildHandler {
 	private int lvl;	
 	private int count;
 	private int type;
-	private int userId;
 	private long metal;
 	private long crystal;
 	private long deut;
@@ -87,9 +86,10 @@ public class BuildHandler {
 			Object res = query.getSingleResult();
 
 			Buildable b = (Buildable)res;
-			
+			query = em.createQuery("select max(id) from WorldSettings k");
+			int wId =  (int)query.getSingleResult();
 			query = em.createQuery("select k from WorldSettings k where k.id = :id");
-			query.setParameter("id", 63);
+			query.setParameter("id", wId);
 			try {
 				Object res2 = query.getSingleResult();
 				WorldSettings ws = (WorldSettings)res2;
@@ -197,7 +197,7 @@ public class BuildHandler {
 					Date d = new Date(System.currentTimeMillis()+(time*1000));
 					//System.out.println("TIME Calc: " + new Timestamp(d.getTime()));
 					applyCost();
-					planetHandler.getPb().setTask(new BuildTask(type,d,id,planetHandler.getPg().getPlanetId(), planetHandler,em,utx));
+					planetHandler.getPb().setTask(new BuildTask(type,d,id,planetHandler.getPg().getPlanetId(), em,utx, planetHandler));
 					setBuildMessage("Bau gestartet");
 //					planetHandler.save();
 				}
@@ -611,10 +611,7 @@ public class BuildHandler {
 		}
 		return res;
 	}
-
-	public void setUserId(int userId) {
-		this.userId = userId;
-	}
+	
 	public String getName() {
 		return name;
 	}

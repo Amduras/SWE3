@@ -17,8 +17,10 @@ public abstract class Planets_General_ {
 	public static volatile SingularAttribute<Planets_General, Double> metal;
 	public static volatile SingularAttribute<Planets_General, Integer> userid;
 	public static volatile SingularAttribute<Planets_General, Double> deut;
+	public static volatile SingularAttribute<Planets_General, Integer> maxEnergy;
 	public static volatile SingularAttribute<Planets_General, Moon> moon;
 	public static volatile SingularAttribute<Planets_General, Integer> slots;
+	public static volatile SingularAttribute<Planets_General, Integer> usedEnergy;
 	public static volatile SingularAttribute<Planets_General, Date> lastUpdate;
 	public static volatile SingularAttribute<Planets_General, Integer> solarsystem;
 	public static volatile SingularAttribute<Planets_General, Integer> temperature;
@@ -27,7 +29,6 @@ public abstract class Planets_General_ {
 	public static volatile SingularAttribute<Planets_General, Integer> position;
 	public static volatile SingularAttribute<Planets_General, Integer> galaxy;
 	public static volatile SingularAttribute<Planets_General, Long> debrisFieldMetal;
-	public static volatile SingularAttribute<Planets_General, Double> energy;
 
 }
 

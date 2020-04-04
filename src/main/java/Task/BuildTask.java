@@ -40,7 +40,6 @@ public class BuildTask implements Task, Serializable{
 		this.time = time;
 		this.upgradeId = upgradeId;
 		this.planet = planet;
-		this.planetHandler = planetHandler;
 		this.em = em;
 		this.utx = utx;
 		this.planetHandler = p;

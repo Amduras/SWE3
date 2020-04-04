@@ -66,7 +66,7 @@ public class PlanetHandler {
 	}
 
 	public void colonizePlanet(int userid, int position, int galaxyid, int systemid) {
-		Planets_General pgt = new Planets_General(galaxyid, systemid, position, null, 0, 0, 0, 193, 0, 500, 200, 0, 0, 0, 0, "Kolonie",userid);
+		Planets_General pgt = new Planets_General(galaxyid, systemid, position, null, 0, 0, 0, 193, 0, genTemp(position), 200, 0, 0, 0, 0, "Kolonie",userid);
 		try {
 			utx.begin();
 		} catch (NotSupportedException | SystemException e1) {
@@ -268,8 +268,10 @@ public class PlanetHandler {
 
 
 	public void updateRes(long seconds) {
-		Query query = em.createQuery("select k from WorldSettings k where k.id = :id");
-		query.setParameter("id", 63);
+		Query query = em.createQuery("select max(id) from WorldSettings k");
+		int id =  (int)query.getSingleResult();
+		query = em.createQuery("select k from WorldSettings k where k.id = :id");
+		query.setParameter("id", id);
 		int geologist = 1;
 		int engineer = 1;
 		float workload = 1f;
@@ -296,20 +298,6 @@ public class PlanetHandler {
 		} catch(NoResultException e){	
 			System.out.println("Keine WS in DB");
 		}		
-	}
-	
-	private void calcEnergy() {
-		double solarE = 20 * pb.getSolarPlant() * Math.pow(1.1, pb.getSolarPlant());
-		double fusionE = (30 * pb.getFusionReactor() * Math.pow((1.05 + pr.getEnergy()* 0.01),pb.getFusionReactor()));
-		maxEnergy = solarE+fusionE;
-		
-		double metalE = 10 * pb.getMetalMine() * Math.pow(1.1, pb.getMetalMine());
-		double crystalE = 10 * pb.getCrystalMine() * Math.pow(1.1, pb.getCrystalMine());
-		double deutE = 20 * pb.getDeutSyn() * Math.pow(1.1, pb.getDeutSyn());
-		
-		pg.setEnergy(maxEnergy - (metalE+crystalE+deutE));
-		
-		
 	}
 	
 	private void resDiff() {

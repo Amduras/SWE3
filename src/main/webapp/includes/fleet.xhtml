@@ -10,7 +10,7 @@
 
 	<f:event listener="#{loginHandler.checkLoggedIn}" type="preRenderView" />
 
-	<p:growl id="growl" />
+	<p:growl id="growl"/>
 	<h:panelGroup id="center_body_top" styleClass="center_body_top"
 		layout="block">
 		<h:panelGroup style="position:relative; width:100%; height:100%;"
@@ -70,7 +70,7 @@
 								url="resources/images/button_build.jpg" title="Bauen">
 								<p:ajax event="click"
 									listener="#{loginHandler.buildHandler.build()}"
-									update=":mainForm:center_body_top" />
+									update=":mainForm:center_body_top :mainForm:growl" />
 							</h:graphicImage></td>
 					</tr>
 					<tr>
