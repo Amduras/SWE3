@@ -38,7 +38,8 @@ public class Planets_General implements Serializable {
 	private double metal;
 	private double crystal;
 	private double deut;
-	private double energy; 
+	private int usedEnergy;
+	private int maxEnergy; 
 	private String name = "DingDong des Todes";
 	private int userid;
 	private Date lastUpdate;
@@ -50,7 +51,7 @@ public class Planets_General implements Serializable {
 	
 	public Planets_General( int galaxy, int solarsystem, int position, Moon moon, long debrisFieldMetal,
 			long debrisFieldCris, long debrisFieldDeut, int slots, int moonSlots, int temperature, long metal,
-			long crystal, long deut, int energy, String name, int userID) {
+			long crystal, long deut, int usedEnergy, int maxEnergy, String name, int userID) {
 		this.galaxy = galaxy;
 		this.solarsystem = solarsystem;
 		this.position = position;
@@ -64,7 +65,8 @@ public class Planets_General implements Serializable {
 		this.metal = metal;
 		this.crystal = crystal;
 		this.deut = deut;
-		this.energy = energy;
+		this.usedEnergy = usedEnergy;
+		this.maxEnergy = maxEnergy;
 		this.name = name;
 		this.userid = userID;
 		this.setLastUpdate(new Date(System.currentTimeMillis()));
@@ -182,14 +184,22 @@ public class Planets_General implements Serializable {
 		this.deut = deut;
 	}
 
-	public double getEnergy() {
-		return energy;
+	public int getUsedEnergy() {
+		return usedEnergy;
 	}
 
-	public void setEnergy(double energy) {
-		this.energy = energy;
+	public void setUsedEnergy(int usedEnergy) {
+		this.usedEnergy = usedEnergy;
+	}
+	
+	public int getMaxEnergy() {
+		return maxEnergy;
 	}
 
+	public void setMaxEnergy(int maxEnergy) {
+		this.maxEnergy = maxEnergy;
+	}
+	
 	public String getName() {
 		return name;
 	}
@@ -217,11 +227,6 @@ public class Planets_General implements Serializable {
 	public int getDeutAsInt() {
 		return (int) deut;
 	}
-	
-	public int getEnergyAsInt() {
-		return (int) energy;
-	}
-
 	public Date getLastUpdate() {
 		return lastUpdate;
 	}
