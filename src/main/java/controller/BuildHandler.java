@@ -104,10 +104,10 @@ public class BuildHandler {
 				metal = (long)(b.getBaseCostMetal() * Math.pow(b.getResFactor(), lvl));
 				crystal = (long)(b.getBaseCostCrystal() * Math.pow(b.getResFactor(), lvl));
 				deut = (long)(b.getBaseCostDeut() * Math.pow(b.getResFactor(), lvl));
-				if(id == 3) {
+				if(id == 4) {
 					energy = (long) -Math.ceil((b.getBaseCostEnergy() * lvl * Math.pow(b.getEnergyFactor(), lvl)));
 				}
-				else if(id == 4) {
+				else if(id == 5) {
 					energy = (long) -Math.ceil((b.getBaseCostEnergy() * lvl * Math.pow(b.getEnergyFactor(), lvl)));
 				}
 				else {
@@ -156,9 +156,9 @@ public class BuildHandler {
 			return planetHandler.getPr().getIon();
 		case "spionagetechnik":
 			return planetHandler.getPr().getEspionage();
-		case "impulsantrieb":
+		case "impulstriebwerk":
 			return planetHandler.getPr().getImpulse();
-		case "verbrennungstechnik":
+		case "verbrennungstriebwerk":
 			return planetHandler.getPr().getCombustion();
 		case "raumschiffpanzerung":
 			return planetHandler.getPr().getArmor();
@@ -180,7 +180,7 @@ public class BuildHandler {
 			return planetHandler.getPb().getNaniteFactory();
 		case "roboterfabrik":
 			return planetHandler.getPb().getRoboticFactory();
-		case "deuterium-Synthetisierer":
+		case "deuterium-synthetisierer":
 			return planetHandler.getPb().getDeutSyn();
 		default:
 			return 99999999;
@@ -188,7 +188,7 @@ public class BuildHandler {
 	}
 
 	public void build() {
-		planetHandler.updateDataset();
+//		planetHandler.updateDataset();
 		//TODO
 		//could have used type?
 		if(id < 16) {//building
@@ -197,8 +197,9 @@ public class BuildHandler {
 					Date d = new Date(System.currentTimeMillis()+(time*1000));
 					//System.out.println("TIME Calc: " + new Timestamp(d.getTime()));
 					applyCost();
-					planetHandler.getPb().setTask(new BuildTask(type,d,id,planetHandler.getPg().getPlanetId(),em,utx));
-					planetHandler.save();
+					planetHandler.getPb().setTask(new BuildTask(type,d,id,planetHandler.getPg().getPlanetId(), planetHandler,em,utx));
+					setBuildMessage("Bau gestartet");
+//					planetHandler.save();
 				}
 				else {
 					System.out.println("Res oder rec fehlen");
@@ -213,8 +214,9 @@ public class BuildHandler {
 				if(checkRes() && checkRec()) {
 					Date d = new Date(System.currentTimeMillis()+(time*1000));
 					applyCost();
-					planetHandler.getPr().setTask(new BuildTask(type,d,id,planetHandler.getPg().getPlanetId(),em,utx));
-					planetHandler.save();
+					planetHandler.getPr().setTask(new BuildTask(type,d,id,planetHandler.getPg().getPlanetId(),planetHandler,em,utx));
+					setBuildMessage("Forschung gestartet");
+//					planetHandler.save();
 				}
 				else {
 					System.out.println("Res oder rec fehlen");
@@ -230,8 +232,9 @@ public class BuildHandler {
 				qTime = qTime.getTime() < System.currentTimeMillis() ? new Date(System.currentTimeMillis()+(time*1000)) : new Date((time*1000)+qTime.getTime());
 				applyCost();
 //				planetHandler.getPs().addTask(new BuildTask(type,qTime,id,planetHandler.getPg().getPlanetId(),em,utx));
+				setBuildMessage("Bau gestartet");
 				planetHandler.getPs().setqTime(qTime);
-				planetHandler.save();
+//				planetHandler.save();
 			}
 			else {
 				System.out.println("Res oder rec fehlen");
@@ -244,7 +247,8 @@ public class BuildHandler {
 				applyCost();
 //				planetHandler.getPd().addTask(new BuildTask(type,qTime,id,planetHandler.getPg().getPlanetId(),em,utx));
 				planetHandler.getPd().setqTime(qTime);
-				planetHandler.save();
+				setBuildMessage("Bau gestartet");
+//				planetHandler.save();
 			}
 			else {
 				System.out.println("Res oder rec fehlen");
@@ -296,9 +300,10 @@ public class BuildHandler {
 			while(buildable && i < recs.length) {
 				String[] recs2 = recs[i].split(":");
 				if(getMethode(recs2[0])!=99999999) {
-					if(Integer.valueOf(recs2[1]) == getMethode(recs2[0].toString())){
+					if(Integer.valueOf(recs2[1]) <= getMethode(recs2[0])){
 						++i;
 					} else {
+						System.out.println("Gesetzt");
 						buildable = false;
 					}
 				}

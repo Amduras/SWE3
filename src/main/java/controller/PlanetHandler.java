@@ -45,6 +45,7 @@ public class PlanetHandler {
 	private Planets_Research pr;
 	private Planets_Ships ps;
 	private GalaxyHandler galaxyHandler;
+	private double maxEnergy;
 
 	public PlanetHandler() {
 
@@ -65,7 +66,7 @@ public class PlanetHandler {
 	}
 
 	public void colonizePlanet(int userid, int position, int galaxyid, int systemid) {
-		Planets_General pgt = new Planets_General(galaxyid, systemid, position, null, 0, 0, 0, 193, 0, 500, 200, 0, 0, 0, "Kolonie",userid);
+		Planets_General pgt = new Planets_General(galaxyid, systemid, position, null, 0, 0, 0, 193, 0, genTemp(position), 200, 0, 0, 0, "Kolonie",userid);
 		try {
 			utx.begin();
 		} catch (NotSupportedException | SystemException e1) {
@@ -102,7 +103,49 @@ public class PlanetHandler {
 			e.printStackTrace();
 		}
 	}
-
+	
+	private int genTemp(int min, int max) {
+		return min+(int)Math.random() * ((max - min)+1);
+	}
+	
+	private int genTemp(int position) {
+		switch(position) {
+		case 0:
+			return genTemp(220,260);
+		case 1:
+			return genTemp(170,210);
+		case 2:
+			return genTemp(120,160);
+		case 3:
+			return genTemp(70,110);
+		case 4:
+			return genTemp(60,100);
+		case 5:
+			return genTemp(50,90);
+		case 6:
+			return genTemp(40,80);
+		case 7:
+			return genTemp(30,70);
+		case 8:
+			return genTemp(20,60);
+		case 9:
+			return genTemp(10,50);
+		case 10:
+			return genTemp(0,40);
+		case 11:
+			return genTemp(-10,300);
+		case 12:
+			return genTemp(-50,-10);
+		case 13:
+			return genTemp(-90,-50);
+		case 14:
+			return genTemp(-130,-90);
+		default:
+			return 50;
+			
+		}
+	}
+	
 	public void createNewPlanet(int userID) {
 		Query query = em.createQuery("select k from Galaxy k");
 		Galaxy galaxy = null;
@@ -165,7 +208,7 @@ public class PlanetHandler {
 			system = galaxyHandler.getFreeSystem(galaxy.getGalaxyId());
 			position = galaxyHandler.getFreePosition(galaxy.getGalaxyId(), system.getSystemId(), true);
 		}
-		Planets_General pgt = new Planets_General( galaxy.getGalaxyId(), system.getSystemId(), position, null, 0, 0, 0, 193, 0, 500, 200, 200, 0, 0, "Heimatplanet",userID);
+		Planets_General pgt = new Planets_General( galaxy.getGalaxyId(), system.getSystemId(), position, null, 0, 0, 0, 193, 0, 120, 200, 200, 0, 0, "Heimatplanet",userID);
 		try {
 			utx.begin();
 		} catch (NotSupportedException | SystemException e1) {
@@ -236,7 +279,6 @@ public class PlanetHandler {
 		
 			double m =  pg.getMetal();
 			double c = pg.getCrystal();
-			System.out.println("c: "+c);
 			double d = pg.getDeut();
 			m += seconds * ((30 * pb.getMetalMine() * Math.pow(1.1, pb.getMetalMine()) * geologist * workload * item + 120) * ((100 + 1 * pr.getPlasma()) / 100) * ws.getGameSpeed())/3600;
 			c += seconds * ((20 * pb.getCrystalMine() * Math.pow(1.1, pb.getCrystalMine()) * geologist * workload * item + 60) * ((100 + 0.66 * pr.getPlasma()) / 100) * ws.getGameSpeed())/3600;
@@ -244,9 +286,25 @@ public class PlanetHandler {
 			pg.setMetal(Math.min(m,Math.round(2.5 * Math.pow(Math.E,(20 * pb.getMetalStorage() / 33)) * 5000)));
 			pg.setCrystal(Math.min(c,Math.round(2.5 * Math.pow(Math.E,(20 * pb.getCrystalStorage() / 33)) * 5000)));
 			pg.setDeut(Math.min(d,Math.round(2.5 * Math.pow(Math.E,(20 * pb.getDeutTank() / 33)) * 5000)));
+			
+			calcEnergy();
 		} catch(NoResultException e){	
 			System.out.println("Keine WS in DB");
 		}		
+	}
+	
+	private void calcEnergy() {
+		double solarE = 20 * pb.getSolarPlant() * Math.pow(1.1, pb.getSolarPlant());
+		double fusionE = (30 * pb.getFusionReactor() * Math.pow((1.05 + pr.getEnergy()* 0.01),pb.getFusionReactor()));
+		maxEnergy = solarE+fusionE;
+		
+		double metalE = 10 * pb.getMetalMine() * Math.pow(1.1, pb.getMetalMine());
+		double crystalE = 10 * pb.getCrystalMine() * Math.pow(1.1, pb.getCrystalMine());
+		double deutE = 20 * pb.getDeutSyn() * Math.pow(1.1, pb.getDeutSyn());
+		
+		pg.setEnergy(maxEnergy - (metalE+crystalE+deutE));
+		
+		
 	}
 	
 	private void resDiff() {
@@ -300,7 +358,6 @@ public class PlanetHandler {
 		query.setParameter("id", pg.getPlanetId());
 		try {
 			pg = (Planets_General)query.getSingleResult();
-			resDiff();
 		} catch(NoResultException e) {
 			System.err.println("Planets_General with id="+pg.getPlanetId()+"was not found.");
 		}		
@@ -347,11 +404,13 @@ public class PlanetHandler {
 	}
 	public void updateDataset() {
 		pg = planets.get(activePlanet);
+		updateGeneral();
 		updateBuildings();
 		updateDef();
 		updateResearch();
 		updateShips();	
-		updateGeneral();
+		resDiff();
+		
 	}
 	
 	public void save() {
@@ -362,6 +421,19 @@ public class PlanetHandler {
 			e.printStackTrace();
 		}
 		em.merge(pg);
+		try {
+			utx.commit();
+		} catch (SecurityException | IllegalStateException | RollbackException | HeuristicMixedException
+				| HeuristicRollbackException | SystemException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			utx.begin();
+		} catch (NotSupportedException | SystemException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		em.merge(pb);
 		em.merge(pr);
 		em.merge(ps);
@@ -451,6 +523,6 @@ public class PlanetHandler {
 	}
 	
 	public int getMaxEnergyAsInt() {
-		return 0;
+		return (int)maxEnergy;
 	}
 }

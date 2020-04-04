@@ -27,7 +27,7 @@ public abstract class Planets_General_ {
 	public static volatile SingularAttribute<Planets_General, Integer> position;
 	public static volatile SingularAttribute<Planets_General, Integer> galaxy;
 	public static volatile SingularAttribute<Planets_General, Long> debrisFieldMetal;
-	public static volatile SingularAttribute<Planets_General, Integer> energy;
+	public static volatile SingularAttribute<Planets_General, Double> energy;
 
 }
 

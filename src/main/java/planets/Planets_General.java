@@ -38,7 +38,7 @@ public class Planets_General implements Serializable {
 	private double metal;
 	private double crystal;
 	private double deut;
-	private int energy; 
+	private double energy; 
 	private String name = "DingDong des Todes";
 	private int userid;
 	private Date lastUpdate;
@@ -182,11 +182,11 @@ public class Planets_General implements Serializable {
 		this.deut = deut;
 	}
 
-	public int getEnergy() {
+	public double getEnergy() {
 		return energy;
 	}
 
-	public void setEnergy(int energy) {
+	public void setEnergy(double energy) {
 		this.energy = energy;
 	}
 

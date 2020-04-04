@@ -44,7 +44,6 @@ public class LoginHandler implements Serializable{
 	private SettingsHandler settingsHandler;
 	private MessageHandler messageHandler;
 	private FleetHandler fleetHandler;
-	private boolean test = true;
 
 
 	@PersistenceContext

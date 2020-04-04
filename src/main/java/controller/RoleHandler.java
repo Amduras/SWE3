@@ -71,7 +71,7 @@ public class RoleHandler implements Serializable{
 
 	public void setNewRight(String newRight) {
 		if(selectedUser != null) {
-			if(selectedUser.getAuthLvl() != AuthLvl.SGA) {
+			if(!selectedUser.getUsername().equals("admin")) {
 				if(!newRight.toLowerCase().equals(selectedUser.getAuthLvl().getLabel())) {
 					this.newRight = newRight;
 					selectedUser.setAuthLvl(AuthLvl.valueOf(newRight));

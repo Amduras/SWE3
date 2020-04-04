@@ -38,21 +38,21 @@ public class MessageHandler implements Serializable{
 	private String newMessageContent;
 
 	public MessageHandler() {
-		
+
 	}
-	
+
 	public MessageHandler(EntityManager em, UserTransaction utx) {
 		this.em = em;
 		this.utx = utx;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	private void createMessageList() {
 		Query query = em.createQuery("select k from Messages k where k.toUser = :user");
 		query.setParameter("user", user.getUsername());
 		messages = query.getResultList();
 	}
-	
+
 	public List<Messages> getMessages() {
 		createMessageList();
 		return messages;
@@ -79,27 +79,30 @@ public class MessageHandler implements Serializable{
 		return message;
 	}
 
-	public void setMessage(int i) {
+	public void setMessage(int i, boolean galaxy) {
 		if(i != -1) {
-		this.message = messages.get(i);
-		message.setRead(true);
-		try {
-			utx.begin();
-		} catch (NotSupportedException | SystemException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		em.merge(message);
-		try {
-			utx.commit();
-		} catch (SecurityException | IllegalStateException | RollbackException | HeuristicMixedException
-				| HeuristicRollbackException | SystemException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		setNewMessageUser(message.getFromUser());
-		setNewMessageSubject("Re:"+message.getSubject());
-		} else {
+			if(!galaxy) {
+				this.message = messages.get(i);
+				message.setRead(true);
+				try {
+					utx.begin();
+				} catch (NotSupportedException | SystemException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				em.merge(message);
+				try {
+					utx.commit();
+				} catch (SecurityException | IllegalStateException | RollbackException | HeuristicMixedException
+						| HeuristicRollbackException | SystemException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				setNewMessageUser(message.getFromUser());
+				setNewMessageSubject("Re:"+message.getSubject());
+			}
+			
+		}else {
 			this.message = new Messages();
 			this.message.setContent(null);
 			this.newMessageUser = null;
@@ -107,7 +110,7 @@ public class MessageHandler implements Serializable{
 			this.newMessageContent = null;
 		}
 	}
-	
+
 	public void submit() {
 		Messages newMessage = new Messages(user.getUsername(), newMessageUser, newMessageContent, newMessageSubject);
 		try {
@@ -125,7 +128,7 @@ public class MessageHandler implements Serializable{
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void remove(int i) {
 		Query query = em.createQuery("delete from Messages k where k.messagesId = :id");
 		query.setParameter("id", messages.get(i).getMessagesId());
@@ -144,7 +147,7 @@ public class MessageHandler implements Serializable{
 			e.printStackTrace();
 		}
 	}
-	
+
 	public String getNewMessageUser() {
 		return newMessageUser;
 	}

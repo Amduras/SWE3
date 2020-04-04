@@ -255,7 +255,13 @@ public class GalaxyHandler {
 			planets=tmpList;
 		}
 	}
-
+	
+	public void message(IncludeController includeController, MessageHandler messageHandler, int id) {
+		messageHandler.setNewMessageUser(getOwner(id));
+		messageHandler.setMessage(2, true);
+		includeController.setPage("messageView");
+	}
+	
 	public void colonize(PlanetHandler planetHandler, int userid, int rowid) {
 		planetHandler.colonizePlanet(userid, rowid, getGalaxyForTable(), getSystemForTable());
 		Query query = em.createQuery("select k from Solarsystem k where k.systemId = :id");

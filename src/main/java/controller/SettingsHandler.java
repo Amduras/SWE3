@@ -68,7 +68,7 @@ public class SettingsHandler implements Serializable{
 		try {
 			settings = (WorldSettings) query.getSingleResult();
 		} catch(NoResultException e) {
-			startSettings("Electra", 1, 1, 193, 0.1, 0.1 , 5, 10);
+			startSettings("Electra", 1000, 1, 193, 0.1, 0.1 , 5, 10);
 		}
 	}
 	

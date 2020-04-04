@@ -20,7 +20,7 @@
 			<f:facet name="header">Nachrichten</f:facet>
 			<p:column headerText="Betreff">
 				<p:commandLink action="#{includeController.setPage('messageView')}"
-					actionListener="#{loginHandler.messageHandler.setMessage(rowid)}"
+					actionListener="#{loginHandler.messageHandler.setMessage(rowid, false)}"
 					value="#{messages.subject}" update=":mainForm" />
 			</p:column>
 			<p:column headerText="Von">
@@ -44,6 +44,6 @@
 			</p:column>
 		</p:dataTable>
 		<p:commandButton value="Neue Nachricht" action="#{includeController.setPage('messageView')}"
-					actionListener="#{loginHandler.messageHandler.setMessage(-1)}" update=":mainForm" />
+					actionListener="#{loginHandler.messageHandler.setMessage(-1, false)}" update=":mainForm" />
 	</h:panelGroup>
 </ui:composition>
