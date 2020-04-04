@@ -168,6 +168,16 @@ public class LoginHandler implements Serializable{
 		em.persist(new Ship(42,1600,10,1,20000,2000,1000,21,new int[] {1,1,1,1,1,1,1,250,1,1,1,1,1,1}));
 		em.persist(new Ship(43,100,1,1,5,100000000,1,21,new int[] {5,5,5,5,5,5,5,1250,5,5,5,5,1,1}));
 		em.persist(new Ship(44,200,1,1,0,0,0,21,new int[] {5,5,5,5,5,5,5,1250,5,5,5,5,1,1}));
+		em.persist(new Ship(45,2000,20,80,0,0,0,0,new int[] {1,1,10,1,1,20,1,200,1,1,1,1,1,1}));
+		em.persist(new Ship(46,2000,25,100,0,0,0,0,new int[] {1,1,1,1,1,20,10,200,1,1,1,1,1,1}));
+		em.persist(new Ship(47,8000,100,250,0,0,0,0,new int[] {1,1,1,1,1,10,1,100,1,1,1,1,1,1}));
+		em.persist(new Ship(48,35000,200,1100,0,0,0,0,new int[] {1,1,1,1,1,5,1,50,1,1,1,1,1,1}));
+		em.persist(new Ship(49,8000,500,150,0,0,0,0,new int[] {1,1,1,1,1,10,1,100,1,1,1,1,1,1}));
+		em.persist(new Ship(50,100000,300,3000,0,0,0,0,new int[] {1,1,1,1,1,5,1,1,1,1,1,1,1,1}));
+		em.persist(new Ship(51,20000,2000,1,0,0,0,0,new int[] {1,1,1,1,1,1,1,1,1,1,1,1,1,1}));
+		em.persist(new Ship(52,100000,10000,1,0,0,0,0,new int[] {1,1,1,1,1,1,1,1,1,1,1,1,1,1}));
+		em.persist(new Ship(53,8000,1,1,0,0,0,0,new int[] {1,1,1,1,1,1,1,1,1,1,1,1,1,1}));
+		em.persist(new Ship(54,15000,1,12000,0,0,0,0,new int[] {1,1,1,1,1,1,1,1,1,1,1,1,1,1}));
 		
 		User noober = new User("noober","admin@admin.de","noober", IsActive.TRUE, AuthLvl.USER);
 		User casual = new User("casual","admin@admin.de","casual", IsActive.TRUE, AuthLvl.USER);
@@ -272,7 +282,6 @@ public class LoginHandler implements Serializable{
 		
 		//planetHandler.createNewPlanet(1);
 	}
-	
 
 	public String login() {
 		Query query = em.createQuery("select k from User k where k.username = :username and k.password = :password ");
