@@ -32,6 +32,7 @@ model\WorldSettings.class
 controller\IncludeController.class
 controller\ListenerView.class
 planets\Planets_Def_.class
+model\Fight.class
 planets\Planets_Research_.class
 planets\Planets_General.class
 planets\Planets_Buildings_.class

@@ -50,11 +50,9 @@ public class GalaxyHandler {
 		query.setParameter("galaxyID", galaxy.getGalaxyId());
 		List<Solarsystem> systems = query.getResultList();
 		if(systems.size() > 0) {
-			System.out.println("altes System");
 			int i = 0;
 			while(i < systems.size()) {
 				system = systems.get(i);
-				System.out.println("System: "+system.getSystemId()+" wird überprüft");
 				if(system.getFreeStartpositions() > 0) {
 					system.setFreeStartpositions(system.getFreeStartpositions() - 1);
 					system.setPlanets(system.getPlanets() - 1);
@@ -72,13 +70,11 @@ public class GalaxyHandler {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					System.out.println("System: "+system.getSystemId()+" übernommen");
 					return system;
 				}
 				++i;
 			}
 		} 
-		System.out.println("neues system");
 		system = new Solarsystem();
 		int id = getMaxSystem();
 		system.setSystemId(id+1);
@@ -103,7 +99,6 @@ public class GalaxyHandler {
 	}
 
 	public Galaxy getGalaxy() {
-		System.out.println("GALAXY");
 		Galaxy galaxy = null;
 		Query query = em.createQuery("select k from Galaxy k");
 		@SuppressWarnings("unchecked")
@@ -158,7 +153,6 @@ public class GalaxyHandler {
 	}
 
 	public int getPosition(int galaxyId, int systemId) {
-		System.out.println("POSITION");
 		boolean blocked = true;
 		int position = 0;
 		Random rand = new Random();

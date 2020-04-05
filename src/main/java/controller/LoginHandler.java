@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.Serializable;
+import java.security.SecureRandom;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -20,6 +21,8 @@ import javax.transaction.NotSupportedException;
 import javax.transaction.RollbackException;
 import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
+
+import org.mindrot.jbcrypt.BCrypt;
 
 import enums.AuthLvl;
 import enums.IsActive;
@@ -50,7 +53,8 @@ public class LoginHandler implements Serializable{
 	private SettingsHandler settingsHandler;
 	private MessageHandler messageHandler;
 	private FleetHandler fleetHandler;
-
+	private int logRounds = 12;
+	private SecureRandom random = new SecureRandom();
 
 	@PersistenceContext
 	private EntityManager em;
@@ -179,13 +183,13 @@ public class LoginHandler implements Serializable{
 		em.persist(new Ship(52,100000,10000,1,0,0,0,0,new int[] {1,1,1,1,1,1,1,1,1,1,1,1,1,1}));
 		em.persist(new Ship(53,8000,1,1,0,0,0,0,new int[] {1,1,1,1,1,1,1,1,1,1,1,1,1,1}));
 		em.persist(new Ship(54,15000,1,12000,0,0,0,0,new int[] {1,1,1,1,1,1,1,1,1,1,1,1,1,1}));
-
-		User noober = new User("noober","admin@admin.de","noober", IsActive.TRUE, AuthLvl.USER);
-		User casual = new User("casual","admin@admin.de","casual", IsActive.TRUE, AuthLvl.USER);
-		User pro = new User("pro","admin@admin.de","pro", IsActive.TRUE, AuthLvl.USER);
-		User toxic = new User("toxic","admin@admin.de","toxic", IsActive.TRUE, AuthLvl.RESTRICTED);
-		User badGuy = new User("bad","admin@admin.de","admin", IsActive.TRUE, AuthLvl.BANNED);
-		User admin = new User("admin","admin@admin.de","admin", IsActive.TRUE, AuthLvl.SGA);
+		
+		User noober = new User("noober","admin@admin.de",hash("noober"), IsActive.TRUE, AuthLvl.USER);
+		User casual = new User("casual","admin@admin.de",hash("casual"), IsActive.TRUE, AuthLvl.USER);
+		User pro = new User("pro","admin@admin.de",hash("pro"), IsActive.TRUE, AuthLvl.USER);
+		User toxic = new User("toxic","admin@admin.de",hash("toxic"), IsActive.TRUE, AuthLvl.RESTRICTED);
+		User badGuy = new User("bad","admin@admin.de",hash("badguy"), IsActive.TRUE, AuthLvl.BANNED);
+		User admin = new User("admin","admin@admin.de",hash("admin"), IsActive.TRUE, AuthLvl.SGA);
 
 		em.persist(noober);
 		em.persist(casual);
@@ -282,17 +286,12 @@ public class LoginHandler implements Serializable{
 //		genTestMsg();
 	}
 
-	public String login() {
+	public String login() {		
 		Query query = em.createQuery("select k from User k where k.username = :username");
 		query.setParameter("username", username);
-		@SuppressWarnings("unchecked")
-		List<User> users = query.getResultList();
-		if(users.size() != 0) {
-			query = em.createQuery("select k from User k where k.username = :username and k.password = :password ");
-			query.setParameter("username", username);
-			query.setParameter("password", password);
-			try {
-				User user = (User) query.getSingleResult();
+		try {
+			User user = (User)query.getSingleResult();
+			if(BCrypt.checkpw(password, user.getPassword())) {
 				handler.setUser(user);
 				query = em.createQuery("select k from Planets_General k where k.userid = :userid");
 				query.setParameter("userid", handler.getUser().getUserID());
@@ -312,11 +311,11 @@ public class LoginHandler implements Serializable{
 				gHandler.setUser(user);
 				messageHandler.setUser(user);
 				return"/main.xhtml?faces-redirect=true";
-			}catch (NoResultException e) {
+			}else {
 				setLoginMessage("Ungültige Kombination aus Name und Passwort");
 				return "";
 			}
-		}else{
+		}catch (NoResultException e){
 			setLoginMessage("User '"+username+ "' nicht vorhanden.");
 			return "";
 		}
@@ -337,7 +336,7 @@ public class LoginHandler implements Serializable{
 			user.setAuthLvl(AuthLvl.USER);
 			user.setIsActive(IsActive.TRUE);
 			user.setUsername(username);
-			user.setPassword(password);
+			user.setPassword(hash(password));
 			user.setEmail("asd@web.de");
 
 			try {
@@ -356,17 +355,13 @@ public class LoginHandler implements Serializable{
 			planetHandler.createNewPlanet(user.getUserID());
 			return "login";
 		} else {
-			return "login";
+			setLoginMessage("username schon vergeben");
+			return "";
 		}
 
 	}
 
 	public boolean isAdmin() {
-		Query query = em.createQuery("select k from User k where k.username = :username and k.password = :password ");
-		query.setParameter("username", username);
-		query.setParameter("password", password);
-		User  user = (User) query.getSingleResult();
-		handler.setUser(user);
 		if(handler.getUser().getAuthLvl() == AuthLvl.SGA) {
 			return true;
 		} else {
@@ -410,7 +405,11 @@ public class LoginHandler implements Serializable{
 		FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
 		return"/login.xhtml?faces-redirect=true";
 	}
-
+	
+	public String hash(String password) {
+        return BCrypt.hashpw(password, BCrypt.gensalt(logRounds,random));
+    }
+	
 	public String getUsername() {
 		return username;
 	}
