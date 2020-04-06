@@ -10,7 +10,7 @@
 
 	<f:event listener="#{loginHandler.checkLoggedIn}" type="preRenderView" />
 
-	<p:growl id="growl"/>
+	<p:growl id="growl" />
 	<h:panelGroup id="center_body_top" styleClass="center_body_top"
 		layout="block">
 		<h:panelGroup style="position:relative; width:100%; height:100%;"
@@ -305,7 +305,7 @@
 								<h:graphicImage class="button_next"
 									url="resources/images/fleetPlanet.jpg" title="Planet" />
 							</p>
-							<p style="color:white;">
+							<p style="color: white;">
 								Koordinaten:
 								<p:outputLabel styleClass="fleetCoords"
 									value="#{loginHandler.planetHandler.pg.galaxy}" />
@@ -323,7 +323,7 @@
 										value="#{loginHandler.fleetHandler.distance}" />
 								</p>
 							</h:panelGroup>
-							<p class="item" style="color:white;">Entfernung</p></td>
+							<p class="item" style="color: white;">Entfernung</p></td>
 						<td id="destination">
 							<p class="item">
 								<p:outputLabel styleClass="fleetPname"
@@ -333,7 +333,7 @@
 								<h:graphicImage class="button_next"
 									url="resources/images/fleetPlanet.jpg" title="Planet" />
 							</p> <h:panelGroup layout="block" style="width: 90%; margin: auto;">
-								<p class="item" style="color:white;">Koordinaten:</p>
+								<p class="item" style="color: white;">Koordinaten:</p>
 								<p:inputText styleClass="fleetInp"
 									value="#{loginHandler.fleetHandler.galaxy}">
 									<p:ajax event="change"

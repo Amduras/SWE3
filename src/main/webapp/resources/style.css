@@ -300,7 +300,7 @@ th.coords {
 	background: url("images/fleet_buttons.jpg");
 	width: 54px;
     height: 54px;
-    background-size: initial;
+  	background-size: initial;
     background-repeat-x: no-repeat;
     background-repeat-y: no-repeat;
     background-attachment: initial;
@@ -309,13 +309,9 @@ th.coords {
     background-color: initial;
 }
 .fleet_button_kolo{
-	/*-webkit-clip-path: inset(0px 434px 160px 108px);
-    clip-path: inset(0px 434px 160px 108px);*/
 	background-position: -108px 0px;
 }
 .fleet_button_tf{
-	/*-webkit-clip-path: inset(0px 434px 160px 108px);
-    clip-path: inset(0px 326px 160px 216px);*/
     background-position: -216px 0px;
 }
 .fleet_button_trans{

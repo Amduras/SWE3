@@ -183,7 +183,7 @@ public class LoginHandler implements Serializable{
 		em.persist(new Ship(52,100000,10000,1,0,0,0,0,new int[] {1,1,1,1,1,1,1,1,1,1,1,1,1,1}));
 		em.persist(new Ship(53,8000,1,1,0,0,0,0,new int[] {1,1,1,1,1,1,1,1,1,1,1,1,1,1}));
 		em.persist(new Ship(54,15000,1,12000,0,0,0,0,new int[] {1,1,1,1,1,1,1,1,1,1,1,1,1,1}));
-		
+
 		User noober = new User("noober","admin@admin.de",hash("noober"), IsActive.TRUE, AuthLvl.USER);
 		User casual = new User("casual","admin@admin.de",hash("casual"), IsActive.TRUE, AuthLvl.USER);
 		User pro = new User("pro","admin@admin.de",hash("pro"), IsActive.TRUE, AuthLvl.USER);
@@ -283,40 +283,41 @@ public class LoginHandler implements Serializable{
 		em.persist(admin_pr);
 		em.persist(admin_ps);
 
-//		genTestMsg();
+		//		genTestMsg();
 	}
 
 	public String login() {		
 		Query query = em.createQuery("select k from User k where k.username = :username");
 		query.setParameter("username", username);
+		User user =  null;
 		try {
-			User user = (User)query.getSingleResult();
-			if(BCrypt.checkpw(password, user.getPassword())) {
-				handler.setUser(user);
-				query = em.createQuery("select k from Planets_General k where k.userid = :userid");
-				query.setParameter("userid", handler.getUser().getUserID());
-				@SuppressWarnings("unchecked")
-				List<Planets_General> planets = query.getResultList();
-				planetHandler.init(planets);
-				query = em.createQuery("select galaxy from Planets_General k where k.userid = :userid and name = :name");
-				query.setParameter("userid", handler.getUser().getUserID());
-				query.setParameter("name", "Heimatplanet");
-				int id = (int) query.getSingleResult();
-				gHandler.setGalaxyForTable(id);
-				query = em.createQuery("select solarsystem from Planets_General k where k.userid = :userid and name = :name");
-				query.setParameter("userid", handler.getUser().getUserID());
-				query.setParameter("name", "Heimatplanet");
-				id = (int) query.getSingleResult();
-				gHandler.setSystemForTable(id);
-				gHandler.setUser(user);
-				messageHandler.setUser(user);
-				return"/main.xhtml?faces-redirect=true";
-			}else {
-				setLoginMessage("Ungültige Kombination aus Name und Passwort");
-				return "";
-			}
+			user = (User)query.getSingleResult();
 		}catch (NoResultException e){
 			setLoginMessage("User '"+username+ "' nicht vorhanden.");
+			return "";
+		}
+		if(BCrypt.checkpw(password, user.getPassword())) {
+			handler.setUser(user);
+			query = em.createQuery("select k from Planets_General k where k.userid = :userid");
+			query.setParameter("userid", handler.getUser().getUserID());
+			@SuppressWarnings("unchecked")
+			List<Planets_General> planets = query.getResultList();
+			planetHandler.init(planets);
+			query = em.createQuery("select galaxy from Planets_General k where k.userid = :userid and name = :name");
+			query.setParameter("userid", handler.getUser().getUserID());
+			query.setParameter("name", planets.get(0).getName());
+			int id = (int) query.getSingleResult();
+			gHandler.setGalaxyForTable(id);
+			query = em.createQuery("select solarsystem from Planets_General k where k.userid = :userid and name = :name");
+			query.setParameter("userid", handler.getUser().getUserID());
+			query.setParameter("name", planets.get(0).getName());
+			id = (int) query.getSingleResult();
+			gHandler.setSystemForTable(id);
+			gHandler.setUser(user);
+			messageHandler.setUser(user);
+			return"/main.xhtml?faces-redirect=true";
+		}else {
+			setLoginMessage("Ungültige Kombination aus Name und Passwort");
 			return "";
 		}
 	}
@@ -405,11 +406,11 @@ public class LoginHandler implements Serializable{
 		FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
 		return"/login.xhtml?faces-redirect=true";
 	}
-	
+
 	public String hash(String password) {
-        return BCrypt.hashpw(password, BCrypt.gensalt(logRounds,random));
-    }
-	
+		return BCrypt.hashpw(password, BCrypt.gensalt(logRounds,random));
+	}
+
 	public String getUsername() {
 		return username;
 	}
