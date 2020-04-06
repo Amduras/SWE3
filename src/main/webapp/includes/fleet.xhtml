@@ -482,17 +482,17 @@
 						<td colspan="3"><h:panelGroup layout="block"
 								style="width: 90%; margin: auto;">
 								<p:inputText styleClass="fleetInp"
-									value="#{loginHandler.fleetHandler.metal}">
+									value="#{loginHandler.fleetHandler.cargo[0]}">
 									<p:ajax event="change"
 										listener="#{loginHandler.fleetHandler.changeRes()}" />
 								</p:inputText>
 								<p:inputText styleClass="fleetInp"
-									value="#{loginHandler.fleetHandler.crystal}">
+									value="#{loginHandler.fleetHandler.cargo[1]}">
 									<p:ajax event="change"
 										listener="#{loginHandler.fleetHandler.changeRes()}" />
 								</p:inputText>
 								<p:inputText styleClass="fleetInp"
-									value="#{loginHandler.fleetHandler.deut}">
+									value="#{loginHandler.fleetHandler.cargo[2]}">
 									<p:ajax event="change"
 										listener="#{loginHandler.fleetHandler.changeRes()}" />
 								</p:inputText>

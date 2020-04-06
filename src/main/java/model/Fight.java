@@ -26,13 +26,16 @@ public class Fight {
 	private EntityManager em;
 	private UserTransaction utx;
 	
+	@SuppressWarnings("unused")
 	private int attPlanetId;
+	private int[] attTShips;
 	private int[][] attShips = new int[13][6];
 	private long[] booty;
+	private Planets_General att_pg;
 	private Planets_Research att_pr;
 	
 	private int defPlanetId;
-	private int[][] defShips = new int[20][6];
+	private int[][] defShips = new int[22][6];
 	private Planets_General def_pg;
 	private Planets_Buildings def_pb;
 	private Planets_Research def_pr;
@@ -43,11 +46,13 @@ public class Fight {
 	
 	public Fight(int attPlanetId, int[] attTShips, long[] booty, int defPlanetId, EntityManager em, UserTransaction utx) {
 		this.attPlanetId = attPlanetId;
+		this.attTShips = attTShips;
 		this.booty = booty;
 		this.defPlanetId = defPlanetId;
 		this.em = em;
 		this.utx = utx;
 		
+		att_pg = getPg(attPlanetId);
 		att_pr = getPr(attPlanetId);
 		
 		def_pg = getPg(defPlanetId);
@@ -122,6 +127,8 @@ public class Fight {
 		endFight(2,6);
 	}
 	private void endFight(int i, int round) {
+		calcAndApplyDebrisfield();
+		updateAttShips();
 		if(i == 0) { // Vicory for att
 			def_pb = getPb(defPlanetId);
 			resDiff();
@@ -136,25 +143,264 @@ public class Fight {
 				booty[2] = maxDeut;			
 			}
 			else {
+				long min = Math.min(maxMetal, Math.min(maxCrystal, maxDeut));
+				if(min*3 <= cargoSpace) {
+					booty[0] = min;
+					booty[1] = min;
+					booty[2] = min;
+				}
+				else {
+					booty[0] = cargoSpace/3;
+					booty[1] = cargoSpace/3;
+					booty[2] = cargoSpace/3;
+				}
 				while((booty[0]+booty[1]+booty[2])<cargoSpace) {
 					booty[0] = booty[0] < maxMetal ? ++booty[0] : booty[0];
 					booty[1] = booty[1] < maxCrystal ? ++booty[1] : booty[1];
 					booty[2] = booty[2] < maxDeut ? ++booty[2] : booty[2];
-				}
+				}		
 			}
 			def_pg.setMetal(def_pg.getMetal()-booty[0]);
 			def_pg.setCrystal(def_pg.getCrystal()-booty[1]);
 			def_pg.setDeut(def_pg.getDeut()-booty[2]);
+			
+			writeLog(true,true);
+			writeLog(false,false);
 		}
 		else if(i == 1) { // Victory for def
-			
+			writeLog(false,true);
+			writeLog(true,false);
 		}
 		else {// Draw
+			writeLog(false,true);
+			writeLog(false,false);
 		}
 		repairDef();
 		saveDefDataset();
 	}
+	private void writeLog(boolean hasWon, boolean forAtt) {
+		String subject = "Angriff auf " +def_pg.getName();
+		String fromUser = "Flottenadmiral";
+		String toUser = "admin";
+		
+		int id = forAtt ? att_pg.getUserId() : def_pg.getUserId();
+		
+		Query query = em.createQuery("select k from User k where k.userId = :userId");
+		query.setParameter("userId", id);
+		
+		try {
+			Object res = query.getSingleResult();
+			User user = (User)res;
+			toUser = user.getUsername();
+		} catch(NoResultException e){	
+			System.out.println("Keine user mit id "+id+" in DB - fight");
+		}		
+		
+		String msg = hasWon ? "Wir haben gesiegt!</br>" : "Niederlage!</br>";
+		msg += "Schlacht um "+def_pg.getName()+ " Am: " + new Date(System.currentTimeMillis()).toString() 
+				+"Beute: <br>"
+				+ "<table>"
+				+"<tr>"
+				+"<td>Metal</td>"
+				+"<td>Kistall</td>"
+				+"<td>Deuterium</td>"
+				+"</tr>"
+				+"<tr>"
+				+"<td>"+booty[0]+"</td>"
+				+"<td>"+booty[1]+"</td>"
+				+"<td>"+booty[2]+"</td>"
+				+"</tr>"
+				+"</tr>"
+				+"<tr>"
+				+"<td rowspan=\"3\">Trümmerfeld</td>"
+				+"</tr>"
+				+"</tr>"
+				+"<tr>"
+				+"<td>"+def_pg.getDebrisFieldMetal()+"</td>"
+				+"<td>"+def_pg.getDebrisFieldCris()+"</td>"
+				+"<td>"+def_pg.getDebrisFieldDeut()+"</td>"
+				+"</tr>"
+				+ "</table></br>"
+				+"Unsere Flotte:</br>"
+				+"<table>"
+				+"<tr>"
+				+"<td>Leichte Jäger</td>"
+				+"<td>Schwere Jäger</td>"
+				+"<td>Kreuzer</td>"
+				+"<td>Schlachtschiffe</td>"
+				+"<td>Schlachtkreuzer</td>"
+				+"<td>Bomber</td>"
+				+"<td>Zerstörer</td>"
+				+"<td>Todestern</td>"
+				+"<td>Kleiner Transporter</td>"
+				+"<td>Großer Transporter</td>"
+				+"<td>Kolonieschiff</td>"
+				+"<td>Recycler</td>"
+				+"<td>Spionage Sonde</td>"
+				+"</tr>"
+				+"<tr>"
+				+"<td>"+(attShips[0][0]+attShips[0][5])+"</td>"
+				+"<td>"+(attShips[1][0]+attShips[1][5])+"</td>"
+				+"<td>"+(attShips[2][0]+attShips[2][5])+"</td>"
+				+"<td>"+(attShips[3][0]+attShips[3][5])+"</td>"
+				+"<td>"+(attShips[4][0]+attShips[4][5])+"</td>"
+				+"<td>"+(attShips[5][0]+attShips[5][5])+"</td>"
+				+"<td>"+(attShips[6][0]+attShips[6][5])+"</td>"
+				+"<td>"+(attShips[7][0]+attShips[7][5])+"</td>"
+				+"<td>"+(attShips[8][0]+attShips[8][5])+"</td>"
+				+"<td>"+(attShips[9][0]+attShips[9][5])+"</td>"
+				+"<td>"+(attShips[10][0]+attShips[10][5])+"</td>"
+				+"<td>"+(attShips[11][0]+attShips[11][5])+"</td>"
+				+"<td>"+(attShips[12][0]+attShips[12][5])+"</td>"
+				+"</tr>"
+				+"<tr>"
+				+"<td>-"+attShips[0][5]+"</td>"
+				+"<td>-"+attShips[1][5]+"</td>"
+				+"<td>-"+attShips[2][5]+"</td>"
+				+"<td>-"+attShips[3][5]+"</td>"
+				+"<td>-"+attShips[4][5]+"</td>"
+				+"<td>-"+attShips[5][5]+"</td>"
+				+"<td>-"+attShips[6][5]+"</td>"
+				+"<td>-"+attShips[7][5]+"</td>"
+				+"<td>-"+attShips[8][5]+"</td>"
+				+"<td>-"+attShips[9][5]+"</td>"
+				+"<td>-"+attShips[10][5]+"</td>"
+				+"<td>-"+attShips[11][5]+"</td>"
+				+"<td>-"+attShips[12][5]+"</td>"
+				+"</tr>"
+				+"</table></br>"
+				+"Verteidiger:</br>"
+				+"<table>"
+				+"<tr>"
+				+"<td>Leichte Jäger</td>"
+				+"<td>Schwere Jäger</td>"
+				+"<td>Kreuzer</td>"
+				+"<td>Schlachtschiffe</td>"
+				+"<td>Schlachtkreuzer</td>"
+				+"<td>Bomber</td>"
+				+"<td>Zerstörer</td>"
+				+"<td>Todestern</td>"
+				+"<td>Kleiner Transporter</td>"
+				+"<td>Großer Transporter</td>"
+				+"<td>Kolonieschiff</td>"
+				+"<td>Recycler</td>"
+				+"<td>Spionage Sonde</td>"
+				+"<td>Solarsattelit</td>"
+				+"</tr>"
+				+"<tr>"
+				+"<td>"+(defShips[1][0]+defShips[0][5])+"</td>"
+				+"<td>"+(defShips[1][0]+defShips[1][5])+"</td>"
+				+"<td>"+(defShips[2][0]+defShips[2][5])+"</td>"
+				+"<td>"+(defShips[3][0]+defShips[3][5])+"</td>"
+				+"<td>"+(defShips[4][0]+defShips[4][5])+"</td>"
+				+"<td>"+(defShips[5][0]+defShips[5][5])+"</td>"
+				+"<td>"+(defShips[6][0]+defShips[6][5])+"</td>"
+				+"<td>"+(defShips[7][0]+defShips[7][5])+"</td>"
+				+"<td>"+(defShips[8][0]+defShips[8][5])+"</td>"
+				+"<td>"+(defShips[9][0]+defShips[9][5])+"</td>"
+				+"<td>"+(defShips[10][0]+defShips[10][5])+"</td>"
+				+"<td>"+(defShips[11][0]+defShips[11][5])+"</td>"
+				+"<td>"+(defShips[12][0]+defShips[12][5])+"</td>"
+				+"<td>"+(defShips[13][0]+defShips[13][5])+"</td>"
+				+"</tr>"
+				+"<tr>"
+				+"<td>-"+defShips[0][5]+"</td>"
+				+"<td>-"+defShips[1][5]+"</td>"
+				+"<td>-"+defShips[2][5]+"</td>"
+				+"<td>-"+defShips[3][5]+"</td>"
+				+"<td>-"+defShips[4][5]+"</td>"
+				+"<td>-"+defShips[5][5]+"</td>"
+				+"<td>-"+defShips[6][5]+"</td>"
+				+"<td>-"+defShips[7][5]+"</td>"
+				+"<td>-"+defShips[8][5]+"</td>"
+				+"<td>-"+defShips[9][5]+"</td>"
+				+"<td>-"+defShips[10][5]+"</td>"
+				+"<td>-"+defShips[11][5]+"</td>"
+				+"<td>-"+defShips[12][5]+"</td>"
+				+"<td>-"+defShips[13][5]+"</td>"
+				+"</tr>"
+				+"</table></br>"
+				+"Verteidigungsanlagen:</br>"
+				+"<table>"
+				+"<tr>"
+				+"<td>Raketenwerfer</td>"
+				+"<td>Leichte Laser</td>"
+				+"<td>Schwere Laser</td>"
+				+"<td>Gausskanone</td>"
+				+"<td>Ionengeschütz</td>"
+				+"<td>Plasmawerfer</td>"
+				+"<td>Kleine Schildkuppel</td>"
+				+"<td>Große Schildkuppel</td>"
+				+"</tr>"
+				+"<tr>"
+				+"<td>"+(defShips[14][0]+defShips[14][5])+"</td>"
+				+"<td>"+(defShips[15][0]+defShips[15][5])+"</td>"
+				+"<td>"+(defShips[16][0]+defShips[16][5])+"</td>"
+				+"<td>"+(defShips[17][0]+defShips[17][5])+"</td>"
+				+"<td>"+(defShips[18][0]+defShips[18][5])+"</td>"
+				+"<td>"+(defShips[19][0]+defShips[19][5])+"</td>"
+				+"<td>"+(defShips[20][0]+defShips[20][5])+"</td>"
+				+"<td>"+(defShips[21][0]+defShips[21][5])+"</td>"
+				+"</tr>"
+				+"<tr>"
+				+"<td>-"+defShips[14][5]+"</td>"
+				+"<td>-"+defShips[15][5]+"</td>"
+				+"<td>-"+defShips[16][5]+"</td>"
+				+"<td>-"+defShips[17][5]+"</td>"
+				+"<td>-"+defShips[18][5]+"</td>"
+				+"<td>-"+defShips[19][5]+"</td>"
+				+"<td>-"+defShips[20][5]+"</td>"
+				+"<td>-"+defShips[21][5]+"</td>"
+				+"</tr>"
+				+"</table></br>"
+				+"60% der Verteidigungsanlagen wurden Repariert.";
+		
+		submitLog(fromUser, toUser, msg, subject);				
+	}
 	
+	private void submitLog(String fromUser, String toUser, String msg, String subject) {
+		Messages newMessage = new Messages(fromUser, toUser, msg, subject);
+		try {
+			utx.begin();
+		} catch (NotSupportedException | SystemException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		em.persist(newMessage);
+		try {
+			utx.commit();
+		} catch (SecurityException | IllegalStateException | RollbackException | HeuristicMixedException
+				| HeuristicRollbackException | SystemException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	private void calcAndApplyDebrisfield() {
+		Query query = em.createQuery("select k from Buildable k where k.id > 30");
+		@SuppressWarnings("unchecked")
+		List<Buildable> res = query.getResultList();
+		long metal = 0;
+		long crystal = 0;
+		long deut = 0;
+		for(int i=0;i<defShips.length;++i) {
+			metal += res.get(i+31).getBaseCostMetal() * defShips[i][5];
+			crystal += res.get(i+31).getBaseCostCrystal() * defShips[i][5];
+			deut += res.get(i).getBaseCostDeut() * defShips[i][5];
+			if(i<attShips.length) {
+				metal += res.get(i+31).getBaseCostMetal() * attShips[i][5];
+				crystal += res.get(i+31).getBaseCostCrystal() * attShips[i][5];
+				deut += res.get(i).getBaseCostDeut() * attShips[i][5];
+			}			
+		}
+		def_pg.setDebrisFieldMetal(def_pg.getDebrisFieldMetal()+metal);
+		def_pg.setDebrisFieldCris(def_pg.getDebrisFieldCris()+crystal);
+		def_pg.setDebrisFieldDeut(def_pg.getDebrisFieldDeut()+deut);
+	}
+	private void updateAttShips() {
+		for(int i=0;i<attShips.length;++i) {
+			attTShips[i] = attShips[i][0];
+		}
+	}
 	private void repairDef() {
 		for(int i=14;i<defShips.length;++i) {
 			defShips[i][0] += defShips[i][5] * 0.6;

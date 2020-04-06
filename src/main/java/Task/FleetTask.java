@@ -7,6 +7,7 @@ import javax.persistence.EntityManager;
 import javax.transaction.UserTransaction;
 
 import controller.QHandler;
+import model.Fight;
 
 public class FleetTask implements Task, Serializable{
 	
@@ -18,31 +19,24 @@ public class FleetTask implements Task, Serializable{
 	private int type;
 	private Date time;
 	private long duration;
-	private boolean mustReturn;
 	private int planet;
 	private int targetPlanet;
 	private int[] ships;
-	private long cargoMetal;
-	private long cargoCrystal;
-	private long cargoDeut;
+	private long[] cargo;
 	
 
 	
-	public FleetTask(EntityManager em, UserTransaction utx, int type, Date time, long duration, boolean mustReturn, int planet,
-			int targetPlanet, int[] ships, long cargoMetal, long cargoCrystal, long cargoDeut) {
+	public FleetTask(EntityManager em, UserTransaction utx, int type, Date time, long duration, int planet,
+			int targetPlanet, int[] ships, long[] cargo) {
 		this.em = em;
 		this.utx = utx;
 		this.type = type;
 		this.time = time;
 		this.duration = duration;
-		this.mustReturn = mustReturn;
 		this.planet = planet;
 		this.targetPlanet = targetPlanet;
 		this.ships = ships;
-		this.cargoMetal = cargoMetal;
-		this.cargoCrystal = cargoCrystal;
-		this.cargoDeut = cargoDeut;
-		
+		this.cargo = cargo;
 		//TODO
 		/*** Delete Ships on mission from Planets_General ***/
 		
@@ -100,7 +94,14 @@ public class FleetTask implements Task, Serializable{
 		
 	}
 	private void attack() {
-		
+		@SuppressWarnings("unused")
+		Fight fight = new Fight(planet, ships, cargo, targetPlanet, em, utx);
+		int res = 0;
+		for(int i=0;i<ships.length;++i) {
+			res += ships[i];
+		}
+		if(res != 0)
+			new FleetTask(em, utx, 3, new Date(System.currentTimeMillis()+duration), duration, targetPlanet, planet, ships, cargo);
 	}
 	@Override
 	public void writeToDB() {

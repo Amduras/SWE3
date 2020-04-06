@@ -13,7 +13,6 @@ import javax.persistence.Query;
 import javax.transaction.UserTransaction;
 
 import Task.FleetTask;
-import model.Buildable;
 import model.Ship;
 import planets.Planets_General;
 
@@ -41,9 +40,8 @@ public class FleetHandler {
 	private String name = "Kein Planet an Zielkoordinaten.";
 	private Planets_General target;
 	private boolean isValidTarget = false;
-	private int metal;
-	private int crystal;
-	private int deut;
+	private long[] cargo = {0,0,0};
+
 	private int mission;
 
 	public FleetHandler(PlanetHandler planetHandler, EntityManager em, UserTransaction utx) {
@@ -121,6 +119,7 @@ public class FleetHandler {
 		if(stage == 0) {
 			this.stage = stage;
 			Arrays.fill(ships, 0);
+			Arrays.fill(cargo, 0);
 		}
 		if(stage == 1) {
 			if(checkShips()) {
@@ -150,7 +149,7 @@ public class FleetHandler {
 		else if(stage == 3)		{
 			if(isValidMission()) {
 				if(isCargoValid()) {
-					new FleetTask(em, utx, mission, arrival, travelTime, true, planetHandler.getPg().getPlanetId(),target.getPlanetId(), ships, metal, crystal, deut);
+					new FleetTask(em, utx, mission, arrival, travelTime, planetHandler.getPg().getPlanetId(),target.getPlanetId(), ships, cargo);
 				}
 				else {
 					System.out.println("Cargospace ist zu klein");
@@ -218,7 +217,7 @@ public class FleetHandler {
 		return res;
 	}
 	private boolean isCargoValid() {
-		return metal+crystal+deut <= cargoSpace ? true : false;
+		return cargo[0]+cargo[1]+cargo[2] <= cargoSpace ? true : false;
 	}
 	private void calcSpeed() {
 		long minSpeed = Long.MAX_VALUE;
@@ -320,24 +319,11 @@ public class FleetHandler {
 		travelTime = (long) ((3500 / 2) * Math.pow((distance * 10 / speed),0.5)+10);
 		duration.setTime(travelTime*1000);
 	}
-
-	public int getMetal() {
-		return metal;
+	public long[] getCargo() {
+		return cargo;
 	}
-	public void setMetal(int metal) {
-		this.metal = metal;
-	}
-	public int getCrystal() {
-		return crystal;
-	}
-	public void setCrystal(int crystal) {
-		this.crystal = crystal;
-	}
-	public int getDeut() {
-		return deut;
-	}
-	public void setDeut(int deut) {
-		this.deut = deut;
+	public void setCargo(long[] cargo) {
+		this.cargo = cargo;
 	}
 	public void setMission(int mission) {
 		setMessage("Mission gesettet!");
