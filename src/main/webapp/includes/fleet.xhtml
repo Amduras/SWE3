@@ -10,7 +10,7 @@
 
 	<f:event listener="#{loginHandler.checkLoggedIn}" type="preRenderView" />
 
-	<p:growl id="growl"/>
+	<p:growl id="growl" />
 	<h:panelGroup id="center_body_top" styleClass="center_body_top"
 		layout="block">
 		<h:panelGroup style="position:relative; width:100%; height:100%;"
@@ -305,7 +305,7 @@
 								<h:graphicImage class="button_next"
 									url="resources/images/fleetPlanet.jpg" title="Planet" />
 							</p>
-							<p style="color:white;">
+							<p style="color: white;">
 								Koordinaten:
 								<p:outputLabel styleClass="fleetCoords"
 									value="#{loginHandler.planetHandler.pg.galaxy}" />
@@ -323,7 +323,7 @@
 										value="#{loginHandler.fleetHandler.distance}" />
 								</p>
 							</h:panelGroup>
-							<p class="item" style="color:white;">Entfernung</p></td>
+							<p class="item" style="color: white;">Entfernung</p></td>
 						<td id="destination">
 							<p class="item">
 								<p:outputLabel styleClass="fleetPname"
@@ -333,7 +333,7 @@
 								<h:graphicImage class="button_next"
 									url="resources/images/fleetPlanet.jpg" title="Planet" />
 							</p> <h:panelGroup layout="block" style="width: 90%; margin: auto;">
-								<p class="item" style="color:white;">Koordinaten:</p>
+								<p class="item" style="color: white;">Koordinaten:</p>
 								<p:inputText styleClass="fleetInp"
 									value="#{loginHandler.fleetHandler.galaxy}">
 									<p:ajax event="change"
@@ -428,38 +428,33 @@
 					<tr>
 						<td rowspan="3">
 							<div id="mission_container">
-								<h:graphicImage class="fleet_button fleet_button_kolo"
-									title="Kolonisieren">
+							
+								<h:graphicImage url="resources/images/missions/kolo.png" title="Kolonisieren">
 									<p:ajax event="click"
 										listener="#{loginHandler.fleetHandler.setMission(0)}"
 										update=":mainForm :mainForm:growl" />
 								</h:graphicImage>
-								<h:graphicImage class="fleet_button fleet_button_tf"
-									title="Trümmerfeld abbauen">
+								<h:graphicImage url="resources/images/missions/TF.png" title="Trümmerfeld abbauen">
 									<p:ajax event="click"
 										listener="#{loginHandler.fleetHandler.setMission(1)}"
 										update=":mainForm" />
 								</h:graphicImage>
-								<h:graphicImage class="fleet_button fleet_button_trans"
-									title="Transport">
+								<h:graphicImage value="resources/images/missions/trans.png" title="Transport">
 									<p:ajax event="click"
 										listener="#{loginHandler.fleetHandler.setMission(2)}"
 										update=":mainForm" />
 								</h:graphicImage>
-								<h:graphicImage class="fleet_button fleet_button_stat"
-									title="Stationieren">
+								<h:graphicImage value="resources/images/missions/stat.png" title="Stationieren">
 									<p:ajax event="click"
 										listener="#{loginHandler.fleetHandler.setMission(3)}"
 										update=":mainForm" />
 								</h:graphicImage>
-								<h:graphicImage class="fleet_button fleet_button_spio"
-									title="Spionage">
+								<h:graphicImage value="resources/images/missions/spio.png" title="Spionage">
 									<p:ajax event="click"
 										listener="#{loginHandler.fleetHandler.setMission(4)}"
 										update=":mainForm" />
 								</h:graphicImage>
-								<h:graphicImage class="fleet_button fleet_button_att"
-									title="Angreifen">
+								<h:graphicImage value="resources/images/missions/att.png" title="Angreifen">
 									<p:ajax event="click"
 										listener="#{loginHandler.fleetHandler.setMission(5)}"
 										update=":mainForm" />
