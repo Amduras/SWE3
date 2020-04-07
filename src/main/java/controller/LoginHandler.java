@@ -2,6 +2,7 @@ package controller;
 
 import java.io.Serializable;
 import java.security.SecureRandom;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -298,15 +299,13 @@ public class LoginHandler implements Serializable{
 				@SuppressWarnings("unchecked")
 				List<Planets_General> planets = query.getResultList();
 				planetHandler.init(planets);
-				query = em.createQuery("select galaxy from Planets_General k where k.userid = :userid and name = :name");
+				query = em.createQuery("select galaxy from Planets_General k where k.userid = :userid");
 				query.setParameter("userid", handler.getUser().getUserID());
-				query.setParameter("name", "Heimatplanet");
-				int id = (int) query.getSingleResult();
+				int id = (int) query.getFirstResult();
 				gHandler.setGalaxyForTable(id);
-				query = em.createQuery("select solarsystem from Planets_General k where k.userid = :userid and name = :name");
+				query = em.createQuery("select solarsystem from Planets_General k where k.userid = :userid");
 				query.setParameter("userid", handler.getUser().getUserID());
-				query.setParameter("name", "Heimatplanet");
-				id = (int) query.getSingleResult();
+				id = (int) query.getFirstResult();
 				gHandler.setSystemForTable(id);
 				gHandler.setUser(user);
 				messageHandler.setUser(user);
