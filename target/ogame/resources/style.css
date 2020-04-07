@@ -297,7 +297,6 @@ th.coords {
 	width: 325px;
 }
 .fleet_button{
-	background: url("images/fleet_buttons.jpg");
 	width: 54px;
     height: 54px;
   	background-size: initial;
@@ -309,22 +308,40 @@ th.coords {
     background-color: initial;
 }
 .fleet_button_kolo{
-	background-position: -108px 0px;
+	z-index:0;
+	position: relativ;
+	top:10px;
+	-webkit-clip-path: inset(26% 73% 50% 18.5%);
+    clip-path: inset(26% 73% 50% 18.5%);
+	/*background-position: -108px 0px;*/
 }
 .fleet_button_tf{
-    background-position: -216px 0px;
+	z-index:1;
+	position: relativ;
+	top:10px;
+    -webkit-clip-path: inset(26% 55% 50% 36.5%);
+    clip-path: inset(26% 55% 50% 36.5%);
+    /*background-position: -216px 0px;*/
 }
 .fleet_button_trans{
-	background-position: -270px 0px;
+	-webkit-clip-path: inset(26% 45.5% 50% 45.5%);
+	clip-path: inset(26% 45.5% 50% 45.5%);
+	/*background-position: -270px 0px;*/
 }
 .fleet_button_stat{
-	background-position: -162px 0px;
+	-webkit-clip-path: inset(26% 64% 50% 27.5%);
+	clip-path: inset(26% 64% 50% 27.5%);
+	/*background-position: -162px 0px;*/
 }
 .fleet_button_spio{
-	background-position: -324px 0px;
+	-webkit-clip-path: inset(26% 37% 50% 54.5%);
+	clip-path: inset(26% 37% 50% 54.5%);
+	/*background-position: -324px 0px;*/
 }
 .fleet_button_att{
-	background-position: -432px 0px;
+	-webkit-clip-path: inset(26% 18.5% 50% 72.5%);
+	clip-path: inset(26% 18.5% 50% 73%);
+	/*background-position: -432px 0px;*/
 }
 .buildings_level_output{
 	color: orange;

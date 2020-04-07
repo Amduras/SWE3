@@ -428,38 +428,33 @@
 					<tr>
 						<td rowspan="3">
 							<div id="mission_container">
-								<h:graphicImage class="fleet_button fleet_button_kolo"
-									title="Kolonisieren">
+							
+								<h:graphicImage url="resources/images/missions/kolo.png" title="Kolonisieren">
 									<p:ajax event="click"
 										listener="#{loginHandler.fleetHandler.setMission(0)}"
 										update=":mainForm :mainForm:growl" />
 								</h:graphicImage>
-								<h:graphicImage class="fleet_button fleet_button_tf"
-									title="Trümmerfeld abbauen">
+								<h:graphicImage url="resources/images/missions/TF.png" title="Trümmerfeld abbauen">
 									<p:ajax event="click"
 										listener="#{loginHandler.fleetHandler.setMission(1)}"
 										update=":mainForm" />
 								</h:graphicImage>
-								<h:graphicImage class="fleet_button fleet_button_trans"
-									title="Transport">
+								<h:graphicImage value="resources/images/missions/trans.png" title="Transport">
 									<p:ajax event="click"
 										listener="#{loginHandler.fleetHandler.setMission(2)}"
 										update=":mainForm" />
 								</h:graphicImage>
-								<h:graphicImage class="fleet_button fleet_button_stat"
-									title="Stationieren">
+								<h:graphicImage value="resources/images/missions/stat.png" title="Stationieren">
 									<p:ajax event="click"
 										listener="#{loginHandler.fleetHandler.setMission(3)}"
 										update=":mainForm" />
 								</h:graphicImage>
-								<h:graphicImage class="fleet_button fleet_button_spio"
-									title="Spionage">
+								<h:graphicImage value="resources/images/missions/spio.png" title="Spionage">
 									<p:ajax event="click"
 										listener="#{loginHandler.fleetHandler.setMission(4)}"
 										update=":mainForm" />
 								</h:graphicImage>
-								<h:graphicImage class="fleet_button fleet_button_att"
-									title="Angreifen">
+								<h:graphicImage value="resources/images/missions/att.png" title="Angreifen">
 									<p:ajax event="click"
 										listener="#{loginHandler.fleetHandler.setMission(5)}"
 										update=":mainForm" />
