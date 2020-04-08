@@ -3,6 +3,7 @@ package model;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -21,6 +22,7 @@ public class Messages implements Serializable{
 	private String fromUser;
 	private String toUser;
 	private Date dateSend;
+	@Column(columnDefinition = "TEXT")
 	private String content;
 	private boolean read;
 	private String subject;
