@@ -19,7 +19,7 @@
 			scrollHeight="223">
 			<f:facet name="header">Nachrichten</f:facet>
 			<p:column headerText="Betreff">
-				<p:commandLink action="#{includeController.setPage('messageView')}"
+				<p:commandLink action="#{includeController.setPage('messageView', loginHandler.fleetHandler)}"
 					actionListener="#{loginHandler.messageHandler.setMessage(rowid, false)}"
 					value="#{messages.subject}" update=":mainForm" />
 			</p:column>
@@ -43,7 +43,7 @@
 				</h:panelGroup>
 			</p:column>
 		</p:dataTable>
-		<p:commandButton value="Neue Nachricht" action="#{includeController.setPage('messageView')}"
+		<p:commandButton value="Neue Nachricht" action="#{includeController.setPage('messageView', loginHandler.fleetHandler)}"
 					actionListener="#{loginHandler.messageHandler.setMessage(-1, false)}" update=":mainForm" />
 	</h:panelGroup>
 </ui:composition>

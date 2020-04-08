@@ -283,10 +283,10 @@ public class GalaxyHandler {
 		}
 	}
 
-	public void message(IncludeController includeController, MessageHandler messageHandler, int id) {
+	public void message(IncludeController includeController, MessageHandler messageHandler, int id, FleetHandler fleetHandler) {
 		messageHandler.setNewMessageUser(getOwner(id));
 		messageHandler.setMessage(2, true);
-		includeController.setPage("messageView");
+		includeController.setPage("messageView", fleetHandler);
 	}
 
 	public void colonize(PlanetHandler planetHandler, int userid, int rowid) {

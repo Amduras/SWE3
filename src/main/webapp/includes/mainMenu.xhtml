@@ -14,59 +14,59 @@
 				<h:form id="menuForm">
 				<p:menu class="navMenu" toggleable="true">
 					<p:menuitem class="menuItem"
-					action="#{includeController.setPage('overview')}" update="center_body" render="col_center">
+					action="#{includeController.setPage('overview', loginHandler.fleetHandler)}" update="center_body" render="col_center">
 						<i class="fa fa-home fa-2x" style="color: white;">Übersicht</i>
 					</p:menuitem>
 					<p:menuitem class="menuItem"
-						action="#{includeController.setPage('supply')}" update="center_body" render="col_center"
+						action="#{includeController.setPage('supply', loginHandler.fleetHandler)}" update="center_body" render="col_center"
 						actionListener="#{loginHandler.buildHandler.setNewPage('true', 'buildings')}">
 						<i class="fa fa-gavel fa-2x" style="color: white;">Versorgung</i>
 					</p:menuitem>
 					<p:menuitem class="menuItem"
-						action="#{includeController.setPage('facility')}" update=":mainForm"
+						action="#{includeController.setPage('facility', loginHandler.fleetHandler)}" update=":mainForm"
 						actionListener="#{loginHandler.buildHandler.setNewPage('true', 'buildings')}">
 						<i class="fa fa-space-shuttle fa-2x" style="color: white;">Anlagen</i>
 					</p:menuitem>
 					<p:menuitem class="menuItem"
-						action="#{includeController.setPage('research')}" update=":mainForm"
+						action="#{includeController.setPage('research', loginHandler.fleetHandler)}" update=":mainForm"
 						actionListener="#{loginHandler.buildHandler.setNewPage('true', 'research')}">
 						<i class="fa fa-graduation-cap fa-2x" style="color: white;">Forschung</i>
 					</p:menuitem>
 					<p:menuitem class="menuItem"
-						action="#{includeController.setPage('shipyard')}" update=":mainForm"
+						action="#{includeController.setPage('shipyard', loginHandler.fleetHandler)}" update=":mainForm"
 						actionListener="#{loginHandler.buildHandler.setNewPage('true', 'ships')}">
 						<i class="fa fa-rebel fa-2x" style="color: white;">Schiffswerft</i>
 					</p:menuitem>
 					<p:menuitem class="menuItem"
-						action="#{includeController.setPage('def')}" update=":mainForm"
+						action="#{includeController.setPage('def', loginHandler.fleetHandler)}" update=":mainForm"
 						actionListener="#{loginHandler.buildHandler.setNewPage('true', 'def')}">
 						<i class="fa fa-sun-o fa-2x" style="color: white;">Verteidigung</i>
 					</p:menuitem>
 					<p:menuitem class="menuItem"
-					action="#{includeController.setPage('fleet')}" update=":mainForm"
+					action="#{includeController.setPage('fleet', loginHandler.fleetHandler)}" update=":mainForm"
 					actionListener="#{loginHandler.buildHandler.setNewPage('true', 'fleet')}">
 						<i class="fa fa-sun-o fa-2x" style="color: white;">Flotte</i>
 					</p:menuitem>
 					<p:menuitem class="menuItem"
-						action="#{includeController.setPage('galaxy')}" update="center_body" render="col_center"
+						action="#{includeController.setPage('galaxy', loginHandler.fleetHandler)}" update="center_body" render="col_center"
 						actionListener="#{loginHandler.buildHandler.setNewPage('true', 'str')}">
 						<i class="fa fa-sun-o fa-2x" style="color: white;">Galaxie</i>
 					</p:menuitem>
 					<p:menuitem class="menuItem"
-					action="#{includeController.setPage('messages')}" update=":mainForm">
+					action="#{includeController.setPage('messages', loginHandler.fleetHandler)}" update=":mainForm">
 						<i class="fa fa-laptop fa-2x" style="color: white;">Messages</i>
 					</p:menuitem>
 					<p:submenu label="Adminbereich"
 						rendered="#{loginHandler.isAdmin()}" class="menuItem"
 						style="color:white;font-size:20px;">
 						<p:menuitem class="menuItem"
-							action="#{includeController.setPage('settings')}"
+							action="#{includeController.setPage('settings', loginHandler.fleetHandler)}"
 							update=":mainForm">
 							<i class="fa fa-gears fa-2x" style="color: white;">World
 								Settings</i>
 						</p:menuitem>
 						<p:menuitem class="menuItem"
-							action="#{includeController.setPage('nutzerverwaltung')}"
+							action="#{includeController.setPage('nutzerverwaltung', loginHandler.fleetHandler)}"
 							update=":mainForm">
 							<i class="fa fa-users fa-2x" style="color: white;">Nutzerverwaltung</i>
 						</p:menuitem>
