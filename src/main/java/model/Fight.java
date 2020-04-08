@@ -68,7 +68,9 @@ public class Fight {
 	}
 	
 	private void beginFight() {		
+		System.out.println("Kampf begint ------------------------------------------");
 		for(int r=0;r<6;++r) {
+			System.out.println("Runde "+r+" startet------------------------------------------ \n Lade Schilde");
 			//charge Shields
 			chargeShields();
 			
@@ -78,6 +80,7 @@ public class Fight {
 				int dmg = defShips[i][0] * defShips[i][3];
 				if(dmg != 0) {
 					int target = findTargetFromAtt();
+					System.out.println("Def-Schiff target "+ target);
 					if (target != -1) {
 						int shots = RapidFire(i,target);
 						
@@ -87,21 +90,25 @@ public class Fight {
 						else
 							attShips[target][4] -= dmg*shots;
 						int losses = hulldmg / attShips[target][1];
+						System.out.println("Def-Schiff "+(i+31)+" schießt auf "+(target+31)+" mit "+shots+" Schuss für "+hulldmg+" Hüllenschaden ,"+losses+" Verluste.");
 						attShips[target][5] += losses;
 						if((attShips[target][0] - losses) < 0)
 							attShips[target][0] = 0;
 						else
-							attShips[target][0] -= losses;	
+							attShips[target][0] -= losses;
 					}
-					else	
+					else {
 						endFight(1,r);
 						return;
+					}						
 				}
 				//att shot
+				System.out.println("Att-Turn i="+i);
 				if(i<attShips.length) {
 					dmg = attShips[i][0] * attShips[i][3];
 					if(dmg != 0) {
 						int target = findTargetFromDef();
+						System.out.println("Att-Schiff target "+ target);
 						if (target != -1) {
 							int shots = RapidFire(i,target);
 							
@@ -111,22 +118,25 @@ public class Fight {
 							else
 								defShips[target][4] -= dmg*shots;
 							int losses = hulldmg / defShips[target][1];
+							System.out.println("Att-Schiff "+(i+31)+" schießt auf "+(target+31)+" mit "+shots+" Schuss für "+hulldmg+" Hüllenschaden ,"+losses+" Verluste.");
 							defShips[target][5] += losses;
 							if((defShips[target][0] - losses) < 0)
 								defShips[target][0] = 0;
 							else
 								defShips[target][0] -= losses;
 						}
-						else	
+						else {
 							endFight(0,r);
 							return;
+						}
 					}
 				}			
 			}			
 		}
-		endFight(2,6);
+		endFight(1,6);
 	}
 	private void endFight(int i, int round) {
+		System.out.println("Kampf ist vorbei, Runde: "+round+", Gewinner: "+i);
 		calcAndApplyDebrisfield();
 		updateAttShips();
 		if(i == 0) { // Vicory for att
@@ -184,8 +194,8 @@ public class Fight {
 		String toUser = "admin";
 		
 		int id = forAtt ? att_pg.getUserId() : def_pg.getUserId();
-		
-		Query query = em.createQuery("select k from User k where k.userId = :userId");
+		//WHYYYYYYYYYYYYYYYYYY großes D????
+		Query query = em.createQuery("select k from User k where k.userID = :userId");
 		query.setParameter("userId", id);
 		
 		try {
@@ -383,12 +393,12 @@ public class Fight {
 		long crystal = 0;
 		long deut = 0;
 		for(int i=0;i<defShips.length;++i) {
-			metal += res.get(i+31).getBaseCostMetal() * defShips[i][5];
-			crystal += res.get(i+31).getBaseCostCrystal() * defShips[i][5];
+			metal += res.get(i).getBaseCostMetal() * defShips[i][5];
+			crystal += res.get(i).getBaseCostCrystal() * defShips[i][5];
 			deut += res.get(i).getBaseCostDeut() * defShips[i][5];
 			if(i<attShips.length) {
-				metal += res.get(i+31).getBaseCostMetal() * attShips[i][5];
-				crystal += res.get(i+31).getBaseCostCrystal() * attShips[i][5];
+				metal += res.get(i).getBaseCostMetal() * attShips[i][5];
+				crystal += res.get(i).getBaseCostCrystal() * attShips[i][5];
 				deut += res.get(i).getBaseCostDeut() * attShips[i][5];
 			}			
 		}

@@ -14,6 +14,7 @@ import javax.transaction.UserTransaction;
 
 import Task.FleetTask;
 import model.Ship;
+import model.WorldSettings;
 import planets.Planets_General;
 
 @ManagedBean(name="fleetHandler")
@@ -316,8 +317,20 @@ public class FleetHandler {
 	}
 
 	private void calcTravelTime() {
-		travelTime = (long) ((3500 / 2) * Math.pow((distance * 10 / speed),0.5)+10);
-		duration.setTime(travelTime*1000);
+		Query query = em.createQuery("select max(id) from WorldSettings k");
+		int id =  (int)query.getSingleResult();
+		query = em.createQuery("select k from WorldSettings k where k.id = :id");
+		query.setParameter("id", id);
+
+		try {
+			Object res = query.getSingleResult();
+			WorldSettings ws = (WorldSettings)res;
+			
+			travelTime = (long) (((3500 / 2) * Math.pow((distance * 10 / speed),0.5)+10) / ws.getFleetSpeed());
+			duration.setTime(travelTime*1000);
+		} catch(NoResultException e){	
+			System.out.println("Keine WS in DB");
+		}		
 	}
 	public long[] getCargo() {
 		return cargo;

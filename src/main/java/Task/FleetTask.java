@@ -39,7 +39,7 @@ public class FleetTask implements Task, Serializable{
 		this.cargo = cargo;
 		//TODO
 		/*** Delete Ships on mission from Planets_General ***/
-		
+		System.out.println("Fleettask mit type "+type);
 		/** Add to queue for schedule **/
 		QHandler.queued.add(this);
 	}
