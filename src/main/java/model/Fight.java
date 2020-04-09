@@ -77,7 +77,7 @@ public class Fight {
 			//abwechselndes feuern, verteidiger hat ersten schuss
 			for(int i=0;i<defShips.length;++i) {
 				//def shot
-				int dmg = defShips[i][0] * defShips[i][3];
+				int dmg = (defShips[i][0]-defShips[i][5]) * defShips[i][3];
 				if(dmg != 0) {
 					int target = findTargetFromAtt();
 					System.out.println("Def-Schiff target "+ target);
@@ -90,12 +90,9 @@ public class Fight {
 						else
 							attShips[target][4] -= dmg*shots;
 						int losses = hulldmg / attShips[target][1];
-						System.out.println("Def-Schiff "+(i+31)+" schießt auf "+(target+31)+" mit "+shots+" Schuss für "+hulldmg+" Hüllenschaden ,"+losses+" Verluste.");
+						System.out.println("Def-Schiff "+(i+31)+" schießt auf "+(target+31)+" mit "+shots+" Schuss für "+hulldmg+" Hüllenschaden ,"+losses+" pot. Verluste.");
 						attShips[target][5] += losses;
-						if((attShips[target][0] - losses) < 0)
-							attShips[target][0] = 0;
-						else
-							attShips[target][0] -= losses;
+						attShips[target][5] = Math.min(attShips[target][0], attShips[target][5]);
 					}
 					else {
 						endFight(1,r);
@@ -103,9 +100,8 @@ public class Fight {
 					}						
 				}
 				//att shot
-				System.out.println("Att-Turn i="+i);
 				if(i<attShips.length) {
-					dmg = attShips[i][0] * attShips[i][3];
+					dmg = (attShips[i][0]-attShips[i][5]) * attShips[i][3];
 					if(dmg != 0) {
 						int target = findTargetFromDef();
 						System.out.println("Att-Schiff target "+ target);
@@ -120,10 +116,7 @@ public class Fight {
 							int losses = hulldmg / defShips[target][1];
 							System.out.println("Att-Schiff "+(i+31)+" schießt auf "+(target+31)+" mit "+shots+" Schuss für "+hulldmg+" Hüllenschaden ,"+losses+" Verluste.");
 							defShips[target][5] += losses;
-							if((defShips[target][0] - losses) < 0)
-								defShips[target][0] = 0;
-							else
-								defShips[target][0] -= losses;
+							defShips[target][5] = Math.min(defShips[target][0], defShips[target][5]);
 						}
 						else {
 							endFight(0,r);
@@ -137,8 +130,7 @@ public class Fight {
 	}
 	private void endFight(int i, int round) {
 		System.out.println("Kampf ist vorbei, Runde: "+round+", Gewinner: "+i);
-		calcAndApplyDebrisfield();
-		updateAttShips();
+		calcAndApplyDebrisfield();	
 		if(i == 0) { // Vicory for att
 			def_pb = getPb(defPlanetId);
 			resDiff();
@@ -186,6 +178,7 @@ public class Fight {
 			writeLog(false,false);
 		}
 		repairDef();
+		applyBattleResults();		
 		saveDefDataset();
 	}
 	private void writeLog(boolean hasWon, boolean forAtt) {
@@ -207,161 +200,72 @@ public class Fight {
 		}		
 		
 		String msg = hasWon ? "Wir haben gesiegt!</br>" : "Niederlage!</br>";
-		msg += "Schlacht um "+def_pg.getName()+ " Am: " + new Date(System.currentTimeMillis()).toString() 
-				+"Beute: <br>"
+		msg += "Schlacht um "+def_pg.getName()+ " Am: " + new Date(System.currentTimeMillis()).toString() +"</br>"
+				+"</br>"
 				+ "<table id=\"buildings\">"
 				+"<tr>"
-				+"<td>Metal</td>"
-				+"<td>Kistall</td>"
-				+"<td>Deuterium</td>"
+				+"<td></td>"
+				+"<td><img width=\"40\" height=\"40\" src=\"resources/images/res_icon/metal.png\" alt=\"Res\"></td>"
+				+"<td><img width=\"40\" height=\"40\" src=\"resources/images/res_icon/crystal.png\" alt=\"Res\"></td>"
+				+"<td><img width=\"40\" height=\"40\" src=\"resources/images/res_icon/deuterium.png\" alt=\"Res\"></td>"
 				+"</tr>"
 				+"<tr>"
+				+"<td>Beute:</td>"
 				+"<td>"+booty[0]+"</td>"
 				+"<td>"+booty[1]+"</td>"
 				+"<td>"+booty[2]+"</td>"
 				+"</tr>"
-				+"</tr>"
 				+"<tr>"
-				+"<td rowspan=\"3\">Trümmerfeld</td>"
-				+"</tr>"
-				+"</tr>"
-				+"<tr>"
+				+"<td>Trümmerfeld:</td>"
 				+"<td>"+def_pg.getDebrisFieldMetal()+"</td>"
 				+"<td>"+def_pg.getDebrisFieldCris()+"</td>"
 				+"<td>"+def_pg.getDebrisFieldDeut()+"</td>"
 				+"</tr>"
 				+ "</table></br>"
-				+"Unsere Flotte:</br>"
+				+"Angreifer:</br>"
 				+"<table id=\"buildings\">"
-				+"<tr>"
-				+"<td>Leichte Jäger</td>"
-				+"<td>Schwere Jäger</td>"
-				+"<td>Kreuzer</td>"
-				+"<td>Schlachtschiffe</td>"
-				+"<td>Schlachtkreuzer</td>"
-				+"<td>Bomber</td>"
-				+"<td>Zerstörer</td>"
-				+"<td>Todestern</td>"
-				+"<td>Kleiner Transporter</td>"
-				+"<td>Großer Transporter</td>"
-				+"<td>Kolonieschiff</td>"
-				+"<td>Recycler</td>"
-				+"<td>Spionage Sonde</td>"
-				+"</tr>"
-				+"<tr>"
-				+"<td>"+(attShips[0][0]+attShips[0][5])+"</td>"
-				+"<td>"+(attShips[1][0]+attShips[1][5])+"</td>"
-				+"<td>"+(attShips[2][0]+attShips[2][5])+"</td>"
-				+"<td>"+(attShips[3][0]+attShips[3][5])+"</td>"
-				+"<td>"+(attShips[4][0]+attShips[4][5])+"</td>"
-				+"<td>"+(attShips[5][0]+attShips[5][5])+"</td>"
-				+"<td>"+(attShips[6][0]+attShips[6][5])+"</td>"
-				+"<td>"+(attShips[7][0]+attShips[7][5])+"</td>"
-				+"<td>"+(attShips[8][0]+attShips[8][5])+"</td>"
-				+"<td>"+(attShips[9][0]+attShips[9][5])+"</td>"
-				+"<td>"+(attShips[10][0]+attShips[10][5])+"</td>"
-				+"<td>"+(attShips[11][0]+attShips[11][5])+"</td>"
-				+"<td>"+(attShips[12][0]+attShips[12][5])+"</td>"
-				+"</tr>"
-				+"<tr>"
-				+"<td>-"+attShips[0][5]+"</td>"
-				+"<td>-"+attShips[1][5]+"</td>"
-				+"<td>-"+attShips[2][5]+"</td>"
-				+"<td>-"+attShips[3][5]+"</td>"
-				+"<td>-"+attShips[4][5]+"</td>"
-				+"<td>-"+attShips[5][5]+"</td>"
-				+"<td>-"+attShips[6][5]+"</td>"
-				+"<td>-"+attShips[7][5]+"</td>"
-				+"<td>-"+attShips[8][5]+"</td>"
-				+"<td>-"+attShips[9][5]+"</td>"
-				+"<td>-"+attShips[10][5]+"</td>"
-				+"<td>-"+attShips[11][5]+"</td>"
-				+"<td>-"+attShips[12][5]+"</td>"
-				+"</tr>"
+				+"<tr>";
+				for(int i=0;i<attShips.length;++i)
+					msg += "<td><img width=\"42\" height=\"42\" src=\"resources/images/buildable/"+(i+31)+".jpg\" alt=\"Ship\"></td>";			
+				msg +="</tr>"
+				+"<tr>";
+				for(int i=0;i<attShips.length;++i)
+					msg += "<td>"+attShips[i][0]+"</td>";	
+				msg +="</tr>"
+				+"<tr>";
+				for(int i=0;i<attShips.length;++i)
+					msg += "<td>"+(-attShips[i][5])+"</td>";	
+				msg +="</tr>"
 				+"</table></br>"
 				+"Verteidiger:</br>"
 				+"<table id=\"buildings\">"
-				+"<tr>"
-				+"<td>Leichte Jäger</td>"
-				+"<td>Schwere Jäger</td>"
-				+"<td>Kreuzer</td>"
-				+"<td>Schlachtschiffe</td>"
-				+"<td>Schlachtkreuzer</td>"
-				+"<td>Bomber</td>"
-				+"<td>Zerstörer</td>"
-				+"<td>Todestern</td>"
-				+"<td>Kleiner Transporter</td>"
-				+"<td>Großer Transporter</td>"
-				+"<td>Kolonieschiff</td>"
-				+"<td>Recycler</td>"
-				+"<td>Spionage Sonde</td>"
-				+"<td>Solarsattelit</td>"
-				+"</tr>"
-				+"<tr>"
-				+"<td>"+(defShips[1][0]+defShips[0][5])+"</td>"
-				+"<td>"+(defShips[1][0]+defShips[1][5])+"</td>"
-				+"<td>"+(defShips[2][0]+defShips[2][5])+"</td>"
-				+"<td>"+(defShips[3][0]+defShips[3][5])+"</td>"
-				+"<td>"+(defShips[4][0]+defShips[4][5])+"</td>"
-				+"<td>"+(defShips[5][0]+defShips[5][5])+"</td>"
-				+"<td>"+(defShips[6][0]+defShips[6][5])+"</td>"
-				+"<td>"+(defShips[7][0]+defShips[7][5])+"</td>"
-				+"<td>"+(defShips[8][0]+defShips[8][5])+"</td>"
-				+"<td>"+(defShips[9][0]+defShips[9][5])+"</td>"
-				+"<td>"+(defShips[10][0]+defShips[10][5])+"</td>"
-				+"<td>"+(defShips[11][0]+defShips[11][5])+"</td>"
-				+"<td>"+(defShips[12][0]+defShips[12][5])+"</td>"
-				+"<td>"+(defShips[13][0]+defShips[13][5])+"</td>"
-				+"</tr>"
-				+"<tr>"
-				+"<td>-"+defShips[0][5]+"</td>"
-				+"<td>-"+defShips[1][5]+"</td>"
-				+"<td>-"+defShips[2][5]+"</td>"
-				+"<td>-"+defShips[3][5]+"</td>"
-				+"<td>-"+defShips[4][5]+"</td>"
-				+"<td>-"+defShips[5][5]+"</td>"
-				+"<td>-"+defShips[6][5]+"</td>"
-				+"<td>-"+defShips[7][5]+"</td>"
-				+"<td>-"+defShips[8][5]+"</td>"
-				+"<td>-"+defShips[9][5]+"</td>"
-				+"<td>-"+defShips[10][5]+"</td>"
-				+"<td>-"+defShips[11][5]+"</td>"
-				+"<td>-"+defShips[12][5]+"</td>"
-				+"<td>-"+defShips[13][5]+"</td>"
-				+"</tr>"
+				+"<tr>";
+				for(int i=0;i<14;++i)
+					msg += "<td><img width=\"42\" height=\"42\" src=\"resources/images/buildable/"+(i+31)+".jpg\" alt=\"Ship\"></td>";			
+				msg +="</tr>"
+				+"<tr>";
+				for(int i=0;i<14;++i)
+					msg += "<td>"+defShips[i][0]+"</td>";		
+				msg +="</tr>"
+				+"<tr>";
+				for(int i=0;i<14;++i)
+					msg += "<td>"+(-defShips[i][5])+"</td>";
+				msg +="</tr>"
 				+"</table></br>"
 				+"Verteidigungsanlagen:</br>"
 				+"<table id=\"buildings\">"
-				+"<tr>"
-				+"<td>Raketenwerfer</td>"
-				+"<td>Leichte Laser</td>"
-				+"<td>Schwere Laser</td>"
-				+"<td>Gausskanone</td>"
-				+"<td>Ionengeschütz</td>"
-				+"<td>Plasmawerfer</td>"
-				+"<td>Kleine Schildkuppel</td>"
-				+"<td>Große Schildkuppel</td>"
-				+"</tr>"
-				+"<tr>"
-				+"<td>"+(defShips[14][0]+defShips[14][5])+"</td>"
-				+"<td>"+(defShips[15][0]+defShips[15][5])+"</td>"
-				+"<td>"+(defShips[16][0]+defShips[16][5])+"</td>"
-				+"<td>"+(defShips[17][0]+defShips[17][5])+"</td>"
-				+"<td>"+(defShips[18][0]+defShips[18][5])+"</td>"
-				+"<td>"+(defShips[19][0]+defShips[19][5])+"</td>"
-				+"<td>"+(defShips[20][0]+defShips[20][5])+"</td>"
-				+"<td>"+(defShips[21][0]+defShips[21][5])+"</td>"
-				+"</tr>"
-				+"<tr>"
-				+"<td>-"+defShips[14][5]+"</td>"
-				+"<td>-"+defShips[15][5]+"</td>"
-				+"<td>-"+defShips[16][5]+"</td>"
-				+"<td>-"+defShips[17][5]+"</td>"
-				+"<td>-"+defShips[18][5]+"</td>"
-				+"<td>-"+defShips[19][5]+"</td>"
-				+"<td>-"+defShips[20][5]+"</td>"
-				+"<td>-"+defShips[21][5]+"</td>"
-				+"</tr>"
+				+"<tr>";
+				for(int i=14;i<defShips.length;++i)
+					msg += "<td><img width=\"42\" height=\"42\" src=\"resources/images/buildable/"+(i+31)+".jpg\" alt=\"Ship\"></td>";
+				msg +="</tr>"
+				+"<tr>";
+				for(int i=14;i<defShips.length;++i)
+					msg += "<td>"+defShips[i][0]+"</td>";
+				msg +="</tr>"
+				+"<tr>";
+				for(int i=14;i<defShips.length;++i)
+					msg += "<td>"+(-defShips[i][5])+"</td>";
+				msg +="</tr>"
 				+"</table></br>"
 				+"60% der Verteidigungsanlagen wurden Repariert.";
 		
@@ -386,40 +290,52 @@ public class Fight {
 		}
 	}
 	private void calcAndApplyDebrisfield() {
-		Query query = em.createQuery("select k from Buildable k where k.id > 30");
-		@SuppressWarnings("unchecked")
-		List<Buildable> res = query.getResultList();
-		long metal = 0;
-		long crystal = 0;
-		long deut = 0;
-		for(int i=0;i<defShips.length;++i) {
-			metal += res.get(i).getBaseCostMetal() * defShips[i][5];
-			crystal += res.get(i).getBaseCostCrystal() * defShips[i][5];
-			deut += res.get(i).getBaseCostDeut() * defShips[i][5];
-			if(i<attShips.length) {
-				metal += res.get(i).getBaseCostMetal() * attShips[i][5];
-				crystal += res.get(i).getBaseCostCrystal() * attShips[i][5];
-				deut += res.get(i).getBaseCostDeut() * attShips[i][5];
-			}			
+		Query query = em.createQuery("select max(id) from WorldSettings k");
+		int id =  (int)query.getSingleResult();
+		query = em.createQuery("select k from WorldSettings k where k.id = :id");
+		query.setParameter("id", id);
+		try {
+			Object res1 = query.getSingleResult();
+			WorldSettings ws = (WorldSettings)res1;
+			query = em.createQuery("select k from Buildable k where k.id > 30");
+			@SuppressWarnings("unchecked")
+			List<Buildable> res = query.getResultList();
+			long metal = 0;
+			long crystal = 0;
+			long deut = 0;
+			for(int i=0;i<defShips.length;++i) {
+				metal += res.get(i).getBaseCostMetal() * defShips[i][5] * ws.getFleetToDebrisFieldRatio();
+				crystal += res.get(i).getBaseCostCrystal() * defShips[i][5] * ws.getFleetToDebrisFieldRatio();
+				deut += res.get(i).getBaseCostDeut() * defShips[i][5] * ws.getFleetToDebrisFieldRatio();
+				if(i<attShips.length) {
+					metal += res.get(i).getBaseCostMetal() * attShips[i][5] * ws.getFleetToDebrisFieldRatio();
+					crystal += res.get(i).getBaseCostCrystal() * attShips[i][5] * ws.getFleetToDebrisFieldRatio();
+					deut += res.get(i).getBaseCostDeut() * attShips[i][5] * ws.getFleetToDebrisFieldRatio();
+				}			
+			}
+			def_pg.setDebrisFieldMetal(def_pg.getDebrisFieldMetal()+metal);
+			def_pg.setDebrisFieldCris(def_pg.getDebrisFieldCris()+crystal);
+			def_pg.setDebrisFieldDeut(def_pg.getDebrisFieldDeut()+deut);
+		} catch(NoResultException e){	
+			System.out.println("Keine WS in DB");
 		}
-		def_pg.setDebrisFieldMetal(def_pg.getDebrisFieldMetal()+metal);
-		def_pg.setDebrisFieldCris(def_pg.getDebrisFieldCris()+crystal);
-		def_pg.setDebrisFieldDeut(def_pg.getDebrisFieldDeut()+deut);
 	}
-	private void updateAttShips() {
-		for(int i=0;i<attShips.length;++i) {
-			attTShips[i] = attShips[i][0];
-		}
+	private void applyBattleResults() {
+		//att
+		for(int i=0;i<attShips.length;++i)
+			attTShips[i] = attShips[i][0]-attShips[i][5];
+		for(int i=0;i<defShips.length;++i)
+			setById(i,defShips[i][0]-defShips[i][5]);
 	}
 	private void repairDef() {
 		for(int i=14;i<defShips.length;++i) {
-			defShips[i][0] += defShips[i][5] * 0.6;
+			defShips[i][5] *= 0.4;
 		}
 	}
 	private int getCargoSpace() {
 		int res = 0;
 		for(int i=0;i<attShips.length;++i) {
-			res += shipData.get(i).getCargoSpace()*attShips[i][0];
+			res += shipData.get(i).getCargoSpace()*(attShips[i][0]-attShips[i][5]);
 		}
 		return res;
 	}
@@ -446,35 +362,34 @@ public class Fight {
 	private int findTargetFromAtt() {
 		List<Integer> tar = new ArrayList<Integer>();
 		for(int i=0;i<attShips.length;++i) {
-			if(attShips[i][0] > 0)
+			if((attShips[i][0]-attShips[i][5]) > 0)
 				tar.add(i);
 		}
 		if(tar.size() == 0)
 			return -1;
 		else {
 			Random rng = new Random();
-			return tar.indexOf(rng.nextInt(tar.size()));
+			return tar.get(rng.nextInt(tar.size()));
 		}
 	}
 	private int findTargetFromDef() {
 		List<Integer> tar = new ArrayList<Integer>();
-		for(int i=0;i<defShips.length;++i) {
-			if(defShips[i][0] > 0)
-				tar.add(i);
-		}
+		for(int i=0;i<defShips.length;++i)
+			if((defShips[i][0]-defShips[i][5]) > 0)
+				tar.add(i);	
 		if(tar.size() == 0)
-			return -1;
+			return -1;						
 		else {
 			Random rng = new Random();
-			return tar.indexOf(rng.nextInt(tar.size()));
+			return tar.get(rng.nextInt(tar.size()));
 		}			
 	}
 	private void chargeShields() {
 		for(int i=0;i<attShips.length;++i) {
-			attShips[i][4] = attShips[i][0] * attShips[i][2];
+			attShips[i][4] = (attShips[i][0]-attShips[i][5]) * attShips[i][2];
 		}
 		for(int i=0;i<defShips.length;++i) {
-			defShips[i][4]= defShips[i][0] * defShips[i][2];
+			defShips[i][4]= (defShips[i][0]-defShips[i][5]) * defShips[i][2];
 		}
 	}
 	private void initAttArray(int[] attTShips) {
@@ -637,6 +552,82 @@ public class Fight {
 			break;
 		}
 		return res;
+	}
+	private void setById(int id, int val) {
+		switch(id+31) {
+		case 31:
+			def_ps.setLightFighter(val);
+			break;
+		case 32:
+			def_ps.setHeavyFighter(val);
+			break;
+		case 33:
+			def_ps.setCruiser(val);
+			break;
+		case 34:
+			def_ps.setBattleship(val);
+			break;
+		case 35:
+			def_ps.setBattlecruiser(val);
+			break;
+		case 36:
+			def_ps.setBomber(val);
+			break;
+		case 37:
+			def_ps.setDestroyer(val);
+			break;
+		case 38:
+			def_ps.setDeathStar(val);
+			break;
+		case 39:
+			def_ps.setSmallCargoShip(val);
+			break;
+		case 40:
+			def_ps.setLargeCargoShip(val);
+			break;
+		case 41:
+			def_ps.setColonyShip(val);
+			break;
+		case 42:
+			def_ps.setRecycler(val);
+			break;
+		case 43:
+			def_ps.setEspionageProbe(val);
+			break;
+		case 44:
+			def_ps.setSolarSattlelite(val);
+			break;
+		case 45:
+			def_pd.setRocketLauncher(val);
+			break;
+		case 46:
+			def_pd.setLightLaser(val);
+			break;
+		case 47:
+			def_pd.setHeavyLaser(val);
+			break;
+		case 48:
+			def_pd.setGaussCannon(val);
+			break;
+		case 49:
+			def_pd.setIonCannon(val);
+			break;
+		case 50:
+			def_pd.setPlasmaTurret(val);
+			break;
+		case 51:
+			def_pd.setSmallShieldDome(val);
+			break;
+		case 52:
+			def_pd.setLargeShieldDome(val);
+			break;
+		case 53:
+			 def_pd.setAntiBallisticMissle(val);
+			break;
+		case 54:
+			def_pd.setInterplanetaryMissle(val);
+			break;
+		}
 	}
 	public void updateRes(long seconds) {
 		Query query = em.createQuery("select max(id) from WorldSettings k");

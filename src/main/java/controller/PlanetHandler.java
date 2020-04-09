@@ -445,16 +445,16 @@ public class PlanetHandler {
 		return planets;
 	}
 	
-	public int getStorageMAsInt() {
-		return (int) Math.round(2.5 * Math.pow(Math.E,(20 * pb.getMetalStorage() / 33)) * 5000);
+	public double getStorageMAsP() {
+		return pg.getMetal()/Math.round(2.5 * Math.pow(Math.E,(20 * pb.getMetalStorage() / 33)) * 5000);
 	}
 	
-	public int getStorageCAsInt() {
-		return (int) Math.round(2.5 * Math.pow(Math.E,(20 * pb.getCrystalStorage() / 33)) * 5000);
+	public double getStorageCAsP() {
+		return pg.getCrystal()/Math.round(2.5 * Math.pow(Math.E,(20 * pb.getCrystalStorage() / 33)) * 5000);
 	}
 	
-	public int getStorageDAsInt() {
-		return (int) Math.round(2.5 * Math.pow(Math.E,(20 * pb.getDeutTank() / 33)) * 5000);
+	public double getStorageDAsP() {
+		return pg.getDeut()/Math.round(2.5 * Math.pow(Math.E,(20 * pb.getDeutTank() / 33)) * 5000);
 	}
 	
 	public int getMaxEnergyAsInt() {

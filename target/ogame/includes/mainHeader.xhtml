@@ -15,30 +15,46 @@
 			<table id="res_table">
 				<thead>
 					<tr class="res_table">
-						<td><h:graphicImage style="width: 42px; height: 100%;"
-								url="resources/images/res_icon/metal.gif" /></td>
-						<td><h:graphicImage style="width: 42px; height: 100%;"
-								url="resources/images/res_icon/crystal.gif" /></td>
-						<td><h:graphicImage style="width: 42px; height: 100%;"
-								url="resources/images/res_icon/deuterium.gif" /></td>
-						<td><h:graphicImage style="width: 42px; height: 100%;"
-								url="resources/images/res_icon/energy.gif" /></td>
+						<td><h:graphicImage style="width: 50%; height: 50%;"
+								url="resources/images/res_icon/metal.png" /></td>
+						<td><h:graphicImage style="width: 50%; height: 50%;"
+								url="resources/images/res_icon/crystal.png" /></td>
+						<td><h:graphicImage style="width: 50%; height: 50%;"
+								url="resources/images/res_icon/deuterium.png" /></td>
+						<td><h:graphicImage style="width: 50%; height: 50%;"
+								url="resources/images/res_icon/energy.png" /></td>
 					</tr>
 				</thead>
 				<tbody>
 					<tr class="res_table">
-						<td id="metal"><p:outputLabel id="res_table_metal" value="#{loginHandler.planetHandler.pg.getMetalAsInt()}"/></td>
-						<td id="crystal"><p:outputLabel id="res_table_crystal" value="#{loginHandler.planetHandler.pg.getCrystalAsInt()}"/></td>
-						<td id="deut"><p:outputLabel  id="res_table_deut" value="#{loginHandler.planetHandler.pg.getDeutAsInt()}"/></td>
-						<td id="energy"><p:outputLabel id="res_table_energy" value="#{loginHandler.planetHandler.pg.getUsedEnergy()}"/></td>
+						<td id="metal"><p:outputLabel id="res_table_metal" value="#{loginHandler.planetHandler.pg.getMetalAsInt()}">
+							<f:convertNumber pattern="#,###,###,###,###"/>
+						</p:outputLabel></td>
+						<td id="crystal"><p:outputLabel id="res_table_crystal" value="#{loginHandler.planetHandler.pg.getCrystalAsInt()}">
+							<f:convertNumber pattern="#,###,###,###,###"/>
+						</p:outputLabel></td>
+						<td id="deut"><p:outputLabel  id="res_table_deut" value="#{loginHandler.planetHandler.pg.getDeutAsInt()}">
+							<f:convertNumber pattern="#,###,###,###,###"/>
+						</p:outputLabel></td>
+						<td id="energy"><p:outputLabel id="res_table_energy" value="#{loginHandler.planetHandler.pg.getUsedEnergy()}">
+							<f:convertNumber pattern="#,###,###,###,###"/>
+						</p:outputLabel></td>
 						<p:poll interval="1" listener="#{loginHandler.planetHandler.updateRes(1)}" 
 						update="res_table_metal res_table_crystal res_table_deut res_table_energy metal_storage crystal_storage deut_storage maxEnergy"/>
 					</tr>
 					<tr class="res_table">
-						<td id="metal_storage">/<p:outputLabel id="metal_storage" value="#{loginHandler.planetHandler.getStorageMAsInt()}"/></td>
-						<td id="crystal_storage">/<p:outputLabel id="crystal_storage" value="#{loginHandler.planetHandler.getStorageCAsInt()}"/></td>
-						<td id="deut_storage">/<p:outputLabel id="deut_storage" value="#{loginHandler.planetHandler.getStorageDAsInt()}"/></td>
-						<td id="maxEnergy">/<p:outputLabel id="maxEnergy" value="#{loginHandler.planetHandler.pg.getMaxEnergy()}"/></td>
+						<td id="metal_storage"><p:outputLabel id="metal_storage" value="#{loginHandler.planetHandler.getStorageMAsP()}" style="loginHandler.planetHandler.getStorageMAsP() > 30 ? color:red; : color:white;">
+							<f:convertNumber pattern="###%"/>
+						</p:outputLabel></td>
+						<td id="metal_storage"><p:outputLabel id="crystal_storage" value="#{loginHandler.planetHandler.getStorageCAsP()}">
+							<f:convertNumber pattern="###%"/>
+						</p:outputLabel></td>
+						<td id="metal_storage"><p:outputLabel id="deut_storage" value="#{loginHandler.planetHandler.getStorageDAsP()}">
+							<f:convertNumber pattern="###%"/>
+						</p:outputLabel></td>
+						<td id="maxEnergy">/<p:outputLabel id="maxEnergy" value="#{loginHandler.planetHandler.pg.getMaxEnergy()}">
+							<f:convertNumber pattern="#,###,###,###,###"/>
+						</p:outputLabel></td>
 						<td></td>
 					</tr>
 				</tbody>
