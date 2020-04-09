@@ -3,6 +3,7 @@ package Task;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -34,8 +35,9 @@ public class BuildTask implements Task, Serializable{
 	private int upgradeId;
 	private int planet;
 	private PlanetHandler planetHandler;
+	private BuildHandler buildHandler;
 	
-	public BuildTask(int type, Date time, int upgradeId, int planet, EntityManager em, UserTransaction utx, PlanetHandler p) {
+	public BuildTask(int type, Date time, int upgradeId, int planet, EntityManager em, UserTransaction utx, PlanetHandler p, BuildHandler buildHandler) {
 		this.type = type;
 		this.time = time;
 		this.upgradeId = upgradeId;
@@ -43,6 +45,7 @@ public class BuildTask implements Task, Serializable{
 		this.em = em;
 		this.utx = utx;
 		this.planetHandler = p;
+		this.buildHandler = buildHandler;
 		/** Add to queue for schedule **/
 		QHandler.queued.add(this);
 	}
@@ -168,6 +171,7 @@ public class BuildTask implements Task, Serializable{
 		}
 		planetHandler.updateDataset();
 		planetHandler.save();
+		buildHandler.setBuildDone("t");
 	}
 	
 	private void idToFieldB(Planets_Buildings b, int id) {

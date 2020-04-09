@@ -1,11 +1,6 @@
 package controller;
 
-import java.beans.IntrospectionException;
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
-import java.sql.Timestamp;
-import java.util.List;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -21,7 +16,6 @@ import org.primefaces.context.RequestContext;
 import Task.BuildTask;
 import model.Buildable;
 import model.WorldSettings;
-import planets.Planets_Buildings;
 
 @ManagedBean(name="buildHandler")
 @SessionScoped
@@ -47,6 +41,8 @@ public class BuildHandler {
 	private String descr;
 	private String rec;
 	private boolean newPage;
+	private String buildDone = "f";
+	private boolean fromPage = true;
 	
 	public BuildHandler() {
 		
@@ -71,14 +67,16 @@ public class BuildHandler {
 	}
 
 	public void setActive(int id){
-		if(id!=this.id) {
-			newPage = false;
-			rec="";
-		} else {
-			newPage = !newPage;
-			rec="";
+		if(fromPage) {
+			if(id!=this.id) {
+				newPage = false;
+				rec="";
+			} else {
+				newPage = !newPage;
+				rec="";
+			}
+			this.id = id;
 		}
-		this.id = id;
 		Query query = em.createQuery("select k from Buildable k where k.id = :id");
 		query.setParameter("id", id);
 
@@ -188,6 +186,7 @@ public class BuildHandler {
 	}
 
 	public void build() {
+		buildDone = "f";
 //		planetHandler.updateDataset();
 		//TODO
 		//could have used type?
@@ -197,7 +196,7 @@ public class BuildHandler {
 					Date d = new Date(System.currentTimeMillis()+(time*1000));
 					//System.out.println("TIME Calc: " + new Timestamp(d.getTime()));
 					applyCost();
-					planetHandler.getPb().setTask(new BuildTask(type,d,id,planetHandler.getPg().getPlanetId(), em,utx, planetHandler));
+					planetHandler.getPb().setTask(new BuildTask(type,d,id,planetHandler.getPg().getPlanetId(), em,utx, planetHandler, this));
 					setBuildMessage("Bau gestartet");
 //					planetHandler.save();
 				}
@@ -214,7 +213,7 @@ public class BuildHandler {
 				if(checkRes() && checkRec()) {
 					Date d = new Date(System.currentTimeMillis()+(time*1000));
 					applyCost();
-					planetHandler.getPr().setTask(new BuildTask(type,d,id,planetHandler.getPg().getPlanetId(),em,utx,planetHandler));
+					planetHandler.getPr().setTask(new BuildTask(type,d,id,planetHandler.getPg().getPlanetId(),em,utx,planetHandler, this));
 					setBuildMessage("Forschung gestartet");
 //					planetHandler.save();
 				}
@@ -255,10 +254,14 @@ public class BuildHandler {
 			}
 		}
 	}
-
+	
 	private void setBuildMessage(String msg) {
 		FacesContext context = FacesContext.getCurrentInstance();
-		context.addMessage(null, new FacesMessage(msg));
+		if(context != null) {
+			context.addMessage(null, new FacesMessage(msg));
+		} else {
+			System.out.println("context: null");
+		}
 	}
 
 	private void applyCost() {
@@ -661,5 +664,26 @@ public class BuildHandler {
 
 	public int getCount() {
 		return count;
-	}	
+	}
+
+	public String getBuildDone() {
+		return buildDone;
+	}
+
+	public void setBuildDone(String str) {
+		this.buildDone = str;
+	}
+	
+	public void afterBuild() {
+		if(buildDone.equals("t")) {
+			fromPage = false;
+			setActive(id);
+			fromPage = true;
+			FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add("mainForm:center_body_top");
+			FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add("mainForm:center_body_bottom");
+			RequestContext.getCurrentInstance().update("mainForm:growl");
+			setBuildMessage("Bau abgeschlossen");
+		}
+			
+	}
 }

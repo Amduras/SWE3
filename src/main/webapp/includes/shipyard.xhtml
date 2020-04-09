@@ -46,7 +46,12 @@
 						<h:graphicImage class="buildings_top_button"
 								url="resources/images/button_build.jpg" title="Bauen">
 							<p:ajax event="click" listener="#{loginHandler.buildHandler.build()}" update=":mainForm:center_body_top :mainForm:growl"/>
-						</h:graphicImage></td>
+						</h:graphicImage>
+						<h:inputText id="hidden" style="display:none;" value="#{loginHandler.buildHandler.buildDone}" 
+						valueChangeListener="#{loginHandler.buildHandler.afterBuild()}">
+						</h:inputText>
+						<p:poll interval="1" update=":mainForm:hidden"></p:poll>
+					</td>
 				</tr>
 				<tr>
 					<td class="td_buildings_top_descr" colspan="2"><p:outputLabel value="#{loginHandler.buildHandler.descr}"/></td>
@@ -58,7 +63,7 @@
 	</h:panelGroup>
 
 	
-	<div id="center_body_bottom">
+	<h:panelGroup id="center_body_bottom" styleClass="center_body_bottom" layout="block">
 		<ui:insert name="content">
 			<table id="buildings">
 				<tr>
@@ -160,5 +165,5 @@
 				</tr>
 			</table>
 		</ui:insert>
-	</div>
+	</h:panelGroup>
 </ui:composition>
