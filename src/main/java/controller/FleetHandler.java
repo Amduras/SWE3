@@ -12,6 +12,8 @@ import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.transaction.UserTransaction;
 
+import org.primefaces.context.RequestContext;
+
 import Task.FleetTask;
 import model.Ship;
 import model.WorldSettings;
@@ -42,6 +44,7 @@ public class FleetHandler {
 	private Planets_General target;
 	private boolean isValidTarget = false;
 	private long[] cargo = {0,0,0};
+	private String missionDone = "f";
 
 	private int mission;
 
@@ -150,7 +153,8 @@ public class FleetHandler {
 		else if(stage == 3)		{
 			if(isValidMission()) {
 				if(isCargoValid()) {
-					new FleetTask(em, utx, mission, arrival, travelTime, planetHandler.getPg().getPlanetId(),target.getPlanetId(), ships, cargo);
+					setMessage("Mission gestartet");
+					new FleetTask(em, utx, mission, arrival, travelTime, planetHandler.getPg().getPlanetId(),target.getPlanetId(), ships, cargo, this);
 				}
 				else {
 					System.out.println("Cargospace ist zu klein");
@@ -164,11 +168,10 @@ public class FleetHandler {
 		}
 	}
 
-
-
 	private void setMessage(String msg) {
 		FacesContext context = FacesContext.getCurrentInstance();
-		context.addMessage(null, new FacesMessage(msg));
+		if(context != null)
+			context.addMessage(null, new FacesMessage(msg));
 	}
 
 	private boolean checkShips() {
@@ -339,7 +342,7 @@ public class FleetHandler {
 		this.cargo = cargo;
 	}
 	public void setMission(int mission) {
-		setMessage("Mission gesettet!");
+		setMessage("Mission gesetzt!");
 		this.mission = mission;
 	}
 	public int getMission() {
@@ -428,5 +431,19 @@ public class FleetHandler {
 	}
 	public void setTravelTime(long travelTime) {
 		this.travelTime = travelTime;
+	}
+	public String getMissionDone() {
+		return missionDone;
+	}
+	public void setMissionDone(String missionDone) {
+		this.missionDone = missionDone;
+	}
+	public void afterMission() {
+		if(missionDone.equals("t")) {
+			FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add("mainForm:center_body_top");
+			FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add("mainForm:center_body_bottom");
+			RequestContext.getCurrentInstance().update("mainForm:growl");
+			setMessage("Mission abgeschlossen");
+		}
 	}
 }

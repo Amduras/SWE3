@@ -15,6 +15,7 @@ import javax.transaction.RollbackException;
 import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 
+import controller.FleetHandler;
 import planets.Planets_Buildings;
 import planets.Planets_Def;
 import planets.Planets_General;
@@ -41,16 +42,18 @@ public class Fight {
 	private Planets_Research def_pr;
 	private Planets_Ships def_ps;
 	private Planets_Def def_pd;
+	private FleetHandler fleetHandler;
 	
 	private List<Ship> shipData;
 	
-	public Fight(int attPlanetId, int[] attTShips, long[] booty, int defPlanetId, EntityManager em, UserTransaction utx) {
+	public Fight(int attPlanetId, int[] attTShips, long[] booty, int defPlanetId, EntityManager em, UserTransaction utx, FleetHandler fleetHandler) {
 		this.attPlanetId = attPlanetId;
 		this.attTShips = attTShips;
 		this.booty = booty;
 		this.defPlanetId = defPlanetId;
 		this.em = em;
 		this.utx = utx;
+		this.fleetHandler = fleetHandler;
 		
 		att_pg = getPg(attPlanetId);
 		att_pr = getPr(attPlanetId);
@@ -288,6 +291,7 @@ public class Fight {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		fleetHandler.setMissionDone("t");
 	}
 	private void calcAndApplyDebrisfield() {
 		Query query = em.createQuery("select max(id) from WorldSettings k");
