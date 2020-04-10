@@ -1,6 +1,5 @@
 package planets;
 
-import Task.BuildTask;
 import javax.annotation.Generated;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
@@ -23,7 +22,7 @@ public abstract class Planets_Buildings_ {
 	public static volatile SingularAttribute<Planets_Buildings, Integer> deutHideout;
 	public static volatile SingularAttribute<Planets_Buildings, Integer> fusionReactor;
 	public static volatile SingularAttribute<Planets_Buildings, Integer> metalMine;
-	public static volatile SingularAttribute<Planets_Buildings, BuildTask> task;
+	public static volatile SingularAttribute<Planets_Buildings, Integer> task;
 	public static volatile SingularAttribute<Planets_Buildings, Integer> sensorPhalanx;
 	public static volatile SingularAttribute<Planets_Buildings, Integer> crystalHideout;
 	public static volatile SingularAttribute<Planets_Buildings, Integer> deutTank;

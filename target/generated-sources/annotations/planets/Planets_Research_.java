@@ -1,6 +1,5 @@
 package planets;
 
-import Task.BuildTask;
 import javax.annotation.Generated;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
@@ -18,7 +17,7 @@ public abstract class Planets_Research_ {
 	public static volatile SingularAttribute<Planets_Research, Integer> hyperspacetech;
 	public static volatile SingularAttribute<Planets_Research, Integer> computer;
 	public static volatile SingularAttribute<Planets_Research, Integer> armor;
-	public static volatile SingularAttribute<Planets_Research, BuildTask> task;
+	public static volatile SingularAttribute<Planets_Research, Integer> task;
 	public static volatile SingularAttribute<Planets_Research, Integer> laser;
 	public static volatile SingularAttribute<Planets_Research, Integer> combustion;
 	public static volatile SingularAttribute<Planets_Research, Integer> gravitation;

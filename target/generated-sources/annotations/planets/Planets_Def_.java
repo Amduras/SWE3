@@ -12,13 +12,14 @@ public abstract class Planets_Def_ {
 	public static volatile SingularAttribute<Planets_Def, Integer> ionCannon;
 	public static volatile SingularAttribute<Planets_Def, Integer> rocketLauncher;
 	public static volatile SingularAttribute<Planets_Def, Integer> largeShieldDome;
-	public static volatile SingularAttribute<Planets_Def, Integer> interplanetaryMissle;
 	public static volatile SingularAttribute<Planets_Def, Integer> lightLaser;
 	public static volatile SingularAttribute<Planets_Def, Integer> gaussCannon;
-	public static volatile SingularAttribute<Planets_Def, Integer> heavyLaser;
 	public static volatile SingularAttribute<Planets_Def, Integer> antiBallisticMissle;
-	public static volatile SingularAttribute<Planets_Def, Integer> planetId;
 	public static volatile SingularAttribute<Planets_Def, Integer> plasmaTurret;
+	public static volatile SingularAttribute<Planets_Def, Integer> task;
+	public static volatile SingularAttribute<Planets_Def, Integer> interplanetaryMissle;
+	public static volatile SingularAttribute<Planets_Def, Integer> heavyLaser;
+	public static volatile SingularAttribute<Planets_Def, Integer> planetId;
 	public static volatile SingularAttribute<Planets_Def, Date> qTime;
 	public static volatile SingularAttribute<Planets_Def, Integer> smallShieldDome;
 

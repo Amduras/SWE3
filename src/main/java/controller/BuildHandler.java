@@ -260,6 +260,7 @@ public class BuildHandler {
 			if(bt != null) {
 				isBuildingR = true;
 				remainingBuildTimeR.setTime(Math.abs(bt.getTime().getTime()-System.currentTimeMillis()));
+				System.out.println(remainingBuildTimeR);
 				buildTaskIdR = bt.getUpgradeId();
 				Query query = em.createQuery("select k from Buildable k where k.id = :id");
 				query.setParameter("id", buildTaskIdR);
