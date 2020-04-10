@@ -15,6 +15,7 @@ import org.primefaces.context.RequestContext;
 
 import Task.BuildTask;
 import model.Buildable;
+import model.Ship;
 import model.WorldSettings;
 
 @ManagedBean(name="buildHandler")
@@ -43,11 +44,17 @@ public class BuildHandler {
 	private boolean newPage;
 	private String buildDone = "f";
 	private boolean fromPage = true;
-	
+	private long shipAttack;
+	private long shipHull;
+	private long shipShield;
+	private long shipCargo;
+	private long shipSpeed;
+	private long shipCons;
+
 	public BuildHandler() {
-		
+
 	}
-	
+
 	public BuildHandler(PlanetHandler p, EntityManager em, UserTransaction utx) {
 		this.planetHandler = p;
 		this.em = em;
@@ -77,6 +84,8 @@ public class BuildHandler {
 			}
 			this.id = id;
 		}
+		if(id > 30)
+			setShipStats(id);
 		Query query = em.createQuery("select k from Buildable k where k.id = :id");
 		query.setParameter("id", id);
 
@@ -91,7 +100,7 @@ public class BuildHandler {
 			try {
 				Object res2 = query.getSingleResult();
 				WorldSettings ws = (WorldSettings)res2;
-				
+
 				name = b.getName();
 				lvl = idToLvl(id)+1;
 				type = b.getType();
@@ -135,6 +144,22 @@ public class BuildHandler {
 			}
 		} catch(NoResultException e){	
 			System.out.println("Keine Werte in DB");
+		}
+	}
+
+	private void setShipStats(int id) {
+		Query query = em.createQuery("select k from Ship k where k.shipId = :id");
+		query.setParameter("id", id);
+		try {
+			Ship ship = (Ship) query.getSingleResult();
+			shipHull = ship.getHull()  * (1 + planetHandler.getPr().getArmor() / 10);
+			shipAttack = ship.getAttack()  * (1 + planetHandler.getPr().getWeapon() / 10);
+			shipShield = ship.getShield() * (1 + planetHandler.getPr().getShield() / 10);;
+			shipCargo = ship.getCargoSpace();
+			shipSpeed =  ship.getSpeed() + ship.getSpeed()/10*idToLvl(ship.getDriveScaleTechId());
+			shipCons = ship.getConsumption();
+		} catch(NoResultException e) {
+
 		}
 	}
 
@@ -187,7 +212,7 @@ public class BuildHandler {
 
 	public void build() {
 		buildDone = "f";
-//		planetHandler.updateDataset();
+		//		planetHandler.updateDataset();
 		//TODO
 		//could have used type?
 		if(id < 16) {//building
@@ -198,7 +223,7 @@ public class BuildHandler {
 					applyCost();
 					planetHandler.getPb().setTask(new BuildTask(type,d,id,planetHandler.getPg().getPlanetId(), em,utx, planetHandler, this));
 					setBuildMessage("Bau gestartet");
-//					planetHandler.save();
+					//					planetHandler.save();
 				}
 				else {
 					System.out.println("Res oder rec fehlen");
@@ -215,7 +240,7 @@ public class BuildHandler {
 					applyCost();
 					planetHandler.getPr().setTask(new BuildTask(type,d,id,planetHandler.getPg().getPlanetId(),em,utx,planetHandler, this));
 					setBuildMessage("Forschung gestartet");
-//					planetHandler.save();
+					//					planetHandler.save();
 				}
 				else {
 					System.out.println("Res oder rec fehlen");
@@ -230,10 +255,10 @@ public class BuildHandler {
 				Date qTime = planetHandler.getPs().getqTime();
 				qTime = qTime.getTime() < System.currentTimeMillis() ? new Date(System.currentTimeMillis()+(time*1000)) : new Date((time*1000)+qTime.getTime());
 				applyCost();
-//				planetHandler.getPs().addTask(new BuildTask(type,qTime,id,planetHandler.getPg().getPlanetId(),em,utx));
+				//				planetHandler.getPs().addTask(new BuildTask(type,qTime,id,planetHandler.getPg().getPlanetId(),em,utx));
 				setBuildMessage("Bau gestartet");
 				planetHandler.getPs().setqTime(qTime);
-//				planetHandler.save();
+				//				planetHandler.save();
 			}
 			else {
 				System.out.println("Res oder rec fehlen");
@@ -244,17 +269,30 @@ public class BuildHandler {
 				Date qTime = planetHandler.getPd().getqTime();
 				qTime = qTime.getTime() < System.currentTimeMillis() ? new Date(System.currentTimeMillis()+(time*1000)) : new Date((time*1000)+qTime.getTime());			
 				applyCost();
-//				planetHandler.getPd().addTask(new BuildTask(type,qTime,id,planetHandler.getPg().getPlanetId(),em,utx));
+				//				planetHandler.getPd().addTask(new BuildTask(type,qTime,id,planetHandler.getPg().getPlanetId(),em,utx));
 				planetHandler.getPd().setqTime(qTime);
 				setBuildMessage("Bau gestartet");
-//				planetHandler.save();
+				//				planetHandler.save();
 			}
 			else {
 				System.out.println("Res oder rec fehlen");
 			}
 		}
 	}
-	
+
+	public void afterBuild() {
+		if(buildDone.equals("t")) {
+			fromPage = false;
+			setActive(id);
+			fromPage = true;
+			FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add("mainForm:center_body_top");
+			FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add("mainForm:center_body_bottom");
+			RequestContext.getCurrentInstance().update("mainForm:growl");
+			setBuildMessage("Bau abgeschlossen");
+		}
+
+	}
+
 	private void setBuildMessage(String msg) {
 		FacesContext context = FacesContext.getCurrentInstance();
 		if(context != null) {
@@ -614,7 +652,7 @@ public class BuildHandler {
 		}
 		return res;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
@@ -673,17 +711,52 @@ public class BuildHandler {
 	public void setBuildDone(String str) {
 		this.buildDone = str;
 	}
-	
-	public void afterBuild() {
-		if(buildDone.equals("t")) {
-			fromPage = false;
-			setActive(id);
-			fromPage = true;
-			FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add("mainForm:center_body_top");
-			FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add("mainForm:center_body_bottom");
-			RequestContext.getCurrentInstance().update("mainForm:growl");
-			setBuildMessage("Bau abgeschlossen");
-		}
-			
+
+	public long getShipAttack() {
+		return shipAttack;
+	}
+
+	public void setShipAttack(long shipAttack) {
+		this.shipAttack = shipAttack;
+	}
+
+	public long getShipHull() {
+		return shipHull;
+	}
+
+	public void setShipHull(long shipHull) {
+		this.shipHull = shipHull;
+	}
+
+	public long getShipShield() {
+		return shipShield;
+	}
+
+	public void setShipShield(long shipShield) {
+		this.shipShield = shipShield;
+	}
+
+	public long getShipCargo() {
+		return shipCargo;
+	}
+
+	public void setShipCargo(long shipCargo) {
+		this.shipCargo = shipCargo;
+	}
+
+	public long getShipSpeed() {
+		return shipSpeed;
+	}
+
+	public void setShipSpeed(long shipSpeed) {
+		this.shipSpeed = shipSpeed;
+	}
+
+	public long getShipCons() {
+		return shipCons;
+	}
+
+	public void setShipCons(long shipCons) {
+		this.shipCons = shipCons;
 	}
 }

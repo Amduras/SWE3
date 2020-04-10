@@ -45,7 +45,7 @@ public class FleetHandler {
 	private boolean isValidTarget = false;
 	private long[] cargo = {0,0,0};
 	private String missionDone = "f";
-
+	
 	private int mission;
 
 	public FleetHandler(PlanetHandler planetHandler, EntityManager em, UserTransaction utx) {
@@ -244,7 +244,16 @@ public class FleetHandler {
 		}
 		speed = minSpeed;
 	}
-
+	
+	public void afterMission() {
+		if(missionDone.equals("t")) {
+			FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add("mainForm:center_body_top");
+			FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add("mainForm:center_body_bottom");
+			RequestContext.getCurrentInstance().update("mainForm:growl");
+			setMessage("Mission abgeschlossen");
+		}
+	}
+	
 	private int idToLvl(int id) {
 		int res = 0;
 		switch(id) {
@@ -393,7 +402,6 @@ public class FleetHandler {
 		return speed;
 	}
 	public void setSpeed(long speed) {
-		System.out.println("Speed auf: "+speed+" gesetzt.");
 		this.speed = speed;
 	}
 	public Date getArrival() {
@@ -437,13 +445,5 @@ public class FleetHandler {
 	}
 	public void setMissionDone(String missionDone) {
 		this.missionDone = missionDone;
-	}
-	public void afterMission() {
-		if(missionDone.equals("t")) {
-			FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add("mainForm:center_body_top");
-			FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add("mainForm:center_body_bottom");
-			RequestContext.getCurrentInstance().update("mainForm:growl");
-			setMessage("Mission abgeschlossen");
-		}
 	}
 }

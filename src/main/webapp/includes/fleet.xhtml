@@ -42,40 +42,29 @@
 					<tr>
 						<td colspan="2" class="td_buildings_top_body">
 							<p>
-								Produktionsdauer:
-								<p:outputLabel value="#{loginHandler.buildHandler.timeM}" />
-								m
-								<p:outputLabel value="#{loginHandler.buildHandler.timeS}" />
-								s
+								Hülle:
+								<p:outputLabel value="#{loginHandler.buildHandler.shipHull}" />
 							</p>
 							<p>
-								Energieverbrauch:
-								<p:outputLabel value="#{loginHandler.buildHandler.energy}" />
+								Schild:
+								<p:outputLabel value="#{loginHandler.buildHandler.shipShield}" />
 							</p>
 							<p>
-								Metal:
-								<p:outputLabel value="#{loginHandler.buildHandler.metal}" />
+								Angriff:
+								<p:outputLabel value="#{loginHandler.buildHandler.shipAttack}" />
 							</p>
 							<p>
-								Kristall:
-								<p:outputLabel value="#{loginHandler.buildHandler.crystal}" />
+								Ladung:
+								<p:outputLabel value="#{loginHandler.buildHandler.shipCargo}" />
 							</p>
 							<p>
-								Deuterium:
-								<p:outputLabel value="#{loginHandler.buildHandler.deut}" />
+								Geschwindigkeit:
+								<p:outputLabel value="#{loginHandler.buildHandler.shipSpeed}" />
 							</p>
-						</td>
-						<td class="td_buildings_top_button"><h:graphicImage
-								class="buildings_top_button"
-								url="resources/images/button_build.jpg" title="Bauen">
-								<p:ajax event="click"
-									listener="#{loginHandler.buildHandler.build()}"
-									update=":mainForm:center_body_top :mainForm:growl" />
-							</h:graphicImage>
-							<h:inputText id="hidden" style="display:none;" value="#{loginHandler.buildHandler.buildDone}" 
-							valueChangeListener="#{loginHandler.buildHandler.afterBuild()}">
-							</h:inputText>
-							<p:poll interval="1" update=":mainForm:hidden"></p:poll>
+							<p>
+								Verbrauch:
+								<p:outputLabel value="#{loginHandler.buildHandler.shipCons}"/>
+							</p>
 						</td>
 					</tr>
 					<tr>
