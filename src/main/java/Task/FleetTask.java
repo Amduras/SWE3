@@ -94,18 +94,7 @@ public class FleetTask implements Task, Serializable{
 		}
 	}
 	private void kolo() {
-		Query query = em.createQuery("select k from Planets_General k where k.planetId = :planetId");
-		query.setParameter("planetId", planet);
-		
-		try {
-			Object res = query.getSingleResult();
-			Planets_General pg = (Planets_General)res;
-			
-			fleetHandler.getPlanetHandler().getGalaxyHandler().colonize(fleetHandler.getPlanetHandler(), pg.getUserId(), targetPlanet);
-			
-		} catch(NoResultException e){	
-			System.out.println("Keine pg mit id "+targetPlanet+" in DB - station");
-		}
+		//TODO
 		deleteMe();
 	}
 	private void tf() {
