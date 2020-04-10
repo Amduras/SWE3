@@ -43,7 +43,7 @@
 						update="res_table_metal res_table_crystal res_table_deut res_table_energy metal_storage crystal_storage deut_storage maxEnergy"/>
 					</tr>
 					<tr class="res_table">
-						<td id="metal_storage"><p:outputLabel id="metal_storage" value="#{loginHandler.planetHandler.getStorageMAsP()}" style="loginHandler.planetHandler.getStorageMAsP() > 30 ? color:red; : color:white;">
+						<td id="metal_storage"><p:outputLabel id="metal_storage" value="#{loginHandler.planetHandler.getStorageMAsP()}">
 							<f:convertNumber pattern="###%"/>
 						</p:outputLabel></td>
 						<td id="metal_storage"><p:outputLabel id="crystal_storage" value="#{loginHandler.planetHandler.getStorageCAsP()}">

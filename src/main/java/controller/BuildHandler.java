@@ -44,6 +44,11 @@ public class BuildHandler {
 	private String buildDone = "f";
 	private boolean fromPage = true;
 	
+	private boolean isBuilding;
+	private int buildTaskId;
+	private String buildTaskName;
+	private Date remainingBuildTime;
+	
 	public BuildHandler() {
 		
 	}
@@ -182,6 +187,26 @@ public class BuildHandler {
 			return planetHandler.getPb().getDeutSyn();
 		default:
 			return 99999999;
+		}
+	}
+	
+	public void checkBuildTask() {
+		BuildTask bt = planetHandler.getPb().getTask();
+		if(bt == null)
+			isBuilding = false;
+		else {
+			isBuilding = true;
+			remainingBuildTime.setTime(Math.abs(bt.getTime().getTime()-System.currentTimeMillis()));
+			buildTaskId = bt.getUpgradeId();
+			Query query = em.createQuery("select k from Buildable k where k.id = :id");
+			query.setParameter("id", id);
+			try {
+				Object res = query.getSingleResult();
+				Buildable b = (Buildable)res;
+				buildTaskName = b.getName();
+			} catch(NoResultException e){	
+				System.out.println("Keine Werte in DB");
+			}
 		}
 	}
 
@@ -672,6 +697,37 @@ public class BuildHandler {
 
 	public void setBuildDone(String str) {
 		this.buildDone = str;
+	}
+	public boolean isB() {
+		return isBuilding;
+	}
+
+	public void setBuilding(boolean isBuilding) {
+		this.isBuilding = isBuilding;
+	}
+
+	public int getBuildTaskId() {
+		return buildTaskId;
+	}
+
+	public void setBuildTaskId(int buildTaskId) {
+		this.buildTaskId = buildTaskId;
+	}
+
+	public String getBuildTaskName() {
+		return buildTaskName;
+	}
+
+	public void setBuildTaskName(String buildTaskName) {
+		this.buildTaskName = buildTaskName;
+	}
+
+	public Date getRemainingBuildTime() {
+		return remainingBuildTime;
+	}
+
+	public void setRemainingBuildTime(Date remainingBuildTime) {
+		this.remainingBuildTime = remainingBuildTime;
 	}
 	
 	public void afterBuild() {
