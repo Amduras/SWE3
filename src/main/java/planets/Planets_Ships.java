@@ -42,7 +42,7 @@ public class Planets_Ships implements Serializable {
 	private int solarSattlelite;
 	
 	private Date qTime = new Date(0);
-//	private List<BuildTask> task = Collections.synchronizedList(new ArrayList<BuildTask>());
+	private int task = -1;
 	
 	public Planets_Ships() {
 		
@@ -217,6 +217,14 @@ public class Planets_Ships implements Serializable {
 
 	public void setqTime(Date qTime) {
 		this.qTime = qTime;
+	}
+
+	public int getTask() {
+		return task;
+	}
+
+	public void setTask(int task) {
+		this.task = task;
 	}
 	
 	

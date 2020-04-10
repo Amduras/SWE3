@@ -78,7 +78,7 @@ public class BuildTask implements Task, Serializable{
 				Object res = query.getSingleResult();
 				Planets_Buildings b = (Planets_Buildings)res;
 				idToFieldB(b,upgradeId);
-				b.setTask(null);
+				b.setTask(-1);
 				try {
 					utx.begin();
 				} catch (NotSupportedException | SystemException e) {
@@ -104,7 +104,7 @@ public class BuildTask implements Task, Serializable{
 				Object res = query.getSingleResult();
 				Planets_Research b = (Planets_Research)res;
 				idToFieldR(b,upgradeId);
-				b.setTask(null);
+				b.setTask(-1);
 				try {
 					utx.begin();
 				} catch (NotSupportedException | SystemException e) {
@@ -361,9 +361,38 @@ public class BuildTask implements Task, Serializable{
 		}
 	}
 	@Override
-	public void writeToDB() {
-		// TODO Auto-generated method stub
+	public void saveToDB(int id) {
+		if(type == 0) {
+			planetHandler.getPb().setTask(id);
+		}
+		else if(type == 1) 
+			planetHandler.getPr().setTask(id);
+		else if(type == 2 && upgradeId < 45)
+			planetHandler.getPs().setTask(id);
+		else
+			planetHandler.getPd().setTask(id);
+		try {
+			utx.begin();
+		} catch (NotSupportedException | SystemException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if(type == 0)
+			em.merge(planetHandler.getPb());
+		else if(type == 1)
+			em.merge(planetHandler.getPr());
+		else if(type == 2 && upgradeId < 45)
+			em.merge(planetHandler.getPs());
+		else
+			em.merge(planetHandler.getPd());
 		
+		try {
+			utx.commit();
+		} catch (SecurityException | IllegalStateException | RollbackException | HeuristicMixedException
+				| HeuristicRollbackException | SystemException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+			
 	}
-
 }

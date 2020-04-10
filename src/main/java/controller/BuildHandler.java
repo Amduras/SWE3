@@ -51,11 +51,25 @@ public class BuildHandler {
 	private long shipSpeed;
 	private long shipCons;
 
-	private boolean isBuilding;
+	private boolean isBuilding = false;
 	private int buildTaskId;
 	private String buildTaskName;
-	private Date remainingBuildTime;
+	private Date remainingBuildTime = new Date();
 	
+	private boolean isBuildingR = false;
+	private int buildTaskIdR;
+	private String buildTaskNameR;
+	private Date remainingBuildTimeR = new Date();
+	
+	private boolean isBuildingS = false;
+	private int buildTaskIdS;
+	private String buildTaskNameS;
+	private Date remainingBuildTimeS = new Date();
+	
+	private boolean isBuildingD = false;
+	private int buildTaskIdD;
+	private String buildTaskNameD;
+	private Date remainingBuildTimeD = new Date();
 	public BuildHandler() {
 
 	}
@@ -138,7 +152,7 @@ public class BuildHandler {
 					timeS = (int)Math.abs(time-timeM*60);
 				}
 				else if(type == 2) {
-					time = (long)Math.ceil(((metal+crystal) / (2500 * (1 + planetHandler.getPb().getShipyard())) * Math.pow(2, planetHandler.getPb().getNaniteFactory())) * ws.getGameSpeed() * 60);
+					time = (long)Math.ceil(((metal+crystal) / (2500 * (1 + planetHandler.getPb().getShipyard())) * Math.pow(2, planetHandler.getPb().getNaniteFactory())) / ws.getGameSpeed() * 60);
 					timeM = time/60;
 					timeS = (int)Math.abs(time-timeM*60);
 				}
@@ -216,21 +230,88 @@ public class BuildHandler {
 	}
 	
 	public void checkBuildTask() {
-		BuildTask bt = planetHandler.getPb().getTask();
-		if(bt == null)
+		int btId = planetHandler.getPb().getTask();
+		if(btId == -1)
 			isBuilding = false;
 		else {
-			isBuilding = true;
-			remainingBuildTime.setTime(Math.abs(bt.getTime().getTime()-System.currentTimeMillis()));
-			buildTaskId = bt.getUpgradeId();
-			Query query = em.createQuery("select k from Buildable k where k.id = :id");
-			query.setParameter("id", id);
-			try {
-				Object res = query.getSingleResult();
-				Buildable b = (Buildable)res;
-				buildTaskName = b.getName();
-			} catch(NoResultException e){	
-				System.out.println("Keine Werte in DB");
+			BuildTask bt = (BuildTask) QHandler.waiting.get(btId);
+			if(bt != null) {
+				isBuilding = true;
+				remainingBuildTime.setTime(Math.abs(bt.getTime().getTime()-System.currentTimeMillis()));
+				buildTaskId = bt.getUpgradeId();
+				Query query = em.createQuery("select k from Buildable k where k.id = :id");
+				query.setParameter("id", buildTaskId);
+				try {
+					Object res = query.getSingleResult();
+					Buildable b = (Buildable)res;
+					buildTaskName = b.getName();			
+				} catch(NoResultException e){	
+					System.out.println("Keine Werte in DB");
+				}
+			}
+		}
+	}
+	public void checkResearchTask() {
+		int btId = planetHandler.getPr().getTask();
+		if(btId == -1)
+			isBuildingR = false;
+		else {
+			BuildTask bt = (BuildTask) QHandler.waiting.get(btId);
+			if(bt != null) {
+				isBuildingR = true;
+				remainingBuildTimeR.setTime(Math.abs(bt.getTime().getTime()-System.currentTimeMillis()));
+				buildTaskIdR = bt.getUpgradeId();
+				Query query = em.createQuery("select k from Buildable k where k.id = :id");
+				query.setParameter("id", buildTaskIdR);
+				try {
+					Object res = query.getSingleResult();
+					Buildable b = (Buildable)res;
+					buildTaskNameR = b.getName();			
+				} catch(NoResultException e){	
+					System.out.println("Keine Werte in DB");
+				}
+			}
+		}
+	}
+	public void checkShipTask() {
+		int btId = planetHandler.getPs().getTask();
+		if(btId == -1)
+			isBuildingS = false;
+		else {
+			BuildTask bt = (BuildTask) QHandler.waiting.get(btId);
+			if(bt != null) {
+				isBuildingS = true;
+				remainingBuildTimeS.setTime(Math.abs(bt.getTime().getTime()-System.currentTimeMillis()));
+				buildTaskIdS = bt.getUpgradeId();
+				Query query = em.createQuery("select k from Buildable k where k.id = :id");
+				query.setParameter("id", buildTaskIdS);
+				try {
+					Object res = query.getSingleResult();
+					Buildable b = (Buildable)res;
+					buildTaskNameS = b.getName();			
+				} catch(NoResultException e){	
+					System.out.println("Keine Werte in DB");
+				}
+			}
+		}
+		btId = planetHandler.getPd().getTask();
+		if(btId == -1)
+			isBuildingD = false;
+		else {
+			BuildTask bt = (BuildTask) QHandler.waiting.get(btId);
+			if(bt != null) {
+				isBuildingD = true;
+				remainingBuildTimeD.setTime(Math.abs(bt.getTime().getTime()-System.currentTimeMillis()));
+				buildTaskIdD = bt.getUpgradeId();
+				Query query = em.createQuery("select k from Buildable k where k.id = :id");
+				query.setParameter("id", buildTaskIdD);
+				try {
+					Object res = query.getSingleResult();
+					Buildable b = (Buildable)res;
+					buildTaskNameD = b.getName();			
+				} catch(NoResultException e){	
+					System.out.println("Keine Werte in DB");
+				}
 			}
 		}
 	}
@@ -241,14 +322,14 @@ public class BuildHandler {
 		//TODO
 		//could have used type?
 		if(id < 16) {//building
-			if(planetHandler.getPb().getTask() == null) {
+			if(planetHandler.getPb().getTask() == -1) {
 				if(checkRes() && checkRec()) {
 					Date d = new Date(System.currentTimeMillis()+(time*1000));
 					//System.out.println("TIME Calc: " + new Timestamp(d.getTime()));
 					applyCost();
-					planetHandler.getPb().setTask(new BuildTask(type,d,id,planetHandler.getPg().getPlanetId(), em,utx, planetHandler, this));
+					new BuildTask(type,d,id,planetHandler.getPg().getPlanetId(), em,utx, planetHandler, this);
 					setBuildMessage("Bau gestartet");
-					//					planetHandler.save();
+					planetHandler.save();
 				}
 				else {
 					System.out.println("Res oder rec fehlen");
@@ -259,13 +340,13 @@ public class BuildHandler {
 			}
 		}
 		else if(id < 31) { //research
-			if(planetHandler.getPr().getTask() == null) {
+			if(planetHandler.getPr().getTask() == -1) {
 				if(checkRes() && checkRec()) {
 					Date d = new Date(System.currentTimeMillis()+(time*1000));
 					applyCost();
-					planetHandler.getPr().setTask(new BuildTask(type,d,id,planetHandler.getPg().getPlanetId(),em,utx,planetHandler, this));
+					new BuildTask(type,d,id,planetHandler.getPg().getPlanetId(),em,utx,planetHandler, this);
 					setBuildMessage("Forschung gestartet");
-					//					planetHandler.save();
+					planetHandler.save();
 				}
 				else {
 					System.out.println("Res oder rec fehlen");
@@ -277,13 +358,16 @@ public class BuildHandler {
 		}
 		else if(id < 45) { //ship
 			if(checkRes() && checkRec()) {
-				Date qTime = planetHandler.getPs().getqTime();
+				/*Date qTime = planetHandler.getPs().getqTime();
 				qTime = qTime.getTime() < System.currentTimeMillis() ? new Date(System.currentTimeMillis()+(time*1000)) : new Date((time*1000)+qTime.getTime());
 				applyCost();
-				//				planetHandler.getPs().addTask(new BuildTask(type,qTime,id,planetHandler.getPg().getPlanetId(),em,utx));
+				//				planetHandler.getPs().addTask(new BuildTask(type,qTime,id,planetHandler.getPg().getPlanetId(),em,utx));*/
+				Date d = new Date(System.currentTimeMillis()+(time*1000));
+				applyCost();
+				new BuildTask(type,d,id,planetHandler.getPg().getPlanetId(),em,utx,planetHandler, this);
 				setBuildMessage("Bau gestartet");
-				planetHandler.getPs().setqTime(qTime);
-				//				planetHandler.save();
+				//planetHandler.getPs().setqTime(qTime);
+				planetHandler.save();
 			}
 			else {
 				System.out.println("Res oder rec fehlen");
@@ -291,18 +375,117 @@ public class BuildHandler {
 		}
 		else { // def
 			if(checkRes() && checkRec()) {
-				Date qTime = planetHandler.getPd().getqTime();
+				/*Date qTime = planetHandler.getPd().getqTime();
 				qTime = qTime.getTime() < System.currentTimeMillis() ? new Date(System.currentTimeMillis()+(time*1000)) : new Date((time*1000)+qTime.getTime());			
 				applyCost();
 				//				planetHandler.getPd().addTask(new BuildTask(type,qTime,id,planetHandler.getPg().getPlanetId(),em,utx));
-				planetHandler.getPd().setqTime(qTime);
+				planetHandler.getPd().setqTime(qTime);*/
+				Date d = new Date(System.currentTimeMillis()+(time*1000));
+				applyCost();
+				new BuildTask(type,d,id,planetHandler.getPg().getPlanetId(),em,utx,planetHandler, this);
 				setBuildMessage("Bau gestartet");
-				//				planetHandler.save();
+				planetHandler.save();
 			}
 			else {
 				System.out.println("Res oder rec fehlen");
 			}
 		}
+	}
+
+	public boolean isBuildingR() {
+		return isBuildingR;
+	}
+
+	public void setBuildingR(boolean isBuildingR) {
+		this.isBuildingR = isBuildingR;
+	}
+
+	public int getBuildTaskIdR() {
+		return buildTaskIdR;
+	}
+
+	public void setBuildTaskIdR(int buildTaskIdR) {
+		this.buildTaskIdR = buildTaskIdR;
+	}
+
+	public String getBuildTaskNameR() {
+		return buildTaskNameR;
+	}
+
+	public void setBuildTaskNameR(String buildTaskNameR) {
+		this.buildTaskNameR = buildTaskNameR;
+	}
+
+	public Date getRemainingBuildTimeR() {
+		return remainingBuildTimeR;
+	}
+
+	public void setRemainingBuildTimeR(Date remainingBuildTimeR) {
+		this.remainingBuildTimeR = remainingBuildTimeR;
+	}
+
+	public boolean isBuildingS() {
+		return isBuildingS;
+	}
+
+	public void setBuildingS(boolean isBuildingS) {
+		this.isBuildingS = isBuildingS;
+	}
+
+	public int getBuildTaskIdS() {
+		return buildTaskIdS;
+	}
+
+	public void setBuildTaskIdS(int buildTaskIdS) {
+		this.buildTaskIdS = buildTaskIdS;
+	}
+
+	public String getBuildTaskNameS() {
+		return buildTaskNameS;
+	}
+
+	public void setBuildTaskNameS(String buildTaskNameS) {
+		this.buildTaskNameS = buildTaskNameS;
+	}
+
+	public Date getRemainingBuildTimeS() {
+		return remainingBuildTimeS;
+	}
+
+	public void setRemainingBuildTimeS(Date remainingBuildTimeS) {
+		this.remainingBuildTimeS = remainingBuildTimeS;
+	}
+
+	public boolean isBuildingD() {
+		return isBuildingD;
+	}
+
+	public void setBuildingD(boolean isBuildingD) {
+		this.isBuildingD = isBuildingD;
+	}
+
+	public int getBuildTaskIdD() {
+		return buildTaskIdD;
+	}
+
+	public void setBuildTaskIdD(int buildTaskIdD) {
+		this.buildTaskIdD = buildTaskIdD;
+	}
+
+	public String getBuildTaskNameD() {
+		return buildTaskNameD;
+	}
+
+	public void setBuildTaskNameD(String buildTaskNameD) {
+		this.buildTaskNameD = buildTaskNameD;
+	}
+
+	public Date getRemainingBuildTimeD() {
+		return remainingBuildTimeD;
+	}
+
+	public void setRemainingBuildTimeD(Date remainingBuildTimeD) {
+		this.remainingBuildTimeD = remainingBuildTimeD;
 	}
 
 	public void afterBuild() {
@@ -736,11 +919,11 @@ public class BuildHandler {
 	public void setBuildDone(String str) {
 		this.buildDone = str;
 	}
-	public boolean isB() {
+	public boolean isBuilding() {
 		return isBuilding;
 	}
 
-	public void setBuilding(boolean isBuilding) {
+	public void setIsBuilding(boolean isBuilding) {
 		this.isBuilding = isBuilding;
 	}
 

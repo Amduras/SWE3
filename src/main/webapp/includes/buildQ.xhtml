@@ -11,8 +11,8 @@
 	<f:event listener="#{loginHandler.checkLoggedIn}" type="preRenderView" />
 
 	<ui:insert name="buildQ">
-		<h:form id="bq_upadate">
-			<h:panelGroup id="BuildQ_inner" styleClass="#{loginHandler.buildHandler.isBuilding ? 'hide' : 'show'}">>
+		<h:form id="bq_update">
+			<h:panelGroup id="BuildQ_inner" styleClass="#{loginHandler.buildHandler.isBuilding() ? 'show' : 'hide'}">>
 				<table>
 					<tr>
 						<td><h:graphicImage style="width: 40px; height: 40px;" id="bq_id"
@@ -25,11 +25,11 @@
 							</p:outputLabel>
 						</td>
 					</tr>
-					<p:poll interval="1" listener="#{loginHandler.planetHandler.checkBuildTask()}" 
-							update="bq_id bq_name bq_time bq_upadate"/>
+					<p:poll interval="1" listener="#{loginHandler.buildHandler.checkBuildTask()}" 
+							update="bq_id bq_name bq_time :bq_update"/>
 				</table>		
 			</h:panelGroup>
-			<h:panelGroup id="BuildQ_innerTwo" styleClass="#{loginHandler.buildHandler.isBuilding ? 'hide' : 'show'}">>
+			<h:panelGroup id="BuildQ_innerTwo" styleClass="#{loginHandler.buildHandler.isBuilding() ? 'hide' : 'show'}">
 				<p>Kein Bauauftrag vorhanden</p>		
 			</h:panelGroup>
 		</h:form>	

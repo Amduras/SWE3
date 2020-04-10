@@ -1,0 +1,37 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:p="http://primefaces.org/ui">
+
+	<f:event listener="#{loginHandler.checkLoggedIn}" type="preRenderView" />
+
+	<ui:insert name="researchQ">
+		<h:form id="rq_update">
+			<h:panelGroup id="ResearchQ_inner" styleClass="#{loginHandler.buildHandler.isBuildingR() ? 'show' : 'hide'}">
+				<table>
+					<tr>
+						<td><h:graphicImage style="width: 40px; height: 40px;" id="rq_id"
+									url="resources/images/buildable/#{loginHandler.buildHandler.buildTaskIdR}.jpg"/></td>
+						<td><h:outputLabel id="rq_name" value="#{loginHandler.buildHandler.buildTaskNameR}"></h:outputLabel></td>
+					</tr>
+					<tr>
+						<td><p:outputLabel id="rq_time" value="#{loginHandler.buildHandler.remainingBuildTimeR}" style="font-size: 15px; margin-top: 4px;">
+								<f:convertDateTime pattern="HH:mm:ss" type="date" timeZone="Europe/Berlin" />
+							</p:outputLabel>
+						</td>
+					</tr>
+					<p:poll interval="1" listener="#{loginHandler.buildHandler.checkResearchTask()}" 
+							update="rq_id rq_name rq_time :rq_update"/>
+				</table>		
+			</h:panelGroup>
+			<h:panelGroup id="BuildQ_innerTwo" styleClass="#{loginHandler.buildHandler.isBuildingR() ? 'hide' : 'show'}">
+				<p>Kein Forschungsauftrag vorhanden</p>		
+			</h:panelGroup>
+		</h:form>	
+	</ui:insert>
+</ui:composition>

@@ -4,11 +4,17 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.EntityManager;
+import javax.transaction.HeuristicMixedException;
+import javax.transaction.HeuristicRollbackException;
+import javax.transaction.NotSupportedException;
+import javax.transaction.RollbackException;
+import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 
 import controller.FleetHandler;
 import controller.QHandler;
 import model.Fight;
+import model.Flight;
 
 public class FleetTask implements Task, Serializable{
 	
@@ -107,9 +113,20 @@ public class FleetTask implements Task, Serializable{
 			new FleetTask(em, utx, 3, new Date(System.currentTimeMillis()+duration), duration, targetPlanet, planet, ships, cargo, fleetHandler);
 	}
 	@Override
-	public void writeToDB() {
-		// TODO Auto-generated method stub
-		
+	public void saveToDB(int id) {
+		try {
+			utx.begin();
+		} catch (NotSupportedException | SystemException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		em.merge(new Flight(planet,targetPlanet,id,type));
+		try {
+			utx.commit();
+		} catch (SecurityException | IllegalStateException | RollbackException | HeuristicMixedException
+				| HeuristicRollbackException | SystemException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
 	}
-
 }

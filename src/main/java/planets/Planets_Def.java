@@ -38,8 +38,8 @@ public class Planets_Def implements Serializable {
 	private int interplanetaryMissle;
 	
 	private Date qTime = new Date(0);
-//	private List<BuildTask> task = Collections.synchronizedList(new ArrayList<BuildTask>());
-	
+	private int task = -1;
+
 	public Planets_Def() {
 		
 	}
@@ -59,7 +59,14 @@ public class Planets_Def implements Serializable {
 		this.antiBallisticMissle = antiBallisticMissle;
 		this.interplanetaryMissle = interplanetaryMissle;
 	}
+	
+	public int getTask() {
+		return task;
+	}
 
+	public void setTask(int task) {
+		this.task = task;
+	}
 	public int getPlanetId() {
 		return planetId;
 	}

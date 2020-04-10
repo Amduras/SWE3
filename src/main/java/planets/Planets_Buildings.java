@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.MapsId;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
+import javax.persistence.Transient;
 
 import Task.BuildTask;
 
@@ -41,8 +42,8 @@ public class Planets_Buildings implements Serializable {
 	private int lunarBase;
 	private int sensorPhalanx;
 	private int jumpgate;
-	
-	private BuildTask task;
+
+	private int task = -1;
 	
 	
 	
@@ -264,11 +265,11 @@ public class Planets_Buildings implements Serializable {
 		this.jumpgate = jumpgate;
 	}
 
-	public BuildTask getTask() {
+	public int getTask() {
 		return task;
 	}
 
-	public void setTask(BuildTask task) {
+	public void setTask(int task) {
 		this.task = task;
 	}
 	

@@ -32,6 +32,7 @@ public class SchedulingTask implements Job {
 							.withSchedule(simpleSchedule()
 									.withMisfireHandlingInstructionFireNow())
 							.build());
+				t.saveToDB(uId);
 				QHandler.waiting.put(uId,t);
 			} catch (SchedulerException e) {
 				// TODO Auto-generated catch block

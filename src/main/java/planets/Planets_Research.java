@@ -35,7 +35,7 @@ public class Planets_Research implements Serializable {
 	private int weapon;
 	private int shield;
 	
-	private BuildTask task;
+	private int task = -1;
 	
 	public Planets_Research() {
 	
@@ -194,11 +194,11 @@ public class Planets_Research implements Serializable {
 		this.hyperspacetech = hyperspacetech;
 	}
 
-	public BuildTask getTask() {
+	public int getTask() {
 		return task;
 	}
 
-	public void setTask(BuildTask task) {
+	public void setTask(int task) {
 		this.task = task;
 	}
 

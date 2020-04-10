@@ -12,5 +12,5 @@ public interface Task {
 	
 	void executeTask();
 	
-	void writeToDB();
+	void saveToDB(int id);
 }
