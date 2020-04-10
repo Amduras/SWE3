@@ -12,7 +12,7 @@
 
 	<ui:insert name="buildQ">
 		<h:form id="bq_upadate">
-			<h:panelGroup id="BuildQ_inner" styleClass="#{loginHandler.buildHandler.isBuilding ? 'hide' : 'show'}">>
+			<h:panelGroup id="BuildQ_inner" styleClass="#{loginHandler.buildHandler.isB() ? 'show' : 'hide'}">
 				<table>
 					<tr>
 						<td><h:graphicImage style="width: 40px; height: 40px;" id="bq_id"
@@ -29,8 +29,8 @@
 							update="bq_id bq_name bq_time bq_upadate"/>
 				</table>		
 			</h:panelGroup>
-			<h:panelGroup id="BuildQ_innerTwo" styleClass="#{loginHandler.buildHandler.isBuilding ? 'hide' : 'show'}">>
-				<p>Kein Bauauftrag vorhanden</p>		
+			<h:panelGroup id="BuildQ_innerTwo" styleClass="#{loginHandler.buildHandler.isB() ? 'hide' : 'show'}">
+				<p style="color:white;">Kein Bauauftrag vorhanden</p>		
 			</h:panelGroup>
 		</h:form>	
 	</ui:insert>
