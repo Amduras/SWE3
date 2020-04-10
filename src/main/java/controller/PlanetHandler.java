@@ -462,4 +462,12 @@ public class PlanetHandler {
 	public int getMaxEnergyAsInt() {
 		return (int)maxEnergy;
 	}
+
+	public GalaxyHandler getGalaxyHandler() {
+		return galaxyHandler;
+	}
+
+	public void setGalaxyHandler(GalaxyHandler galaxyHandler) {
+		this.galaxyHandler = galaxyHandler;
+	}
 }

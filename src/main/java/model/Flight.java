@@ -1,6 +1,7 @@
 package model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,15 +20,16 @@ public class Flight implements Serializable{
 	private int planetToId;
 	private int fleetTaskID;
 	private int fleetTaskType;
+	private Date fleetTaskTime;
 	
-	public Flight(int planetFromId, int planetToId, int fleetTaskID, int fleetTaskType) {
+	public Flight(int planetFromId, int planetToId, int fleetTaskID, int fleetTaskType, Date fleetTaskTime) {
 		super();
 		this.planetFromId = planetFromId;
 		this.planetToId = planetToId;
 		this.fleetTaskID = fleetTaskID;
 		this.fleetTaskType = fleetTaskType;
+		this.fleetTaskTime = fleetTaskTime;
 	}
-	
 	public int getPlanetFromId() {
 		return planetFromId;
 	}
@@ -52,4 +54,12 @@ public class Flight implements Serializable{
 	public void setFleetTaskType(int fleetTaskType) {
 		this.fleetTaskType = fleetTaskType;
 	}
+	public Date getFleetTaskTime() {
+		return fleetTaskTime;
+	}
+	public void setFleetTaskTime(Date fleetTaskTime) {
+		this.fleetTaskTime = fleetTaskTime;
+	}
+	
+	
 }
