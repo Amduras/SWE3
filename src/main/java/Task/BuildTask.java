@@ -50,6 +50,14 @@ public class BuildTask implements Task, Serializable{
 		QHandler.queued.add(this);
 	}
 	
+	public int getUpgradeId() {
+		return upgradeId;
+	}
+
+	public void setUpgradeId(int upgradeId) {
+		this.upgradeId = upgradeId;
+	}
+
 	@Override
 	public int getType() {
 		return type;
