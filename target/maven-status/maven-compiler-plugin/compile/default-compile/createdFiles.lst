@@ -13,6 +13,7 @@ controller\SettingsHandler.class
 model\User.class
 controller\BuildHandler.class
 controller\UserHandler.class
+model\Flight_.class
 ships\Ships_Build.class
 planets\Planets_Buildings.class
 planets\Planets_Ships.class

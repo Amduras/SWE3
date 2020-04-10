@@ -18,6 +18,7 @@ import Task.FleetTask;
 import model.Ship;
 import model.WorldSettings;
 import planets.Planets_General;
+import planets.Planets_Ships;
 
 @ManagedBean(name="fleetHandler")
 @SessionScoped
@@ -155,6 +156,14 @@ public class FleetHandler {
 				if(isCargoValid()) {
 					setMessage("Mission gestartet");
 					new FleetTask(em, utx, mission, arrival, travelTime, planetHandler.getPg().getPlanetId(),target.getPlanetId(), ships, cargo, this);
+					
+					planetHandler.getPg().setMetal(planetHandler.getPg().getMetal()-cargo[0]);
+					planetHandler.getPg().setCrystal(planetHandler.getPg().getCrystal()-cargo[1]);
+					planetHandler.getPg().setDeut(planetHandler.getPg().getDeut()-cargo[2]);
+					
+					subtractShips();
+					
+					setStage(0);
 				}
 				else {
 					System.out.println("Cargospace ist zu klein");
@@ -167,7 +176,10 @@ public class FleetHandler {
 			}
 		}
 	}
-
+	private void subtractShips() {
+		for(int i=0; i<ships.length;++i)
+			setById(i,planetHandler.getPs(),getById(i,planetHandler.getPs())-ships[i]);
+	}
 	private void setMessage(String msg) {
 		FacesContext context = FacesContext.getCurrentInstance();
 		if(context != null)
@@ -344,6 +356,100 @@ public class FleetHandler {
 			System.out.println("Keine WS in DB");
 		}		
 	}
+	private int getById(int id, Planets_Ships ps) {
+		int res = 999999;
+		switch(id+31) {
+		case 31:
+			res = ps.getLightFighter();
+			break;
+		case 32:
+			res = ps.getHeavyFighter();
+			break;
+		case 33:
+			res = ps.getCruiser();
+			break;
+		case 34:
+			res = ps.getBattleship();
+			break;
+		case 35:
+			res = ps.getBattlecruiser();
+			break;
+		case 36:
+			res = ps.getBomber();
+			break;
+		case 37:
+			res = ps.getDestroyer();
+			break;
+		case 38:
+			res = ps.getDeathStar();
+			break;
+		case 39:
+			res = ps.getSmallCargoShip();
+			break;
+		case 40:
+			res = ps.getLargeCargoShip();
+			break;
+		case 41:
+			res = ps.getColonyShip();
+			break;
+		case 42:
+			res = ps.getRecycler();
+			break;
+		case 43:
+			res = ps.getEspionageProbe();
+			break;
+		case 44:
+			res = ps.getSolarSattlelite();
+			break;
+		}
+		return res;
+	}
+	private void setById(int id, Planets_Ships ps, int val) {
+		switch(id+31) {
+		case 31:
+			ps.setLightFighter(val);
+			break;
+		case 32:
+			ps.setHeavyFighter(val);
+			break;
+		case 33:
+			ps.setCruiser(val);
+			break;
+		case 34:
+			ps.setBattleship(val);
+			break;
+		case 35:
+			ps.setBattlecruiser(val);
+			break;
+		case 36:
+			ps.setBomber(val);
+			break;
+		case 37:
+			ps.setDestroyer(val);
+			break;
+		case 38:
+			ps.setDeathStar(val);
+			break;
+		case 39:
+			ps.setSmallCargoShip(val);
+			break;
+		case 40:
+			ps.setLargeCargoShip(val);
+			break;
+		case 41:
+			ps.setColonyShip(val);
+			break;
+		case 42:
+			ps.setRecycler(val);
+			break;
+		case 43:
+			ps.setEspionageProbe(val);
+			break;
+		case 44:
+			ps.setSolarSattlelite(val);
+			break;
+		}
+	}
 	public long[] getCargo() {
 		return cargo;
 	}
@@ -445,5 +551,11 @@ public class FleetHandler {
 	}
 	public void setMissionDone(String missionDone) {
 		this.missionDone = missionDone;
+	}
+	public PlanetHandler getPlanetHandler() {
+		return planetHandler;
+	}
+	public void setPlanetHandler(PlanetHandler planetHandler) {
+		this.planetHandler = planetHandler;
 	}
 }
