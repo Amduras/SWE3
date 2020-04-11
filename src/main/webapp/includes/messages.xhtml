@@ -10,7 +10,7 @@
 
 	<f:event listener="#{loginHandler.checkLoggedIn}" type="preRenderView" />
 
-
+	<p:growl id="growl"/> 
 	<h:panelGroup id="center_body_top" styleClass="center_body_top" layout="block">
 		<p:dataTable id="messagesTable"
 			value="#{loginHandler.messageHandler.messages}" var="messages"

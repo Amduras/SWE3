@@ -16,7 +16,6 @@ public abstract class User_ {
 	public static volatile SingularAttribute<User, AuthLvl> authLvl;
 	public static volatile SingularAttribute<User, Integer> userID;
 	public static volatile SingularAttribute<User, String> email;
-	public static volatile SingularAttribute<User, Integer> picture;
 	public static volatile SingularAttribute<User, String> username;
 
 }

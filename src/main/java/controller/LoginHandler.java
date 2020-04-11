@@ -94,13 +94,6 @@ public class LoginHandler implements Serializable{
 		settingsHandler = new SettingsHandler(em, utx);
 	}
 
-	private void genTestMsg() {
-		em.persist(new Messages("1","admin", "Das issen Test du lappen", "Test"));
-		em.persist(new Messages("1","admin", "Das issen Test2 du lappen", "Test2"));
-		em.persist(new Messages("1","admin", "Das issen Test3 du lappen", "Test3"));
-		em.persist(new Messages("1","admin", "Das issen Test4 du lappen", "Test4"));
-	}
-
 	private void install() {
 		// name		type	baseCostMetal baseCostCrystal baseCostDeut baseCostEnergy	resFactor	energyFactor	Descr	rec
 		//type 0= building 1=tech 2=ship/def
@@ -328,38 +321,42 @@ public class LoginHandler implements Serializable{
 	}
 
 	public String neuerUser() {
-		Query query = em.createQuery("select k from User k where k.username = :username");
-		query.setParameter("username", username);
-		@SuppressWarnings("unchecked")
-		List<User> qusers = query.getResultList();
-		if(qusers.size() == 0) {
-			User user = new User();
-			user.setAuthLvl(AuthLvl.USER);
-			user.setIsActive(IsActive.TRUE);
-			user.setUsername(username);
-			user.setPassword(hash(password));
-			user.setEmail("asd@web.de");
-
-			try {
-				utx.begin();
-			} catch (NotSupportedException | SystemException e) {
-				e.printStackTrace();
-			}
-			em.persist(user);
-			try {
-				utx.commit();
-			} catch (SecurityException | IllegalStateException | RollbackException | HeuristicMixedException
-					| HeuristicRollbackException | SystemException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			planetHandler.createNewPlanet(user.getUserID());
-			return "login";
+		if(username.toLowerCase().equals("flottenadmiral")) {
+			setLoginMessage("Name: "+username+" kann nicht vergeben werden.");
 		} else {
-			setLoginMessage("username schon vergeben");
-			return "";
-		}
+			Query query = em.createQuery("select k from User k where k.username = :username");
+			query.setParameter("username", username);
+			@SuppressWarnings("unchecked")
+			List<User> qusers = query.getResultList();
+			if(qusers.size() == 0) {
+				User user = new User();
+				user.setAuthLvl(AuthLvl.USER);
+				user.setIsActive(IsActive.TRUE);
+				user.setUsername(username);
+				user.setPassword(hash(password));
+				user.setEmail("asd@web.de");
 
+				try {
+					utx.begin();
+				} catch (NotSupportedException | SystemException e) {
+					e.printStackTrace();
+				}
+				em.persist(user);
+				try {
+					utx.commit();
+				} catch (SecurityException | IllegalStateException | RollbackException | HeuristicMixedException
+						| HeuristicRollbackException | SystemException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				planetHandler.createNewPlanet(user.getUserID());
+				return "login";
+			} else {
+				setLoginMessage("username schon vergeben");
+				return "";
+			}
+		}
+		return"";
 	}
 
 	public boolean isAdmin() {
