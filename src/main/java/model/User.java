@@ -31,7 +31,6 @@ public class User implements Serializable{
 	private String password;
 	private IsActive isActive;
 	private Long lastlogin;
-	private int picture;
 	private AuthLvl authLvl;
 	
 	public User(){
