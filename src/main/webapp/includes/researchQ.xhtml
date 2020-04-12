@@ -12,16 +12,18 @@
 
 	<ui:insert name="researchQ">
 		<h:form id="rq_update">
+			<h2 style="color:orange;">Forschungslabor</h2>
+			<hr style="width: 60%;"></hr>
 			<h:panelGroup id="ResearchQ_inner" styleClass="#{loginHandler.buildHandler.isBuildingR() ? 'show' : 'hide'}">
-				<table>
+				<table align="center">
 					<tr>
-						<td><h:graphicImage style="width: 40px; height: 40px;" id="rq_id"
+						<td rowspan="2"><h:graphicImage style="width: 40px; height: 40px;" id="rq_id"
 									url="resources/images/buildable/#{loginHandler.buildHandler.buildTaskIdR}.jpg"/></td>
 						<td><h:outputLabel style="color:white;" id="rq_name" value="#{loginHandler.buildHandler.buildTaskNameR}"></h:outputLabel></td>
 					</tr>
 					<tr>
 						<td><p:outputLabel id="rq_time" value="#{loginHandler.buildHandler.remainingBuildTimeR}" style="color:white;font-size: 15px; margin-top: 4px;">
-								<f:convertDateTime pattern="HH:mm:ss" type="date" timeZone="Europe/Berlin" />
+								<f:convertDateTime pattern="HH:mm:ss" type="date" timeZone="CEST" />
 							</p:outputLabel>
 						</td>
 					</tr>

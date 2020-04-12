@@ -12,16 +12,18 @@
 
 	<ui:insert name="buildQ">
 		<h:form id="bq_update">
+			<h2 style="color:orange;">Infrastruktur</h2>
+			<hr style="width: 60%;"></hr>
 			<h:panelGroup id="BuildQ_inner" styleClass="#{loginHandler.buildHandler.isBuilding() ? 'show' : 'hide'}">>
-				<table>
+				<table align="center">
 					<tr>
-						<td><h:graphicImage style="width: 40px; height: 40px;" id="bq_id"
+						<td rowspan="2"><h:graphicImage style="width: 40px; height: 40px;" id="bq_id"
 									url="resources/images/buildable/#{loginHandler.buildHandler.buildTaskId}.jpg"/></td>
 						<td><h:outputLabel style="color: white;" id="bq_name" value="#{loginHandler.buildHandler.buildTaskName}"></h:outputLabel></td>
 					</tr>
 					<tr>
 						<td><p:outputLabel id="bq_time" value="#{loginHandler.buildHandler.remainingBuildTime}" style="color: white; font-size: 15px; margin-top: 4px;">
-								<f:convertDateTime pattern="HH:mm:ss" type="date" timeZone="Europe/Berlin" />
+								<f:convertDateTime pattern="HH:mm:ss" type="date" timeZone="CEST" />
 							</p:outputLabel>
 						</td>
 					</tr>
@@ -30,7 +32,7 @@
 				</table>		
 			</h:panelGroup>
 			<h:panelGroup id="BuildQ_innerTwo" styleClass="#{loginHandler.buildHandler.isBuilding() ? 'hide' : 'show'}">
-				<p>Kein Bauauftrag vorhanden</p>		
+				<p style="color:white;">Kein Bauauftrag vorhanden</p>		
 			</h:panelGroup>
 		</h:form>	
 	</ui:insert>

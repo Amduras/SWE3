@@ -12,16 +12,18 @@
 
 	<ui:insert name="shipQ">
 		<h:form id="sdq_update">
+			<h2 style="color:orange;">Schiffswerft</h2>
+			<hr style="width: 60%;"></hr>
 			<h:panelGroup id="ShipQ_inner" styleClass="#{loginHandler.buildHandler.isBuildingS() ? 'show' : 'hide'}">
-				<table>
+				<table align="center">
 					<tr>
-						<td><h:graphicImage style="width: 40px; height: 40px;" id="sq_id"
+						<td rowspan="2"><h:graphicImage style="width: 40px; height: 40px;" id="sq_id"
 									url="resources/images/buildable/#{loginHandler.buildHandler.buildTaskIdS}.jpg"/></td>
-						<td><h:outputLabel id="sq_name" value="#{loginHandler.buildHandler.buildTaskNameS}"></h:outputLabel></td>
+						<td><h:outputLabel id="sq_name" style="color:white;" value="#{loginHandler.buildHandler.buildTaskNameS}"></h:outputLabel></td>
 					</tr>
 					<tr>
 						<td><p:outputLabel id="sq_time" value="#{loginHandler.buildHandler.remainingBuildTimeS}" style="color:white;font-size: 15px; margin-top: 4px;">
-								<f:convertDateTime pattern="HH:mm:ss" type="date" timeZone="Europe/Berlin" />
+								<f:convertDateTime pattern="HH:mm:ss" type="date" timeZone="CEST" />
 							</p:outputLabel>
 						</td>
 					</tr>
@@ -31,15 +33,15 @@
 				<p style="color:white;">Kein Bauauftrag vorhanden</p>		
 			</h:panelGroup>
 			<h:panelGroup id="DefQ_inner" styleClass="#{loginHandler.buildHandler.isBuildingD() ? 'show' : 'hide'}">
-				<table>
+				<table align="center">
 					<tr>
-						<td><h:graphicImage style="width: 40px; height: 40px;" id="dq_id"
+						<td rowspan="2"><h:graphicImage style="width: 40px; height: 40px;" id="dq_id"
 									url="resources/images/buildable/#{loginHandler.buildHandler.buildTaskIdD}.jpg"/></td>
 						<td><h:outputLabel style="color:white;" id="dq_name" value="#{loginHandler.buildHandler.buildTaskNameD}"></h:outputLabel></td>
 					</tr>
 					<tr>
 						<td><p:outputLabel id="dq_time" value="#{loginHandler.buildHandler.remainingBuildTimeD}" style="color:white;font-size: 15px; margin-top: 4px;">
-								<f:convertDateTime pattern="HH:mm:ss" type="date" timeZone="Europe/Berlin" />
+								<f:convertDateTime pattern="HH:mm:ss" type="date" timeZone="CEST" />
 							</p:outputLabel>
 						</td>
 					</tr>

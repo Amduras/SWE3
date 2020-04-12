@@ -173,7 +173,7 @@ public class FleetHandler {
 			}
 			else {
 				System.out.println("gebe gültige Mission ein.");
-				setMessage("gebe eine Gültige Mission ein.");
+				setMessage("gebe eine gültige Mission ein.");
 			}
 		}
 	}
@@ -209,23 +209,35 @@ public class FleetHandler {
 				if(i != 10)
 					temp += ships[i];
 			res = temp == 0 && ships[10] == 1;
+			res = false;
+			if(!res)
+				setMessage("Kolonisieren geht zZ nur über die Galaxieansicht!");
 			break;
 		case 1:
 			for(int i=0;i<ships.length-1;++i)
 				if(i != 11)
 					temp += ships[i];
 			res = temp == 0;
+			res = false;
+			if(!res)
+				setMessage("Trümmerfelder abzubauen ist in dieser Version noch nicht verfügbar!");
 			break;
 		case 2:
 			res = true;
 			break;
 		case 3:
-			res = true;
+			//make sure both planets are from the same user
+			res = planetHandler.getPg().getUserId() == target.getUserId();
+			if(!res)
+				setMessage("Stationieren geht nur auf eigenen Planeten!");
 			break;
 		case 4:
 			for(int i=0;i<ships.length-1;++i)
 				temp += ships[i];
 			res = temp == 0;
+			res = false;
+			if(!res)
+				setMessage("Spionieren ist in dieser Version noch nicht verfügbar!");
 			break;
 		case 5:
 			res = true;

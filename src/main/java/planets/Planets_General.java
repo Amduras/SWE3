@@ -40,7 +40,7 @@ public class Planets_General implements Serializable {
 	private double deut;
 	private int usedEnergy;
 	private int maxEnergy; 
-	private String name = "DingDong des Todes";
+	private String name = "Test";
 	private int userid;
 	private Date lastUpdate;
 
