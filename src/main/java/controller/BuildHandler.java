@@ -209,7 +209,7 @@ public class BuildHandler {
 			return planetHandler.getPr().getHyperspace();
 		case "plasmatechnik":
 			return planetHandler.getPr().getPlasma();
-		case "gravitontechnik":
+		case "gravitonforschung":
 			return planetHandler.getPr().getGravitation();
 		case "waffentechnik":
 			return planetHandler.getPr().getWeapon();
@@ -466,7 +466,6 @@ public class BuildHandler {
 					if(Integer.valueOf(recs2[1]) <= getMethode(recs2[0])){
 						++i;
 					} else {
-						System.out.println("Gesetzt");
 						buildable = false;
 					}
 				}

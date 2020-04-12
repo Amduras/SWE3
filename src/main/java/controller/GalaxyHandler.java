@@ -5,8 +5,10 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Random;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
@@ -288,40 +290,23 @@ public class GalaxyHandler {
 		messageHandler.setMessage(2, true);
 		includeController.setPage("messageView", fleetHandler);
 	}
-
-	public void colonize(PlanetHandler planetHandler, int userid, int rowid) {
-		planetHandler.colonizePlanet(userid, rowid, getGalaxyForTable(), getSystemForTable());
-		Query query = em.createQuery("select k from Solarsystem k where k.systemId = :id");
-		query.setParameter("id", getSystemForTable());
-		Solarsystem system = (Solarsystem) query.getSingleResult();
-		system.setPlanets(system.getPlanets()-1);
-		if(rowid >=3 || rowid <= 12) {
-			system.setFreeStartpositions(system.getFreeStartpositions()-1);
+	
+	public void colonize(PlanetHandler planetHandler, int userid, int rowid, FleetHandler fleetHandler) {
+		if(planetHandler.getPs().getColonyShip() > 0) {
+			fleetHandler.setUserid(userid);
+			fleetHandler.kolo(getGalaxyForTable(), getSystemForTable(), rowid, true);
+		} else {
+			setMessage("Es wird ein Kolonieshiff benötigt.");
 		}
-
-		try {
-			utx.begin();
-		} catch (NotSupportedException | SystemException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		em.merge(system);
-		try {
-			utx.commit();
-		} catch (SecurityException | IllegalStateException | RollbackException | HeuristicMixedException
-				| HeuristicRollbackException | SystemException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		planetHandler.createPlanetlist();
 	}
-
-	public void spy(int position) {
-
-	}
-
-	public void attack(int position) {
-
+	
+	private void setMessage(String msg) {
+		FacesContext context = FacesContext.getCurrentInstance();
+		if(context != null) {
+			context.addMessage(null, new FacesMessage(msg));
+		} else {
+			System.out.println("context: null");
+		}
 	}
 
 	public List<Planets_General> getPlanets() {

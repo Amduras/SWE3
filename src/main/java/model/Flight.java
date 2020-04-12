@@ -22,9 +22,6 @@ public class Flight implements Serializable{
 	private int fleetTaskType;
 	private Date fleetTaskTime;
 	
-	public Flight() {
-		
-	}
 	
 	public Flight(int planetFromId, int planetToId, int fleetTaskID, int fleetTaskType, Date fleetTaskTime) {
 		super();
@@ -34,6 +31,7 @@ public class Flight implements Serializable{
 		this.fleetTaskType = fleetTaskType;
 		this.fleetTaskTime = fleetTaskTime;
 	}
+	
 	public Flight() {
 		
 	}
