@@ -69,7 +69,7 @@ public class FleetHandler {
 				position == planetHandler.getPg().getPosition()) {
 			isValidTarget = false;
 			name = planetHandler.getPg().getName();
-			System.out.println("Start kann nicht ziel sein idk xd.");
+			//System.out.println("Start kann nicht ziel sein idk xd.");
 			setMessage("Start kann nicht Ziel sein");
 		}
 		else {
@@ -90,7 +90,7 @@ public class FleetHandler {
 				isValidTarget = false;
 				calcDistance();
 				calcTravelTime();
-				System.out.println("Kein Planet an "+galaxy+":"+solarSystem+":"+position);
+				//System.out.println("Kein Planet an "+galaxy+":"+solarSystem+":"+position);
 				setMessage("Kein Planet an "+galaxy+":"+solarSystem+":"+(position+1));
 			}
 		}	
@@ -132,6 +132,7 @@ public class FleetHandler {
 			this.stage = stage;
 			Arrays.fill(ships, 0);
 			Arrays.fill(cargo, 0);
+			planetHandler.updateShips();
 		}
 		if(stage == 1) {
 			if(checkShips()) {
@@ -145,7 +146,7 @@ public class FleetHandler {
 				this.stage = stage;
 			}
 			else {
-				System.out.println("Keine Schiffe zum versenden Ausgewählt");
+				//System.out.println("Keine Schiffe zum versenden Ausgewählt");
 				setMessage("Kein Schiff zum versenden Ausgewählt");
 			}
 		}
@@ -154,7 +155,7 @@ public class FleetHandler {
 				this.stage = stage;
 			}
 			else {
-				System.out.println("gebe gültige Koordinaten ein.");
+				//System.out.println("gebe gültige Koordinaten ein.");
 				setMessage("gebe gültige Koordinaten ein");
 			}
 		}
@@ -169,7 +170,7 @@ public class FleetHandler {
 					planetHandler.getPg().setDeut(planetHandler.getPg().getDeut()-cargo[2]);
 					
 					subtractShips();
-					System.out.println("m: "+cargo[0]+" c: "+cargo[1]+" d: "+cargo[2]);
+					//System.out.println("m: "+cargo[0]+" c: "+cargo[1]+" d: "+cargo[2]);
 					planetHandler.save();
 					setStage(0);
 				}
@@ -247,10 +248,10 @@ public class FleetHandler {
 		int sum = 0;
 		for(int i=0;i<ships.length;++i) {
 			int actualShips = idToLvl(31+i);
-			System.out.println("Shiff: "+i+" Anzahl: "+actualShips);
+			//System.out.println("Shiff: "+i+" Anzahl: "+actualShips);
 			sum += ships[i] > actualShips ? actualShips : ships[i];
 		}
-		System.out.println("Summe: "+sum);
+		//System.out.println("Summe: "+sum);
 		if(sum == 0) {
 			Arrays.fill(ships, 0);
 		}
@@ -316,9 +317,9 @@ public class FleetHandler {
 					Ship s = (Ship)res;
 					long tspeed = s.getSpeed() + s.getSpeed()/10*idToLvl(s.getDriveScaleTechId());					
 					minSpeed = tspeed < minSpeed ? tspeed : minSpeed;
-					System.out.println(i+" "+tspeed+" "+minSpeed+" "+speed);
+					//System.out.println(i+" "+tspeed+" "+minSpeed+" "+speed);
 				} catch(NoResultException e){	
-					System.out.println("Kein Schiff mit id"+(31+i)+" in der db.");
+					//System.out.println("Kein Schiff mit id"+(31+i)+" in der db.");
 					setMessage("Kein Schiff vorhanden");
 				}
 			}			
@@ -403,7 +404,7 @@ public class FleetHandler {
 					cargoSpace += s.getCargoSpace()*ships[i];
 
 				} catch(NoResultException e){	
-					System.out.println("Kein Schiff mit id"+(31+i)+" in der db.");
+					//System.out.println("Kein Schiff mit id"+(31+i)+" in der db.");
 					setMessage("Kein Cargo Schiff vorhanden");
 				}
 			}			

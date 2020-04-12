@@ -71,9 +71,9 @@ public class Fight {
 	}
 	
 	private void beginFight() {		
-		System.out.println("Kampf begint ------------------------------------------");
+		//System.out.println("Kampf begint ------------------------------------------");
 		for(int r=0;r<6;++r) {
-			System.out.println("Runde "+r+" startet------------------------------------------ \n Lade Schilde");
+			//System.out.println("Runde "+r+" startet------------------------------------------ \n Lade Schilde");
 			//charge Shields
 			chargeShields();
 			
@@ -93,7 +93,7 @@ public class Fight {
 						else
 							attShips[target][4] -= dmg*shots;
 						int losses = hulldmg / attShips[target][1];
-						System.out.println("Def-Schiff "+(i+31)+" schießt auf "+(target+31)+" mit "+shots+" Schuss für "+hulldmg+" Hüllenschaden ,"+losses+" pot. Verluste.");
+						//System.out.println("Def-Schiff "+(i+31)+" schießt auf "+(target+31)+" mit "+shots+" Schuss für "+hulldmg+" Hüllenschaden ,"+losses+" pot. Verluste.");
 						attShips[target][5] += losses;
 						attShips[target][5] = Math.min(attShips[target][0], attShips[target][5]);
 					}
@@ -117,7 +117,7 @@ public class Fight {
 							else
 								defShips[target][4] -= dmg*shots;
 							int losses = hulldmg / defShips[target][1];
-							System.out.println("Att-Schiff "+(i+31)+" schießt auf "+(target+31)+" mit "+shots+" Schuss für "+hulldmg+" Hüllenschaden ,"+losses+" Verluste.");
+							//System.out.println("Att-Schiff "+(i+31)+" schießt auf "+(target+31)+" mit "+shots+" Schuss für "+hulldmg+" Hüllenschaden ,"+losses+" Verluste.");
 							defShips[target][5] += losses;
 							defShips[target][5] = Math.min(defShips[target][0], defShips[target][5]);
 						}
@@ -132,7 +132,7 @@ public class Fight {
 		endFight(1,6);
 	}
 	private void endFight(int i, int round) {
-		System.out.println("Kampf ist vorbei, Runde: "+round+", Gewinner: "+i);
+		//System.out.println("Kampf ist vorbei, Runde: "+round+", Gewinner: "+i);
 		calcAndApplyDebrisfield();	
 		if(i == 0) { // Vicory for att
 			def_pb = getPb(defPlanetId);

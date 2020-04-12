@@ -57,9 +57,9 @@ public class FleetTask implements Task, Serializable{
 		this.fleetHandler = fleetHandler;
 		//TODO
 		/*** Delete Ships on mission from Planets_General ***/
-		System.out.println("Fleettask mit type "+type);
+		/*System.out.println("Fleettask mit type "+type);
 		for(int i : this.ships)
-			System.out.println("Ship - const: "+ i);
+			System.out.println("Ship - const: "+ i);*/
 		/** Add to queue for schedule **/
 		QHandler.queued.add(this);
 	}
@@ -114,15 +114,15 @@ public class FleetTask implements Task, Serializable{
 			Object res = query.getSingleResult();
 			Planets_General pg = (Planets_General)res;
 			
-			System.out.println("pId:"+targetPlanet+"m: "+pg.getMetal()+" c: "+pg.getCrystal()+" d: "+pg.getDeut());
-			System.out.println("m: "+cargo[0]+" c: "+cargo[1]+" d: "+cargo[2]);
+			//System.out.println("pId:"+targetPlanet+"m: "+pg.getMetal()+" c: "+pg.getCrystal()+" d: "+pg.getDeut());
+			//System.out.println("m: "+cargo[0]+" c: "+cargo[1]+" d: "+cargo[2]);
 			
 			pg.setMetal(pg.getMetal()+cargo[0]);
 			pg.setCrystal(pg.getCrystal()+cargo[1]);
 			pg.setDeut(pg.getDeut()+cargo[2]);
 				
 			
-			System.out.println("After: pId:"+targetPlanet+"m: "+pg.getMetal()+" c: "+pg.getCrystal()+" d: "+pg.getDeut());					
+			//System.out.println("After: pId:"+targetPlanet+"m: "+pg.getMetal()+" c: "+pg.getCrystal()+" d: "+pg.getDeut());					
 			try {
 				utx.begin();
 			} catch (NotSupportedException | SystemException e) {
@@ -202,11 +202,11 @@ public class FleetTask implements Task, Serializable{
 				submitMSG(fromUser,toUser,msg,subject);
 			}
 			cargo[0] = cargo[1] = cargo[2] = 0;
-			for(int i : ships)
-				System.out.println("Ship - before: "+ i);
-			new FleetTask(em, utx, 3, new Date(System.currentTimeMillis()+duration*1000), duration, planet, planet, ships, cargo, fleetHandler);
-			for(int i : ships)
-				System.out.println("Ship - After: "+ i);
+			//for(int i : ships)
+				//System.out.println("Ship - before: "+ i);
+			new FleetTask(em, utx, 3, new Date(System.currentTimeMillis()+duration*1000), duration, targetPlanet, planet, ships, cargo, fleetHandler);
+			//for(int i : ships)
+				//System.out.println("Ship - After: "+ i);
 		} catch(NoResultException e){	
 			System.out.println("Keine pg mit id "+targetPlanet+" in DB - station");
 		}
@@ -319,20 +319,23 @@ public class FleetTask implements Task, Serializable{
 		}	
 	}
 	private void deleteMe() {
+		Query query = em.createQuery("delete from Flight k where k.fleetTaskID = :id");
+		query.setParameter("id", flight.getFleetTaskID());
+
 		try {
-			utx.begin();
-		} catch (NotSupportedException | SystemException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		em.remove(flight);
-		try {
-			utx.commit();
-		} catch (SecurityException | IllegalStateException | RollbackException | HeuristicMixedException
-				| HeuristicRollbackException | SystemException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+            utx.begin();
+        } catch (NotSupportedException | SystemException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        query.executeUpdate();
+        try {
+            utx.commit();
+        } catch (SecurityException | IllegalStateException | RollbackException | HeuristicMixedException
+                | HeuristicRollbackException | SystemException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 		fleetHandler.setMissionDone("t");
 	}
 	private int getById(int id, Planets_Ships ps) {
