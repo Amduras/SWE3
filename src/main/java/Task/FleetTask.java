@@ -209,7 +209,7 @@ public class FleetTask implements Task, Serializable{
 			cargo[0] = cargo[1] = cargo[2] = 0;
 			for(int i : ships)
 				System.out.println("Ship - before: "+ i);
-			new FleetTask(em, utx, 3, new Date(System.currentTimeMillis()+duration*1000), duration, planet, planet, ships, cargo, fleetHandler);
+			new FleetTask(em, utx, 3, new Date(System.currentTimeMillis()+duration*1000), duration, targetPlanet, planet, ships, cargo, fleetHandler);
 			for(int i : ships)
 				System.out.println("Ship - After: "+ i);
 		} catch(NoResultException e){	

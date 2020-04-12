@@ -416,11 +416,8 @@
 			<ui:insert name="content">
 				<table>
 					<tr>
-						<td rowspan="3" style="color: white;">Mission für das Ziel
-							wählen:</td>
-					</tr>
-					<tr>
-						<td rowspan="3">
+						<td style="color: white;">Mission für das Ziel wählen:</td>
+						<td>
 							<div id="mission_container">
 							
 								<h:graphicImage url="resources/images/missions/kolo.png" title="Kolonisieren">
@@ -457,41 +454,51 @@
 						</td>
 					</tr>
 					<tr>
-						<td rowspan="3"></td>
+						<td style="color: white;">Briefing</td>
+						<td style="color: white;">Rohstoffe einladen</td>
 					</tr>
 					<tr>
-					</tr>
-					<tr>
-						<td style="color: white;" rowspan="2">Briefing</td>
-						<td rowspan="2" style="color: white;">Rohstoffe einladen</td>
-					</tr>
-					<tr>
-						<td colspan="3"></td>
-						<td></td>
-						<td colspan="3"><h:panelGroup layout="block"
-								style="width: 90%; margin: auto;">
-								<p:inputText styleClass="fleetInp"
-									value="#{loginHandler.fleetHandler.cargo[0]}">
-									<p:ajax event="change"
-										listener="#{loginHandler.fleetHandler.changeRes()}" />
-								</p:inputText>
-								<p:inputText styleClass="fleetInp"
-									value="#{loginHandler.fleetHandler.cargo[1]}">
-									<p:ajax event="change"
-										listener="#{loginHandler.fleetHandler.changeRes()}" />
-								</p:inputText>
-								<p:inputText styleClass="fleetInp"
-									value="#{loginHandler.fleetHandler.cargo[2]}">
-									<p:ajax event="change"
-										listener="#{loginHandler.fleetHandler.changeRes()}" />
-								</p:inputText>
-							</h:panelGroup></td>
-					</tr>
-					<tr>
-						<td></td>
-					</tr>
-					<tr>
-						<td></td>
+						<td>
+							<div class="hUl">
+								<ul class="briefingList">
+									<li class="briefingList">Laderaum: <p:outputLabel
+											styleClass="duration"
+											value="#{loginHandler.fleetHandler.cargoSpace}"></p:outputLabel>
+									</li>
+								</ul>
+							</div>
+						</td>
+						<td>
+							<table align="center">
+								<tr>
+									<td><img width="40" height="40" src="resources/images/res_icon/metal.png" alt="Res"/></td>
+									<td><img width="40" height="40" src="resources/images/res_icon/crystal.png" alt="Res"/></td>
+									<td><img width="40" height="40" src="resources/images/res_icon/deuterium.png" alt="Res"/></td>
+								</tr>
+								<tr>
+									<td><p:inputText styleClass="fleetInp"
+											value="#{loginHandler.fleetHandler.cargo[0]}">
+											<p:ajax event="change"
+												listener="#{loginHandler.fleetHandler.changeRes()}" />
+										</p:inputText>
+									</td>
+									<td>
+										<p:inputText styleClass="fleetInp"
+											value="#{loginHandler.fleetHandler.cargo[1]}">
+											<p:ajax event="change"
+												listener="#{loginHandler.fleetHandler.changeRes()}" />
+										</p:inputText>
+									</td>
+									<td>
+										<p:inputText styleClass="fleetInp"
+											value="#{loginHandler.fleetHandler.cargo[2]}">
+											<p:ajax event="change"
+												listener="#{loginHandler.fleetHandler.changeRes()}" />
+										</p:inputText>
+									</td>
+								</tr>
+							</table>				
+						</td>
 					</tr>
 				</table>
 				<h:graphicImage class="button_next"

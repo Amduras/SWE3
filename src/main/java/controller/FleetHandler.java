@@ -132,6 +132,7 @@ public class FleetHandler {
 			this.stage = stage;
 			Arrays.fill(ships, 0);
 			Arrays.fill(cargo, 0);
+			planetHandler.updateShips();
 		}
 		if(stage == 1) {
 			if(checkShips()) {

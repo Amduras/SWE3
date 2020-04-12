@@ -87,7 +87,7 @@ td {
 	width: 100%;
   	height: 300px;
 	border: 4px solid black;
-	border-style: none solid solid solid;
+	border-style: solid solid solid solid;
   	background: #15151e;
   	margin-top: -12px;
   	margin-bottom: 25px;
@@ -95,7 +95,7 @@ td {
 #mainForm\:center_body_bottom{
 	width: 100%;
 	border: 4px solid black;
-	border-style: none solid solid solid;
+	border-style: solid solid solid solid;
   	background: #15151e;
   	margin-top: -12px;
   	margin-bottom: 25px;
