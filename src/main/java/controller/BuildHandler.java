@@ -1,5 +1,6 @@
 package controller;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.faces.application.FacesMessage;
@@ -238,6 +239,7 @@ public class BuildHandler {
 			BuildTask bt = (BuildTask) QHandler.waiting.get(btId);
 			if(bt != null) {
 				isBuilding = true;
+				//System.out.println("TIME: "+new Date(bt.getTime().getTime()).toString()+" SysT: "+ new Date(System.currentTimeMillis()).toString());
 				remainingBuildTime.setTime(Math.abs(bt.getTime().getTime()-System.currentTimeMillis()));
 				buildTaskId = bt.getUpgradeId();
 				Query query = em.createQuery("select k from Buildable k where k.id = :id");
