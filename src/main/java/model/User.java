@@ -94,14 +94,6 @@ public class User implements Serializable{
 		this.lastlogin = lastlogin;
 	}
 
-	public int getPicture() {
-		return picture;
-	}
-
-	public void setPicture(int picture) {
-		this.picture = picture;
-	}
-
 	public AuthLvl getAuthLvl() {
 		return authLvl;
 	}

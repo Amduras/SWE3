@@ -4,9 +4,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.transaction.HeuristicMixedException;
 import javax.transaction.HeuristicRollbackException;
@@ -110,8 +113,24 @@ public class MessageHandler implements Serializable{
 			this.newMessageContent = null;
 		}
 	}
-
+	
+	private void toGrowl(String msg) {
+		FacesContext context = FacesContext.getCurrentInstance();
+		if(context != null) {
+			context.addMessage(null, new FacesMessage(msg));
+		} else {
+			System.out.println("context: null");
+		}
+	}
+	
 	public void submit() {
+		Query query = em.createQuery("select k from User k where k.username = :name");
+		query.setParameter("name", newMessageUser);
+		try {
+			Object res = query.getSingleResult();
+		} catch(NoResultException e) {
+			toGrowl("Nutzer "+newMessageUser+" nicht vorhanden.");
+		}
 		Messages newMessage = new Messages(user.getUsername(), newMessageUser, newMessageContent, newMessageSubject);
 		try {
 			utx.begin();
@@ -127,6 +146,8 @@ public class MessageHandler implements Serializable{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		toGrowl("Nachricht verschickt.");
+//		include.setPage("messages", fleet);
 	}
 
 	public void remove(int i) {

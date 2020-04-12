@@ -339,12 +339,14 @@ public class BuildHandler {
 			}
 			else {
 				System.out.println("Es wird bereits gebaut.");
+				setBuildMessage("Es wird bereits gebaut.");
 			}
 		}
 		else if(id < 31) { //research
 			if(planetHandler.getPr().getTask() == -1) {
 				if(checkRes() && checkRec()) {
 					Date d = new Date(System.currentTimeMillis()+(time*1000));
+					System.out.println("Date: "+d);
 					applyCost();
 					new BuildTask(type,d,id,planetHandler.getPg().getPlanetId(),em,utx,planetHandler, this);
 					setBuildMessage("Forschung gestartet");
@@ -356,6 +358,7 @@ public class BuildHandler {
 			}
 			else {
 				System.out.println("Es wird bereits geforscht.");
+				setBuildMessage("Es wird bereits geforscht.");
 			}
 		}
 		else if(id < 45) { //ship
@@ -394,101 +397,7 @@ public class BuildHandler {
 		}
 	}
 
-	public boolean isBuildingR() {
-		return isBuildingR;
-	}
-
-	public void setBuildingR(boolean isBuildingR) {
-		this.isBuildingR = isBuildingR;
-	}
-
-	public int getBuildTaskIdR() {
-		return buildTaskIdR;
-	}
-
-	public void setBuildTaskIdR(int buildTaskIdR) {
-		this.buildTaskIdR = buildTaskIdR;
-	}
-
-	public String getBuildTaskNameR() {
-		return buildTaskNameR;
-	}
-
-	public void setBuildTaskNameR(String buildTaskNameR) {
-		this.buildTaskNameR = buildTaskNameR;
-	}
-
-	public Date getRemainingBuildTimeR() {
-		return remainingBuildTimeR;
-	}
-
-	public void setRemainingBuildTimeR(Date remainingBuildTimeR) {
-		this.remainingBuildTimeR = remainingBuildTimeR;
-	}
-
-	public boolean isBuildingS() {
-		return isBuildingS;
-	}
-
-	public void setBuildingS(boolean isBuildingS) {
-		this.isBuildingS = isBuildingS;
-	}
-
-	public int getBuildTaskIdS() {
-		return buildTaskIdS;
-	}
-
-	public void setBuildTaskIdS(int buildTaskIdS) {
-		this.buildTaskIdS = buildTaskIdS;
-	}
-
-	public String getBuildTaskNameS() {
-		return buildTaskNameS;
-	}
-
-	public void setBuildTaskNameS(String buildTaskNameS) {
-		this.buildTaskNameS = buildTaskNameS;
-	}
-
-	public Date getRemainingBuildTimeS() {
-		return remainingBuildTimeS;
-	}
-
-	public void setRemainingBuildTimeS(Date remainingBuildTimeS) {
-		this.remainingBuildTimeS = remainingBuildTimeS;
-	}
-
-	public boolean isBuildingD() {
-		return isBuildingD;
-	}
-
-	public void setBuildingD(boolean isBuildingD) {
-		this.isBuildingD = isBuildingD;
-	}
-
-	public int getBuildTaskIdD() {
-		return buildTaskIdD;
-	}
-
-	public void setBuildTaskIdD(int buildTaskIdD) {
-		this.buildTaskIdD = buildTaskIdD;
-	}
-
-	public String getBuildTaskNameD() {
-		return buildTaskNameD;
-	}
-
-	public void setBuildTaskNameD(String buildTaskNameD) {
-		this.buildTaskNameD = buildTaskNameD;
-	}
-
-	public Date getRemainingBuildTimeD() {
-		return remainingBuildTimeD;
-	}
-
-	public void setRemainingBuildTimeD(Date remainingBuildTimeD) {
-		this.remainingBuildTimeD = remainingBuildTimeD;
-	}
+	
 
 	public void afterBuild() {
 		if(buildDone.equals("t")) {
@@ -517,7 +426,8 @@ public class BuildHandler {
 		double c = planetHandler.getPg().getCrystal();
 		double d = planetHandler.getPg().getDeut();
 		int uE = planetHandler.getPg().getUsedEnergy();
-		planetHandler.getPg().setUsedEnergy((int)(uE+energy));
+		if(energy > 0)
+			planetHandler.getPg().setUsedEnergy((int)(uE+energy));
 		planetHandler.getPg().setMetal(m - metal);
 		planetHandler.getPg().setCrystal(c - crystal);
 		planetHandler.getPg().setDeut(d - deut);
@@ -999,5 +909,101 @@ public class BuildHandler {
 
 	public void setShipCons(long shipCons) {
 		this.shipCons = shipCons;
+	}
+	
+	public boolean isBuildingR() {
+		return isBuildingR;
+	}
+
+	public void setBuildingR(boolean isBuildingR) {
+		this.isBuildingR = isBuildingR;
+	}
+
+	public int getBuildTaskIdR() {
+		return buildTaskIdR;
+	}
+
+	public void setBuildTaskIdR(int buildTaskIdR) {
+		this.buildTaskIdR = buildTaskIdR;
+	}
+
+	public String getBuildTaskNameR() {
+		return buildTaskNameR;
+	}
+
+	public void setBuildTaskNameR(String buildTaskNameR) {
+		this.buildTaskNameR = buildTaskNameR;
+	}
+
+	public Date getRemainingBuildTimeR() {
+		return remainingBuildTimeR;
+	}
+
+	public void setRemainingBuildTimeR(Date remainingBuildTimeR) {
+		this.remainingBuildTimeR = remainingBuildTimeR;
+	}
+
+	public boolean isBuildingS() {
+		return isBuildingS;
+	}
+
+	public void setBuildingS(boolean isBuildingS) {
+		this.isBuildingS = isBuildingS;
+	}
+
+	public int getBuildTaskIdS() {
+		return buildTaskIdS;
+	}
+
+	public void setBuildTaskIdS(int buildTaskIdS) {
+		this.buildTaskIdS = buildTaskIdS;
+	}
+
+	public String getBuildTaskNameS() {
+		return buildTaskNameS;
+	}
+
+	public void setBuildTaskNameS(String buildTaskNameS) {
+		this.buildTaskNameS = buildTaskNameS;
+	}
+
+	public Date getRemainingBuildTimeS() {
+		return remainingBuildTimeS;
+	}
+
+	public void setRemainingBuildTimeS(Date remainingBuildTimeS) {
+		this.remainingBuildTimeS = remainingBuildTimeS;
+	}
+
+	public boolean isBuildingD() {
+		return isBuildingD;
+	}
+
+	public void setBuildingD(boolean isBuildingD) {
+		this.isBuildingD = isBuildingD;
+	}
+
+	public int getBuildTaskIdD() {
+		return buildTaskIdD;
+	}
+
+	public void setBuildTaskIdD(int buildTaskIdD) {
+		this.buildTaskIdD = buildTaskIdD;
+	}
+
+	public String getBuildTaskNameD() {
+		return buildTaskNameD;
+	}
+
+	public void setBuildTaskNameD(String buildTaskNameD) {
+		this.buildTaskNameD = buildTaskNameD;
+	}
+
+	public Date getRemainingBuildTimeD() {
+		return remainingBuildTimeD;
+	}
+
+	public void setRemainingBuildTimeD(Date remainingBuildTimeD) {
+		this.remainingBuildTimeD = remainingBuildTimeD;
 	}
 }
