@@ -442,6 +442,7 @@ th.coords {
 	white-space: nowrap; */
 	background: none;
 	background-color: none;
+	border: 0px;
 	width: auto !important;
 }
 

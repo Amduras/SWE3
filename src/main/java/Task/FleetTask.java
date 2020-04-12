@@ -18,6 +18,7 @@ import controller.FleetHandler;
 import controller.QHandler;
 import model.Fight;
 import model.Flight;
+import model.Messages;
 import model.Solarsystem;
 import model.User;
 import planets.Planets_Buildings;
@@ -125,7 +126,7 @@ public class FleetTask implements Task, Serializable{
 			pg.setCrystal(pg.getCrystal()+cargo[1]);
 			pg.setDeut(pg.getDeut()+cargo[2]);
 				
-			cargo[0] = cargo[1] = cargo[2] = 0;
+			
 			System.out.println("After: pId:"+targetPlanet+"m: "+pg.getMetal()+" c: "+pg.getCrystal()+" d: "+pg.getDeut());					
 			try {
 				utx.begin();
@@ -141,6 +142,71 @@ public class FleetTask implements Task, Serializable{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			
+			
+			query = em.createQuery("select k from Planets_General k where k.planetId = :planetId");
+			query.setParameter("planetId", planet);
+			
+			Object res2 = query.getSingleResult();
+			Planets_General pg_self = (Planets_General)res2;
+			
+			query = em.createQuery("select k from User k where k.userID = :userId");
+			query.setParameter("userId", pg_self.getUserId());
+			
+			Object res3 = query.getSingleResult();
+			User user_self = (User)res3;
+			
+			query = em.createQuery("select k from User k where k.userID = :userId");
+			query.setParameter("userId", pg.getUserId());
+			
+			Object res4 = query.getSingleResult();
+			User user_other = (User)res4;
+			
+			
+			
+			String subject = "Transport zu " +pg.getName();
+			String fromUser = "Flottenadmiral";
+			String toUser = user_self.getUsername();
+			
+			String msg = "Unsere Flotte hat den Planeten "+pg.getName()+" beliefert.</br>"
+					+ "Folgende Rohstoffe wurden entladen:</br>"
+					+ "<table id=\"buildings\">"
+					+"<tr>"
+					+"<td><img width=\"40\" height=\"40\" src=\"resources/images/res_icon/metal.png\" alt=\"Res\"></td>"
+					+"<td><img width=\"40\" height=\"40\" src=\"resources/images/res_icon/crystal.png\" alt=\"Res\"></td>"
+					+"<td><img width=\"40\" height=\"40\" src=\"resources/images/res_icon/deuterium.png\" alt=\"Res\"></td>"
+					+"</tr>"
+					+"<tr>"
+					+"<td>"+cargo[0]+"</td>"
+					+"<td>"+cargo[1]+"</td>"
+					+"<td>"+cargo[2]+"</td>"
+					+"</tr>"
+					+ "</table></br>"
+					+"Die Flotte befindet sich nun auf dem Rückweg.";
+			submitMSG(fromUser,toUser,msg,subject);
+			if(user_self.getUserID() != user_other.getUserID()) {
+				subject = "Transport von " +pg_self.getName();
+				fromUser = "Flottenadmiral";
+				toUser = user_other.getUsername();
+				
+				msg = "Eine Flotte vom Planeten "+pg_self.getName()+" hat uns beliefert.</br>"
+						+ "Folgende Rohstoffe wurden entladen:</br>"
+						+ "<table id=\"buildings\">"
+						+"<tr>"
+						+"<td><img width=\"40\" height=\"40\" src=\"resources/images/res_icon/metal.png\" alt=\"Res\"></td>"
+						+"<td><img width=\"40\" height=\"40\" src=\"resources/images/res_icon/crystal.png\" alt=\"Res\"></td>"
+						+"<td><img width=\"40\" height=\"40\" src=\"resources/images/res_icon/deuterium.png\" alt=\"Res\"></td>"
+						+"</tr>"
+						+"<tr>"
+						+"<td>"+cargo[0]+"</td>"
+						+"<td>"+cargo[1]+"</td>"
+						+"<td>"+cargo[2]+"</td>"
+						+"</tr>"
+						+ "</table></br>"
+						+"Die Flotte befindet sich nun auf dem Rückweg.";
+				submitMSG(fromUser,toUser,msg,subject);
+			}
+			cargo[0] = cargo[1] = cargo[2] = 0;
 			for(int i : ships)
 				System.out.println("Ship - before: "+ i);
 			new FleetTask(em, utx, 3, new Date(System.currentTimeMillis()+duration*1000), duration, planet, planet, ships, cargo, fleetHandler);
@@ -187,7 +253,36 @@ public class FleetTask implements Task, Serializable{
 						| HeuristicRollbackException | SystemException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}					
+				}
+				query = em.createQuery("select k from User k where k.userID = :userId");
+				query.setParameter("userId", pg.getUserId());
+				
+				Object res4 = query.getSingleResult();
+				User user_self = (User)res4;
+				
+				
+				
+				String subject = "Flotte erreicht "+pg.getName();
+				String fromUser = "Flottenadmiral";
+				String toUser = user_self.getUsername();
+				
+				String msg = "Unsere Flotte hat nach Ihrer Mission erfolgreich "+pg.getName()+" erreicht.</br>"
+						+ "Folgende Rohstoffe wurden entladen:</br>"
+						+ "<table id=\"buildings\">"
+						+"<tr>"
+						+"<td><img width=\"40\" height=\"40\" src=\"resources/images/res_icon/metal.png\" alt=\"Res\"></td>"
+						+"<td><img width=\"40\" height=\"40\" src=\"resources/images/res_icon/crystal.png\" alt=\"Res\"></td>"
+						+"<td><img width=\"40\" height=\"40\" src=\"resources/images/res_icon/deuterium.png\" alt=\"Res\"></td>"
+						+"</tr>"
+						+"<tr>"
+						+"<td>"+cargo[0]+"</td>"
+						+"<td>"+cargo[1]+"</td>"
+						+"<td>"+cargo[2]+"</td>"
+						+"</tr>"
+						+"</table></br>"
+						+"Die Flotte erwartet eure Befehle.";
+				submitMSG(fromUser,toUser,msg,subject);
+				cargo[0] = cargo[1] = cargo[2] = 0;
 			} catch(NoResultException e){	
 				System.out.println("Keine pg mit id "+targetPlanet+" in DB - station");
 			}
@@ -338,5 +433,23 @@ public class FleetTask implements Task, Serializable{
 			ps.setSolarSattlelite(val);
 			break;
 		}
+	}
+	private void submitMSG(String fromUser, String toUser, String msg, String subject) {
+		Messages newMessage = new Messages(fromUser, toUser, msg, subject);
+		try {
+			utx.begin();
+		} catch (NotSupportedException | SystemException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		em.persist(newMessage);
+		try {
+			utx.commit();
+		} catch (SecurityException | IllegalStateException | RollbackException | HeuristicMixedException
+				| HeuristicRollbackException | SystemException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		fleetHandler.setMissionDone("t");
 	}
 }
