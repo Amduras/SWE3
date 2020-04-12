@@ -3,14 +3,8 @@ package planets;
 import java.io.Serializable;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.MapsId;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
-import javax.persistence.Transient;
-
-import Task.BuildTask;
 
 @SuppressWarnings("serial")
 @NamedQuery(name="SelectPlanets_Buildings", query="Select k from Planets_Buildings k")

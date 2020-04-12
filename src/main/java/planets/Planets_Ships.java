@@ -1,20 +1,11 @@
 package planets;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.MapsId;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
-
-import Task.BuildTask;
 
 @SuppressWarnings("serial")
 @NamedQuery(name="SelectPlanets_Ships", query="Select k from Planets_Ships k")

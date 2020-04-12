@@ -3,8 +3,6 @@ package Task;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;

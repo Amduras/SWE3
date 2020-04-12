@@ -1,21 +1,15 @@
 package model;
 
 import java.io.Serializable;
-import java.util.List;
-import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 
 import enums.AuthLvl;
 import enums.IsActive;
-import planets.Planets_General;
 
 @SuppressWarnings("serial")
 @NamedQuery(name="SelectUsers", query="Select k from User k")

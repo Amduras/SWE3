@@ -1,7 +1,6 @@
 package Task;
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.Date;
 
 import javax.persistence.EntityManager;
@@ -19,12 +18,8 @@ import controller.QHandler;
 import model.Fight;
 import model.Flight;
 import model.Messages;
-import model.Solarsystem;
 import model.User;
-import planets.Planets_Buildings;
-import planets.Planets_Def;
 import planets.Planets_General;
-import planets.Planets_Research;
 import planets.Planets_Ships;
 
 public class FleetTask implements Task, Serializable{

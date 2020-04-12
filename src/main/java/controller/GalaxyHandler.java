@@ -167,6 +167,7 @@ public class GalaxyHandler {
 			query.setParameter("systemId", systemId);
 			query.setParameter("position", position);
 			try {
+				@SuppressWarnings("unused")
 				Object res = query.getSingleResult();
 			}catch (NoResultException e) {
 				blocked = false;

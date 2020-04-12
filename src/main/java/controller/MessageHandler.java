@@ -127,6 +127,7 @@ public class MessageHandler implements Serializable{
 		Query query = em.createQuery("select k from User k where k.username = :name");
 		query.setParameter("name", newMessageUser);
 		try {
+			@SuppressWarnings("unused")
 			Object res = query.getSingleResult();
 		} catch(NoResultException e) {
 			toGrowl("Nutzer "+newMessageUser+" nicht vorhanden.");

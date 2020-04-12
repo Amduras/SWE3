@@ -28,7 +28,6 @@ import enums.AuthLvl;
 import enums.IsActive;
 import model.Buildable;
 import model.Galaxy;
-import model.Messages;
 import model.Ship;
 import model.Solarsystem;
 import model.User;

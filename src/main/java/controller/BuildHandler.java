@@ -1,6 +1,5 @@
 package controller;
 
-import java.util.Calendar;
 import java.util.Date;
 
 import javax.faces.application.FacesMessage;
@@ -323,8 +322,6 @@ public class BuildHandler {
 	public void build() {
 		buildDone = "f";
 		//		planetHandler.updateDataset();
-		//TODO
-		//could have used type?
 		if(id < 16) {//building
 			if(planetHandler.getPb().getTask() == -1) {
 				if(checkRes() && checkRec()) {
