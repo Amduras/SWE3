@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:p="http://primefaces.org/ui">
+
+	<f:event listener="#{loginHandler.checkLoggedIn}" type="preRenderView" />
+	<ui:insert name="fleetTables">
+		<h:panelGroup id="fleetsTop">
+			<h:form id="fleets_table_top">
+				<p:dataTable id="fleetIn"
+					value="#{loginHandler.flightHandler.flightsInc}" var="in"
+					emptyMessage="Keine ankommenden Flüge" styleClass="userTable">
+					<p:column headerText="Missionstyp">
+						<p:outputLabel value="Kolonisieren" rendered="#{in.getFleetTaskType() eq 0}" />
+						<p:outputLabel value="Trümmerfeld abbauen" rendered="#{in.getFleetTaskType() eq 1}" />
+						<p:outputLabel value="Transport" rendered="#{in.getFleetTaskType() eq 2}"/>
+						<p:outputLabel value="Stationieren" rendered="#{in.getFleetTaskType() eq 3}"/>
+						<p:outputLabel value="Spionage" rendered="#{in.getFleetTaskType() eq 4}"/>
+						<p:outputLabel value="Angriff" rendered="#{in.getFleetTaskType() eq 5}"/>
+					</p:column>
+					<p:column headerText="Dauer">
+						<p:outputLabel value="#{loginHandler.flightHandler.getRemainingTime(in)}">
+							<f:convertDateTime pattern="HH:mm:ss" type="date" timeZone="CEST" />
+						</p:outputLabel>
+					</p:column>
+					<p:column headerText="Ausgangsplanet">
+						<p:outputLabel value="#{loginHandler.flightHandler.getPlanet(in.getPlanetFromId())}" />
+					</p:column>
+				</p:dataTable>
+			</h:form>
+		</h:panelGroup>
+		<h:panelGroup id="fleetsBot">
+			<h:form id="fleets_table_bot">
+				<p:dataTable id="fleetOut"
+					value="#{loginHandler.flightHandler.flightsOut}" var="out"
+					emptyMessage="Keine ausgehenden Flüge" styleClass="userTable">
+					<p:column headerText="Missionstyp">
+						<p:outputLabel value="Kolonisieren" rendered="#{out.getFleetTaskType() eq 0}" />
+						<p:outputLabel value="Trümmerfeld abbauen" rendered="#{out.getFleetTaskType() eq 1}" />
+						<p:outputLabel value="Transport" rendered="#{out.getFleetTaskType() eq 2}"/>
+						<p:outputLabel value="Stationieren" rendered="#{out.getFleetTaskType() eq 3}"/>
+						<p:outputLabel value="Spionage" rendered="#{out.getFleetTaskType() eq 4}"/>
+						<p:outputLabel value="Angriff" rendered="#{out.getFleetTaskType() eq 5}"/>
+					</p:column>
+					<p:column headerText="Dauer">
+						<p:outputLabel value="#{loginHandler.flightHandler.getRemainingTime(out)}">
+							<f:convertDateTime pattern="HH:mm:ss" type="date" timeZone="CEST" />
+						</p:outputLabel>
+					</p:column>
+					<p:column headerText="Zielplanet">
+						<p:outputLabel value="#{loginHandler.flightHandler.getPlanet(out.getPlanetToId())}"/>
+					</p:column>
+				</p:dataTable>
+				<p:poll interval="1" listener="#{loginHandler.flightHandler.flightList()}" update=":fleets_table_top :fleets_table_bot"/>
+			</h:form>
+		</h:panelGroup>
+	</ui:insert>
+</ui:composition>

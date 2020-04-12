@@ -53,6 +53,7 @@ public class LoginHandler implements Serializable{
 	private SettingsHandler settingsHandler;
 	private MessageHandler messageHandler;
 	private FleetHandler fleetHandler;
+	private FlightHandler flightHandler;
 	private int logRounds = 12;
 	private SecureRandom random = new SecureRandom();
 
@@ -92,6 +93,7 @@ public class LoginHandler implements Serializable{
 			}			
 		}
 		settingsHandler = new SettingsHandler(em, utx);
+		flightHandler = new FlightHandler(em, utx);
 	}
 
 	private void install() {
@@ -308,6 +310,7 @@ public class LoginHandler implements Serializable{
 			gHandler.setSystemForTable(id);
 			gHandler.setUser(user);
 			messageHandler.setUser(user);
+			flightHandler.setPlanetHandler(planetHandler);
 			return"/main.xhtml?faces-redirect=true";
 		}else {
 			setLoginMessage("Ungültige Kombination aus Name und Passwort");
@@ -488,4 +491,14 @@ public class LoginHandler implements Serializable{
 	public void setFleetHandler(FleetHandler fleetHandler) {
 		this.fleetHandler = fleetHandler;
 	}
+
+	public FlightHandler getFlightHandler() {
+		return flightHandler;
+	}
+
+	public void setFlightHandler(FlightHandler flightHandler) {
+		this.flightHandler = flightHandler;
+	}
+	
+
 }

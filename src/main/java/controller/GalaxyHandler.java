@@ -293,6 +293,7 @@ public class GalaxyHandler {
 	
 	public void colonize(PlanetHandler planetHandler, int userid, int rowid, FleetHandler fleetHandler) {
 		if(planetHandler.getPs().getColonyShip() > 0) {
+			setMessage("Mission gestartet.");
 			fleetHandler.setUserid(userid);
 			fleetHandler.kolo(getGalaxyForTable(), getSystemForTable(), rowid, true);
 		} else {

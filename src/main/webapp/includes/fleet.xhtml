@@ -510,7 +510,7 @@
 				<h:inputText id="hidden2" style="display:none;" value="#{loginHandler.fleetHandler.missionDone}" 
 							valueChangeListener="#{loginHandler.fleetHandler.afterMission()}">
 				</h:inputText>
-				<p:poll interval="1" update=":mainForm:hidden2"></p:poll>
+				<p:poll interval="1" update=":mainForm:hidden2" />
 				
 			</ui:insert>
 		</h:panelGroup>

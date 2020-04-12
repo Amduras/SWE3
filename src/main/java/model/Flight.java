@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 
 @SuppressWarnings("serial")
+@NamedQuery(name="SelectFlights", query="Select k from Flight k")
 @Entity
 public class Flight implements Serializable{
 	@Id
