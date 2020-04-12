@@ -162,7 +162,8 @@ public class FleetHandler {
 					planetHandler.getPg().setDeut(planetHandler.getPg().getDeut()-cargo[2]);
 					
 					subtractShips();
-					
+					System.out.println("m: "+cargo[0]+" c: "+cargo[1]+" d: "+cargo[2]);
+					planetHandler.save();
 					setStage(0);
 				}
 				else {

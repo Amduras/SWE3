@@ -30,6 +30,9 @@ public class Flight implements Serializable{
 		this.fleetTaskType = fleetTaskType;
 		this.fleetTaskTime = fleetTaskTime;
 	}
+	public Flight() {
+		
+	}
 	public int getPlanetFromId() {
 		return planetFromId;
 	}

@@ -1,6 +1,7 @@
 package Task;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Date;
 
 import javax.persistence.EntityManager;
@@ -34,8 +35,8 @@ public class FleetTask implements Task, Serializable{
 	private long duration;
 	private int planet;
 	private int targetPlanet;
-	private int[] ships;
-	private long[] cargo;
+	private int[] ships =  new int[13];
+	private long[] cargo = new long[3];
 	private FleetHandler fleetHandler;
 	private Flight flight;
 
@@ -49,12 +50,17 @@ public class FleetTask implements Task, Serializable{
 		this.duration = duration;
 		this.planet = planet;
 		this.targetPlanet = targetPlanet;
-		this.ships = ships;
-		this.cargo = cargo;
+		for (int i=0;i<ships.length;++i)
+			this.ships[i] = ships[i];
+		this.cargo[0] = cargo[0];
+		this.cargo[1] = cargo[1];
+		this.cargo[2] = cargo[2];
 		this.fleetHandler = fleetHandler;
 		//TODO
 		/*** Delete Ships on mission from Planets_General ***/
 		System.out.println("Fleettask mit type "+type);
+		for(int i : this.ships)
+			System.out.println("Ship - const: "+ i);
 		/** Add to queue for schedule **/
 		QHandler.queued.add(this);
 	}
@@ -107,13 +113,16 @@ public class FleetTask implements Task, Serializable{
 		try {
 			Object res = query.getSingleResult();
 			Planets_General pg = (Planets_General)res;
-
+			
+			System.out.println("pId:"+targetPlanet+"m: "+pg.getMetal()+" c: "+pg.getCrystal()+" d: "+pg.getDeut());
+			System.out.println("m: "+cargo[0]+" c: "+cargo[1]+" d: "+cargo[2]);
+			
 			pg.setMetal(pg.getMetal()+cargo[0]);
 			pg.setCrystal(pg.getCrystal()+cargo[1]);
 			pg.setDeut(pg.getDeut()+cargo[2]);
 				
 			cargo[0] = cargo[1] = cargo[2] = 0;
-								
+			System.out.println("After: pId:"+targetPlanet+"m: "+pg.getMetal()+" c: "+pg.getCrystal()+" d: "+pg.getDeut());					
 			try {
 				utx.begin();
 			} catch (NotSupportedException | SystemException e) {
@@ -128,7 +137,11 @@ public class FleetTask implements Task, Serializable{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			new FleetTask(em, utx, 3, new Date(System.currentTimeMillis()+duration), duration, targetPlanet, planet, ships, cargo, fleetHandler);
+			for(int i : ships)
+				System.out.println("Ship - before: "+ i);
+			new FleetTask(em, utx, 3, new Date(System.currentTimeMillis()+duration*1000), duration, planet, planet, ships, cargo, fleetHandler);
+			for(int i : ships)
+				System.out.println("Ship - After: "+ i);
 		} catch(NoResultException e){	
 			System.out.println("Keine pg mit id "+targetPlanet+" in DB - station");
 		}
@@ -147,14 +160,15 @@ public class FleetTask implements Task, Serializable{
 			try {
 				Object res2 = query.getSingleResult();
 				Planets_Ships ps = (Planets_Ships)res2;
-				
+				System.out.println("Station: pId: "+targetPlanet);
+				for(int i : ships)
+					System.out.println("Ship: "+ i);
 				pg.setMetal(pg.getMetal()+cargo[0]);
 				pg.setCrystal(pg.getCrystal()+cargo[1]);
 				pg.setDeut(pg.getDeut()+cargo[2]);
 				
 				for(int i=0; i<ships.length;++i)
 					setById(i,ps,getById(i,ps)+ships[i]);
-				
 				try {
 					utx.begin();
 				} catch (NotSupportedException | SystemException e) {

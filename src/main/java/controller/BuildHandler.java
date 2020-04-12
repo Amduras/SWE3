@@ -131,31 +131,32 @@ public class BuildHandler {
 				crystal = (long)(b.getBaseCostCrystal() * Math.pow(b.getResFactor(), lvl));
 				deut = (long)(b.getBaseCostDeut() * Math.pow(b.getResFactor(), lvl));
 				if(id == 4) {
-					energy = (long) -Math.ceil((b.getBaseCostEnergy() * lvl * Math.pow(b.getEnergyFactor(), lvl)));
+					energy = 0;//(long) -Math.ceil((b.getBaseCostEnergy() * lvl * Math.pow(b.getEnergyFactor(), lvl)));
 				}
 				else if(id == 5) {
-					energy = (long) -Math.ceil((b.getBaseCostEnergy() * lvl * Math.pow(b.getEnergyFactor(), lvl)));
+					energy = 0;//(long) -Math.ceil((b.getBaseCostEnergy() * lvl * Math.pow(b.getEnergyFactor(), lvl)));
 				}
 				else {
 					energy = (long) Math.ceil((b.getBaseCostEnergy() * lvl * Math.pow(b.getEnergyFactor(), lvl)));
 				}
 				if(type == 0) {
-					time = (long)Math.ceil((metal+crystal) * 36 / (25 * (1 + planetHandler.getPb().getRoboticFactory()) * Math.pow(2, planetHandler.getPb().getNaniteFactory()) * ws.getGameSpeed()));
+					time = (long)Math.ceil((metal+crystal) * 36 / (25 * (1 + planetHandler.getPb().getRoboticFactory()) * Math.pow(2, planetHandler.getPb().getNaniteFactory()) * ws.getGameSpeed()))+5;
 					if(time > 100)
 						time -= 90;
 					timeM = time/60;
 					timeS = (int)Math.abs(time-timeM*60);
 				}
 				else if(type == 1) {
-					time = (long)Math.ceil(((metal+crystal) / (1000 * (1 + planetHandler.getPb().getResearchlab())) * 3600 - 1) / ws.getGameSpeed());
+					time = (long)Math.ceil(((metal+crystal) / (1000 * (1 + planetHandler.getPb().getResearchlab())) * 3600 - 1) / ws.getGameSpeed())+5;
 					timeM = time/60;
 					timeS = (int)Math.abs(time-timeM*60);
 				}
 				else if(type == 2) {
-					time = (long)Math.ceil(((metal+crystal) / (2500 * (1 + planetHandler.getPb().getShipyard())) * Math.pow(2, planetHandler.getPb().getNaniteFactory())) / ws.getGameSpeed() * 60);
+					time = (long)Math.ceil(((metal+crystal) / (2500 * (1 + planetHandler.getPb().getShipyard())) * Math.pow(2, planetHandler.getPb().getNaniteFactory())) / ws.getGameSpeed() * 60)+5;
 					timeM = time/60;
 					timeS = (int)Math.abs(time-timeM*60);
 				}
+				
 				descr = b.getDescr();
 				rec = b.getRec();
 			} catch(NoResultException e){	
@@ -260,7 +261,7 @@ public class BuildHandler {
 			if(bt != null) {
 				isBuildingR = true;
 				remainingBuildTimeR.setTime(Math.abs(bt.getTime().getTime()-System.currentTimeMillis()));
-				System.out.println(remainingBuildTimeR);
+				//System.out.println(remainingBuildTimeR);
 				buildTaskIdR = bt.getUpgradeId();
 				Query query = em.createQuery("select k from Buildable k where k.id = :id");
 				query.setParameter("id", buildTaskIdR);

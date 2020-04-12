@@ -17,10 +17,10 @@
 					<tr>
 						<td><h:graphicImage style="width: 40px; height: 40px;" id="bq_id"
 									url="resources/images/buildable/#{loginHandler.buildHandler.buildTaskId}.jpg"/></td>
-						<td><h:outputLabel id="bq_name" value="#{loginHandler.buildHandler.buildTaskName}"></h:outputLabel></td>
+						<td><h:outputLabel style="color: white;" id="bq_name" value="#{loginHandler.buildHandler.buildTaskName}"></h:outputLabel></td>
 					</tr>
 					<tr>
-						<td><p:outputLabel id="bq_time" value="#{loginHandler.buildHandler.remainingBuildTime}" style="font-size: 15px; margin-top: 4px;">
+						<td><p:outputLabel id="bq_time" value="#{loginHandler.buildHandler.remainingBuildTime}" style="color: white; font-size: 15px; margin-top: 4px;">
 								<f:convertDateTime pattern="HH:mm:ss" type="date" timeZone="Europe/Berlin" />
 							</p:outputLabel>
 						</td>

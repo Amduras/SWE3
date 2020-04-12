@@ -327,9 +327,9 @@ public class Fight {
 	private void applyBattleResults() {
 		//att
 		for(int i=0;i<attShips.length;++i)
-			attTShips[i] = attShips[i][0]-attShips[i][5];
+			attTShips[i] = attShips[i][0]-Math.abs(attShips[i][5]);
 		for(int i=0;i<defShips.length;++i)
-			setById(i,defShips[i][0]-defShips[i][5]);
+			setById(i,defShips[i][0]-Math.abs(defShips[i][5]));
 	}
 	private void repairDef() {
 		for(int i=14;i<defShips.length;++i) {
