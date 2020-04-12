@@ -468,7 +468,6 @@ public class BuildHandler {
 					if(Integer.valueOf(recs2[1]) <= getMethode(recs2[0])){
 						++i;
 					} else {
-						System.out.println("Gesetzt");
 						buildable = false;
 					}
 				}

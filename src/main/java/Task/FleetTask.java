@@ -21,7 +21,10 @@ import model.Flight;
 import model.Messages;
 import model.Solarsystem;
 import model.User;
+import planets.Planets_Buildings;
+import planets.Planets_Def;
 import planets.Planets_General;
+import planets.Planets_Research;
 import planets.Planets_Ships;
 
 public class FleetTask implements Task, Serializable{
@@ -101,7 +104,8 @@ public class FleetTask implements Task, Serializable{
 		}
 	}
 	private void kolo() {
-		//TODO
+		System.out.println("Kolonisieren gestartet");
+		fleetHandler.kolo((int)cargo[0], (int)cargo[1], (int)cargo[2], false);
 		deleteMe();
 	}
 	private void tf() {

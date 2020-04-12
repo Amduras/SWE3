@@ -10,12 +10,18 @@ import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
+import javax.transaction.HeuristicMixedException;
+import javax.transaction.HeuristicRollbackException;
+import javax.transaction.NotSupportedException;
+import javax.transaction.RollbackException;
+import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 
 import org.primefaces.context.RequestContext;
 
 import Task.FleetTask;
 import model.Ship;
+import model.Solarsystem;
 import model.WorldSettings;
 import planets.Planets_General;
 import planets.Planets_Ships;
@@ -46,6 +52,7 @@ public class FleetHandler {
 	private boolean isValidTarget = false;
 	private long[] cargo = {0,0,0};
 	private String missionDone = "f";
+	private int userid;
 	
 	private int mission;
 
@@ -175,6 +182,51 @@ public class FleetHandler {
 				System.out.println("gebe gültige Mission ein.");
 				setMessage("gebe eine gültige Mission ein.");
 			}
+		}
+	}
+	public void kolo(int galaxyid, int systemid, int position, boolean fromGalaxy) {
+		if(fromGalaxy) {
+			System.out.println("Berechnung");
+			calcSpeed();
+			calcTravelTime();
+			arrival = new Date(System.currentTimeMillis()+travelTime*1000);
+			for(int i = 0; i < ships.length; ++i) {
+				if(i == 6) {
+					ships[i] = 1;
+				} else {
+					ships[i] = 0;
+				}
+			}
+			cargo[0] = galaxyid;
+			cargo[1] = systemid;
+			cargo[2] = position;
+			new FleetTask(em, utx, 0, arrival, travelTime, -1, -1, ships, cargo, this);
+		} else {
+			System.out.println("Kolonisieren");
+			planetHandler.colonizePlanet(userid, position, galaxyid, systemid);
+			Query query = em.createQuery("select k from Solarsystem k where k.systemId = :id");
+			query.setParameter("id", galaxyid);
+			Solarsystem system = (Solarsystem) query.getSingleResult();
+			system.setPlanets(system.getPlanets()-1);
+			if(position >=3 || position <= 12) {
+				system.setFreeStartpositions(system.getFreeStartpositions()-1);
+			}
+
+			try {
+				utx.begin();
+			} catch (NotSupportedException | SystemException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			em.merge(system);
+			try {
+				utx.commit();
+			} catch (SecurityException | IllegalStateException | RollbackException | HeuristicMixedException
+					| HeuristicRollbackException | SystemException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			planetHandler.createPlanetlist();
 		}
 	}
 	private void subtractShips() {
@@ -570,5 +622,11 @@ public class FleetHandler {
 	}
 	public void setPlanetHandler(PlanetHandler planetHandler) {
 		this.planetHandler = planetHandler;
+	}
+	public int getUserid() {
+		return userid;
+	}
+	public void setUserid(int userid) {
+		this.userid = userid;
 	}
 }

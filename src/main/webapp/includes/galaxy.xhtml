@@ -9,7 +9,7 @@
 	xmlns:p="http://primefaces.org/ui">
 
 	<f:event listener="#{loginHandler.checkLoggedIn}" type="preRenderView" />
-	
+	<p:growl id="growl" />
 	<p:panelGrid id="changeGrid" style="width:100%;">
 		<f:facet name="header">
 			<p:row>
@@ -66,8 +66,8 @@
 		<p:column headerText="Name">
 			<h:panelGroup rendered="#{loginHandler.gHandler.existPlanet(rowid) == false}">
 				<h:graphicImage url="resources/images/galaxies/kolonisieren.png" title="Kolonisieren">
-					<p:ajax event="click" update=":mainForm:galaxieTable :userPlanets" 
-					listener="#{loginHandler.gHandler.colonize(loginHandler.planetHandler, loginHandler.handler.user.userID, rowid)}"/>
+					<p:ajax event="click" update=":mainForm:galaxieTable :userPlanets :mainForm:growl" 
+					listener="#{loginHandler.gHandler.colonize(loginHandler.planetHandler, loginHandler.handler.user.userID, rowid, loginHandler.fleetHandler)}"/>
 				</h:graphicImage>
 			</h:panelGroup>
 			<p:outputLabel value="#{planets.name}" rendered="#{loginHandler.gHandler.existPlanet(rowid) == true}"/>
