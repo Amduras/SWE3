@@ -178,6 +178,32 @@ td {
   	text-align: center;
   	color: white;
 }
+
+#fleetTables{
+	display: block;
+	margin-left: 20px;
+	float: left;
+}
+#fleetsTop{
+	display: block;
+	margin-top: 20px;
+	padding-bottom: 15px;
+	width: 400px;
+  	border: 4px solid black;
+  	background: #15151e;
+  	text-align: center;
+  	color: white;
+}
+#fleetsBot{
+	display: block;
+	margin-top: 20px;
+	padding-bottom: 15px;
+	width: 400px;
+	border: 4px solid black;
+  	background: #15151e;
+  	text-align: center;
+  	color: white;
+}
 .col{
   float: left;
   width: 33%;

@@ -338,6 +338,7 @@ public class FleetTask implements Task, Serializable{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		fleetHandler.setMissionDone("t");
 	}
 	private int getById(int id, Planets_Ships ps) {
 		int res = 999999;

@@ -185,6 +185,7 @@ public class FleetHandler {
 			}
 		}
 	}
+	
 	public void kolo(int galaxyid, int systemid, int position, boolean fromGalaxy) {
 		if(fromGalaxy) {
 			System.out.println("Berechnung");
@@ -192,7 +193,7 @@ public class FleetHandler {
 			calcTravelTime();
 			arrival = new Date(System.currentTimeMillis()+travelTime*1000);
 			for(int i = 0; i < ships.length; ++i) {
-				if(i == 6) {
+				if(i == 10) {
 					ships[i] = 1;
 				} else {
 					ships[i] = 0;
@@ -201,7 +202,9 @@ public class FleetHandler {
 			cargo[0] = galaxyid;
 			cargo[1] = systemid;
 			cargo[2] = position;
-			new FleetTask(em, utx, 0, arrival, travelTime, -1, -1, ships, cargo, this);
+			new FleetTask(em, utx, 0, arrival, travelTime, planetHandler.getPg().getPlanetId(), -1, ships, cargo, this);
+			subtractShips();
+			planetHandler.save();
 		} else {
 			System.out.println("Kolonisieren");
 			planetHandler.colonizePlanet(userid, position, galaxyid, systemid);
@@ -230,6 +233,7 @@ public class FleetHandler {
 			planetHandler.createPlanetlist();
 		}
 	}
+	
 	private void subtractShips() {
 		for(int i=0; i<ships.length;++i)
 			setById(i,planetHandler.getPs(),getById(i,planetHandler.getPs())-ships[i]);
@@ -328,6 +332,7 @@ public class FleetHandler {
 			FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add("mainForm:center_body_top");
 			FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add("mainForm:center_body_bottom");
 			RequestContext.getCurrentInstance().update("mainForm:growl");
+			RequestContext.getCurrentInstance().update("mainForm:galaxieTable");
 			setMessage("Mission abgeschlossen");
 		}
 	}
